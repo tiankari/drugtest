@@ -1,0 +1,863 @@
+{
+  "note": "Generated from src/pipeline/mat.ts. Design colours are what is sent to the printer, not what it prints; each copy must be registered.",
+  "version": 1,
+  "label": "MAT v1",
+  "sizeMm": [
+    105,
+    148
+  ],
+  "markers": [
+    {
+      "corner": "TL",
+      "rect": {
+        "x": 4,
+        "y": 4,
+        "w": 12,
+        "h": 12
+      },
+      "hole": {
+        "x": 8,
+        "y": 8,
+        "w": 4,
+        "h": 4
+      }
+    },
+    {
+      "corner": "TR",
+      "rect": {
+        "x": 89,
+        "y": 4,
+        "w": 12,
+        "h": 12
+      },
+      "hole": null
+    },
+    {
+      "corner": "BR",
+      "rect": {
+        "x": 89,
+        "y": 132,
+        "w": 12,
+        "h": 12
+      },
+      "hole": null
+    },
+    {
+      "corner": "BL",
+      "rect": {
+        "x": 4,
+        "y": 132,
+        "w": 12,
+        "h": 12
+      },
+      "hole": null
+    }
+  ],
+  "sampleZone": {
+    "x": 17.5,
+    "y": 38,
+    "w": 70,
+    "h": 70
+  },
+  "scaleBar": {
+    "rect": {
+      "x": 27.5,
+      "y": 112,
+      "w": 50,
+      "h": 1.6
+    },
+    "lengthMm": 50,
+    "segmentMm": 10
+  },
+  "idStrip": {
+    "frame": {
+      "x": 30,
+      "y": 19,
+      "w": 45,
+      "h": 5
+    },
+    "cells": [
+      {
+        "x": 30,
+        "y": 19,
+        "w": 5,
+        "h": 5
+      },
+      {
+        "x": 35,
+        "y": 19,
+        "w": 5,
+        "h": 5
+      },
+      {
+        "x": 40,
+        "y": 19,
+        "w": 5,
+        "h": 5
+      },
+      {
+        "x": 45,
+        "y": 19,
+        "w": 5,
+        "h": 5
+      },
+      {
+        "x": 50,
+        "y": 19,
+        "w": 5,
+        "h": 5
+      },
+      {
+        "x": 55,
+        "y": 19,
+        "w": 5,
+        "h": 5
+      },
+      {
+        "x": 60,
+        "y": 19,
+        "w": 5,
+        "h": 5
+      },
+      {
+        "x": 65,
+        "y": 19,
+        "w": 5,
+        "h": 5
+      },
+      {
+        "x": 70,
+        "y": 19,
+        "w": 5,
+        "h": 5
+      }
+    ],
+    "encoding": "cells 0-3 version (MSB first), cells 4-7 copy index A=1..O=15, cell 8 parity making the count of black cells odd",
+    "copies": {
+      "A": "000100011",
+      "B": "000100101"
+    }
+  },
+  "patches": [
+    {
+      "id": "Y1",
+      "name": "Lemon yellow",
+      "role": "chromatic",
+      "family": "yellow",
+      "side": "top",
+      "index": 0,
+      "rectMm": {
+        "x": 18.5,
+        "y": 5,
+        "w": 10,
+        "h": 10
+      },
+      "designSrgb8": [
+        245,
+        224,
+        80
+      ],
+      "designLabD65": [
+        88.59,
+        -8.61,
+        70.02
+      ]
+    },
+    {
+      "id": "O2",
+      "name": "Deep orange",
+      "role": "chromatic",
+      "family": "orange",
+      "side": "top",
+      "index": 1,
+      "rectMm": {
+        "x": 30.1,
+        "y": 5,
+        "w": 10,
+        "h": 10
+      },
+      "designSrgb8": [
+        224,
+        106,
+        30
+      ],
+      "designLabD65": [
+        58.28,
+        42.04,
+        59.47
+      ]
+    },
+    {
+      "id": "P1",
+      "name": "Magenta purple",
+      "role": "chromatic",
+      "family": "purple",
+      "side": "top",
+      "index": 2,
+      "rectMm": {
+        "x": 41.7,
+        "y": 5,
+        "w": 10,
+        "h": 10
+      },
+      "designSrgb8": [
+        162,
+        61,
+        127
+      ],
+      "designLabD65": [
+        42.08,
+        49.01,
+        -16.19
+      ]
+    },
+    {
+      "id": "W_T",
+      "name": "White (paper)",
+      "role": "white",
+      "family": "white",
+      "side": "top",
+      "index": 3,
+      "rectMm": {
+        "x": 53.3,
+        "y": 5,
+        "w": 10,
+        "h": 10
+      },
+      "designSrgb8": [
+        255,
+        255,
+        255
+      ],
+      "designLabD65": [
+        100,
+        0,
+        0
+      ]
+    },
+    {
+      "id": "BL1",
+      "name": "Medium blue",
+      "role": "chromatic",
+      "family": "blue",
+      "side": "top",
+      "index": 4,
+      "rectMm": {
+        "x": 64.9,
+        "y": 5,
+        "w": 10,
+        "h": 10
+      },
+      "designSrgb8": [
+        63,
+        114,
+        192
+      ],
+      "designLabD65": [
+        48.13,
+        8.46,
+        -45.96
+      ]
+    },
+    {
+      "id": "Y2",
+      "name": "Turmeric yellow",
+      "role": "chromatic",
+      "family": "yellow",
+      "side": "top",
+      "index": 5,
+      "rectMm": {
+        "x": 76.5,
+        "y": 5,
+        "w": 10,
+        "h": 10
+      },
+      "designSrgb8": [
+        232,
+        168,
+        32
+      ],
+      "designLabD65": [
+        73.07,
+        12.99,
+        71.22
+      ]
+    },
+    {
+      "id": "V2",
+      "name": "Lavender",
+      "role": "chromatic",
+      "family": "violet",
+      "side": "right",
+      "index": 0,
+      "rectMm": {
+        "x": 90,
+        "y": 19,
+        "w": 10,
+        "h": 10
+      },
+      "designSrgb8": [
+        168,
+        151,
+        214
+      ],
+      "designLabD65": [
+        65.99,
+        19.24,
+        -29.88
+      ]
+    },
+    {
+      "id": "W_R1",
+      "name": "White (paper)",
+      "role": "white",
+      "family": "white",
+      "side": "right",
+      "index": 1,
+      "rectMm": {
+        "x": 90,
+        "y": 31.5,
+        "w": 10,
+        "h": 10
+      },
+      "designSrgb8": [
+        255,
+        255,
+        255
+      ],
+      "designLabD65": [
+        100,
+        0,
+        0
+      ]
+    },
+    {
+      "id": "R",
+      "name": "Primary red",
+      "role": "primary",
+      "family": "red",
+      "side": "right",
+      "index": 2,
+      "rectMm": {
+        "x": 90,
+        "y": 44,
+        "w": 10,
+        "h": 10
+      },
+      "designSrgb8": [
+        208,
+        40,
+        40
+      ],
+      "designLabD65": [
+        45.75,
+        63.15,
+        42.94
+      ]
+    },
+    {
+      "id": "BR1",
+      "name": "Medium brown",
+      "role": "chromatic",
+      "family": "brown",
+      "side": "right",
+      "index": 3,
+      "rectMm": {
+        "x": 90,
+        "y": 56.5,
+        "w": 10,
+        "h": 10
+      },
+      "designSrgb8": [
+        154,
+        106,
+        64
+      ],
+      "designLabD65": [
+        48.94,
+        14.49,
+        31.04
+      ]
+    },
+    {
+      "id": "BG1",
+      "name": "Teal",
+      "role": "chromatic",
+      "family": "blue-green",
+      "side": "right",
+      "index": 4,
+      "rectMm": {
+        "x": 90,
+        "y": 69,
+        "w": 10,
+        "h": 10
+      },
+      "designSrgb8": [
+        31,
+        138,
+        138
+      ],
+      "designLabD65": [
+        52.18,
+        -28.31,
+        -8.43
+      ]
+    },
+    {
+      "id": "P2",
+      "name": "Deep purple",
+      "role": "chromatic",
+      "family": "purple",
+      "side": "right",
+      "index": 5,
+      "rectMm": {
+        "x": 90,
+        "y": 81.5,
+        "w": 10,
+        "h": 10
+      },
+      "designSrgb8": [
+        94,
+        42,
+        110
+      ],
+      "designLabD65": [
+        27.19,
+        35.29,
+        -29.54
+      ]
+    },
+    {
+      "id": "G",
+      "name": "Primary green",
+      "role": "primary",
+      "family": "green",
+      "side": "right",
+      "index": 6,
+      "rectMm": {
+        "x": 90,
+        "y": 94,
+        "w": 10,
+        "h": 10
+      },
+      "designSrgb8": [
+        46,
+        154,
+        64
+      ],
+      "designLabD65": [
+        56.15,
+        -49.42,
+        38
+      ]
+    },
+    {
+      "id": "W_R2",
+      "name": "White (paper)",
+      "role": "white",
+      "family": "white",
+      "side": "right",
+      "index": 7,
+      "rectMm": {
+        "x": 90,
+        "y": 106.5,
+        "w": 10,
+        "h": 10
+      },
+      "designSrgb8": [
+        255,
+        255,
+        255
+      ],
+      "designLabD65": [
+        100,
+        0,
+        0
+      ]
+    },
+    {
+      "id": "BG2",
+      "name": "Sea green",
+      "role": "chromatic",
+      "family": "blue-green",
+      "side": "right",
+      "index": 8,
+      "rectMm": {
+        "x": 90,
+        "y": 119,
+        "w": 10,
+        "h": 10
+      },
+      "designSrgb8": [
+        93,
+        184,
+        164
+      ],
+      "designLabD65": [
+        68.96,
+        -32.11,
+        1.82
+      ]
+    },
+    {
+      "id": "RB2",
+      "name": "Maroon brown",
+      "role": "chromatic",
+      "family": "reddish-brown",
+      "side": "bottom",
+      "index": 0,
+      "rectMm": {
+        "x": 18.5,
+        "y": 133,
+        "w": 10,
+        "h": 10
+      },
+      "designSrgb8": [
+        138,
+        51,
+        36
+      ],
+      "designLabD65": [
+        33.77,
+        36.18,
+        28.5
+      ]
+    },
+    {
+      "id": "BL2",
+      "name": "Dark blue",
+      "role": "chromatic",
+      "family": "blue",
+      "side": "bottom",
+      "index": 1,
+      "rectMm": {
+        "x": 30.1,
+        "y": 133,
+        "w": 10,
+        "h": 10
+      },
+      "designSrgb8": [
+        35,
+        56,
+        110
+      ],
+      "designLabD65": [
+        24.67,
+        11.04,
+        -33.9
+      ]
+    },
+    {
+      "id": "W_B",
+      "name": "White (paper)",
+      "role": "white",
+      "family": "white",
+      "side": "bottom",
+      "index": 2,
+      "rectMm": {
+        "x": 41.7,
+        "y": 133,
+        "w": 10,
+        "h": 10
+      },
+      "designSrgb8": [
+        255,
+        255,
+        255
+      ],
+      "designLabD65": [
+        100,
+        0,
+        0
+      ]
+    },
+    {
+      "id": "BR2",
+      "name": "Dark brown",
+      "role": "chromatic",
+      "family": "brown",
+      "side": "bottom",
+      "index": 3,
+      "rectMm": {
+        "x": 53.3,
+        "y": 133,
+        "w": 10,
+        "h": 10
+      },
+      "designSrgb8": [
+        94,
+        59,
+        34
+      ],
+      "designLabD65": [
+        28.44,
+        12.58,
+        21.68
+      ]
+    },
+    {
+      "id": "B",
+      "name": "Primary blue",
+      "role": "primary",
+      "family": "blue",
+      "side": "bottom",
+      "index": 4,
+      "rectMm": {
+        "x": 64.9,
+        "y": 133,
+        "w": 10,
+        "h": 10
+      },
+      "designSrgb8": [
+        42,
+        60,
+        156
+      ],
+      "designLabD65": [
+        29.72,
+        27.13,
+        -54.38
+      ]
+    },
+    {
+      "id": "V1",
+      "name": "Blue violet",
+      "role": "chromatic",
+      "family": "violet",
+      "side": "bottom",
+      "index": 5,
+      "rectMm": {
+        "x": 76.5,
+        "y": 133,
+        "w": 10,
+        "h": 10
+      },
+      "designSrgb8": [
+        106,
+        79,
+        176
+      ],
+      "designLabD65": [
+        40.88,
+        34.17,
+        -48.06
+      ]
+    },
+    {
+      "id": "N1",
+      "name": "Neutral 1 (white, L*100)",
+      "role": "neutral",
+      "family": "neutral",
+      "side": "left",
+      "index": 0,
+      "rectMm": {
+        "x": 5,
+        "y": 19,
+        "w": 10,
+        "h": 10
+      },
+      "designSrgb8": [
+        255,
+        255,
+        255
+      ],
+      "designLabD65": [
+        100,
+        0,
+        0
+      ]
+    },
+    {
+      "id": "N2",
+      "name": "Neutral 2 (L*82)",
+      "role": "neutral",
+      "family": "neutral",
+      "side": "left",
+      "index": 1,
+      "rectMm": {
+        "x": 5,
+        "y": 31.5,
+        "w": 10,
+        "h": 10
+      },
+      "designSrgb8": [
+        204,
+        204,
+        204
+      ],
+      "designLabD65": [
+        82.05,
+        0,
+        0
+      ]
+    },
+    {
+      "id": "N3",
+      "name": "Neutral 3 (L*65)",
+      "role": "neutral",
+      "family": "neutral",
+      "side": "left",
+      "index": 2,
+      "rectMm": {
+        "x": 5,
+        "y": 44,
+        "w": 10,
+        "h": 10
+      },
+      "designSrgb8": [
+        158,
+        158,
+        158
+      ],
+      "designLabD65": [
+        65.11,
+        0,
+        0
+      ]
+    },
+    {
+      "id": "N4",
+      "name": "Neutral 4 (L*49)",
+      "role": "neutral",
+      "family": "neutral",
+      "side": "left",
+      "index": 3,
+      "rectMm": {
+        "x": 5,
+        "y": 56.5,
+        "w": 10,
+        "h": 10
+      },
+      "designSrgb8": [
+        116,
+        116,
+        116
+      ],
+      "designLabD65": [
+        48.84,
+        0,
+        0
+      ]
+    },
+    {
+      "id": "N5",
+      "name": "Neutral 5 (L*34)",
+      "role": "neutral",
+      "family": "neutral",
+      "side": "left",
+      "index": 4,
+      "rectMm": {
+        "x": 5,
+        "y": 69,
+        "w": 10,
+        "h": 10
+      },
+      "designSrgb8": [
+        80,
+        80,
+        80
+      ],
+      "designLabD65": [
+        34.03,
+        0,
+        0
+      ]
+    },
+    {
+      "id": "N6",
+      "name": "Neutral 6 (near-black, L*20)",
+      "role": "neutral",
+      "family": "neutral",
+      "side": "left",
+      "index": 5,
+      "rectMm": {
+        "x": 5,
+        "y": 81.5,
+        "w": 10,
+        "h": 10
+      },
+      "designSrgb8": [
+        48,
+        48,
+        48
+      ],
+      "designLabD65": [
+        19.87,
+        0,
+        0
+      ]
+    },
+    {
+      "id": "RB1",
+      "name": "Rust red-brown",
+      "role": "chromatic",
+      "family": "reddish-brown",
+      "side": "left",
+      "index": 6,
+      "rectMm": {
+        "x": 5,
+        "y": 94,
+        "w": 10,
+        "h": 10
+      },
+      "designSrgb8": [
+        181,
+        69,
+        42
+      ],
+      "designLabD65": [
+        44.59,
+        43.98,
+        39.09
+      ]
+    },
+    {
+      "id": "W_L",
+      "name": "White (paper)",
+      "role": "white",
+      "family": "white",
+      "side": "left",
+      "index": 7,
+      "rectMm": {
+        "x": 5,
+        "y": 106.5,
+        "w": 10,
+        "h": 10
+      },
+      "designSrgb8": [
+        255,
+        255,
+        255
+      ],
+      "designLabD65": [
+        100,
+        0,
+        0
+      ]
+    },
+    {
+      "id": "O1",
+      "name": "Light orange",
+      "role": "chromatic",
+      "family": "orange",
+      "side": "left",
+      "index": 8,
+      "rectMm": {
+        "x": 5,
+        "y": 119,
+        "w": 10,
+        "h": 10
+      },
+      "designSrgb8": [
+        242,
+        160,
+        90
+      ],
+      "designLabD65": [
+        72.73,
+        23.92,
+        48.29
+      ]
+    }
+  ]
+}
