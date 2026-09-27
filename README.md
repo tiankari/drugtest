@@ -20,6 +20,7 @@ npm run dev:https      # LAN HTTPS dev server for camera checks on a phone (self
 npm test               # unit tests (Node)
 npm run test:browser   # pixel-contract tests in real Chromium (installed Edge on Windows)
 npm run test:e2e       # built app + fake camera: data collection, export, hash checks
+npm run test:offline   # deployed site with the network cut: reload, capture, export, card PDF
 npm run typecheck      # app, no-DOM pipeline, Node scripts
 npm run mat            # regenerate the printable reference colour card into print/
 npm run build          # production build into dist/

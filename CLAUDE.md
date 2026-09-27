@@ -20,13 +20,14 @@ repo.** No AI co-author trailer in commit messages (user's choice).
   and tell the user; do not use or delete it.
 - GitHub Pages base path `/drugtest/` is set in `vite.config.ts`.
 
-### Remaining checkpoint tasks (before photos)
+### Checkpoint tasks
 
-1. `main` pushed to `origin` (check `git status`; the user may push it
-   themselves if a login is needed).
+1. User pushes `main` to `origin`, signing in as tiankari (check `git status`).
 2. User switches on **Settings → Pages → Build and deployment → Source: GitHub
    Actions**. Confirm the workflow passes and https://tiankari.github.io/drugtest/
-   loads, the service worker installs and an offline reload works.
+   serves the pushed commit, then run `npm run test:offline` against it
+   (network cut: reload, capture, zip export with hash checks, card PDF). It
+   passed against an earlier test deployment of the same code.
 3. User confirms on a phone: camera opens, live guidance shows, a data
    collection capture saves, and the .zip export works.
 
@@ -156,7 +157,8 @@ writer), an IndexedDB wrapper, a UI framework, OpenCV.js.
 - Imports use explicit `.ts` extensions; only erasable TS syntax (no enums, no
   parameter properties, no namespaces) so Node can run scripts directly.
 - `npm run typecheck && npm test && npm run test:browser` before committing;
-  `npm run test:e2e` after UI/capture changes.
+  `npm run test:e2e` after UI/capture changes; `npm run test:offline [url]`
+  against the deployed site after a deploy (defaults to the Pages URL).
 - Phone testing: `npm run dev:https` works for camera checks but a self-signed
   certificate blocks service-worker registration; test offline on GitHub Pages.
 - Builds and `vite preview` serve at `/drugtest/` (open http://localhost:4173/drugtest/);
