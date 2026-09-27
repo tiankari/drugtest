@@ -4,14 +4,20 @@
 
 import { PARAMS } from '../pipeline/config.ts';
 
-export const REQUESTED_CONSTRAINTS: MediaStreamConstraints = {
-  audio: false,
-  video: {
-    facingMode: { ideal: 'environment' },
-    width: { ideal: PARAMS.requestWidth },
-    height: { ideal: PARAMS.requestHeight },
-  },
+// resizeMode 'none' (a preference, ignored where unsupported) asks for one of
+// the camera's native modes. Without it, Chrome meets a landscape 1920x1080
+// request from a portrait-native camera by cropping to a 1080x1080 square.
+// (In the Media Capture spec and Chrome, but not yet in TypeScript's DOM types.)
+type VideoConstraints = MediaTrackConstraints & { resizeMode?: ConstrainDOMString };
+
+const VIDEO: VideoConstraints = {
+  facingMode: { ideal: 'environment' },
+  width: { ideal: PARAMS.requestWidth },
+  height: { ideal: PARAMS.requestHeight },
+  resizeMode: { ideal: 'none' },
 };
+
+export const REQUESTED_CONSTRAINTS: MediaStreamConstraints = { audio: false, video: VIDEO };
 
 export class CameraError extends Error {
   readonly hint: string;

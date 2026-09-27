@@ -3,31 +3,41 @@
 // works: reload, data collection capture (the capture worker is first loaded
 // while offline), .zip export with hash checks, and the card PDF download.
 //
-// Run: node tests/e2e/offline.e2e.ts [url]
+// --mobile emulates a phone (Playwright's Pixel 7 profile: Android user agent,
+// touch, 412 px viewport) with a portrait 1080x1920 fake camera. It is an
+// emulation in desktop Chromium, not a real phone.
+//
+// Run: node tests/e2e/offline.e2e.ts [url] [--mobile]
 
 import { mkdirSync, mkdtempSync, readFileSync, writeFileSync } from 'node:fs';
 import { tmpdir } from 'node:os';
 import { dirname, join } from 'node:path';
 import { unzipSync } from 'fflate';
-import { chromium } from 'playwright';
+import { chromium, devices } from 'playwright';
 import { loadCapture } from '../../scripts/lib/capture-files.ts';
 import { browserChannel, fakeCameraArgs } from '../../scripts/lib/fake-camera.ts';
 import { sha256Hex } from '../../src/io/hash.ts';
 
-const url = process.argv[2] ?? 'https://tiankari.github.io/drugtest/';
+const args = process.argv.slice(2);
+const mobile = args.includes('--mobile');
+const url = args.find((a) => !a.startsWith('--')) ?? 'https://tiankari.github.io/drugtest/';
+const [camW, camH] = mobile ? [1080, 1920] : [1920, 1080];
 const failures: string[] = [];
 const check = (ok: boolean, what: string) => {
   console.log(`${ok ? 'PASS' : 'FAIL'}  ${what}`);
   if (!ok) failures.push(what);
 };
 
-const browser = await chromium.launch({ channel: browserChannel, headless: !process.env.HEADED, args: fakeCameraArgs(1920, 1080) });
+const browser = await chromium.launch({ channel: browserChannel, headless: !process.env.HEADED, args: fakeCameraArgs(camW, camH) });
 const outDir = mkdtempSync(join(tmpdir(), 'fdtc-offline-'));
 try {
-  const context = await browser.newContext({ acceptDownloads: true, viewport: { width: 412, height: 915 } });
+  const context = await browser.newContext(
+    mobile ? { ...devices['Pixel 7'], acceptDownloads: true } : { acceptDownloads: true, viewport: { width: 412, height: 915 } },
+  );
   const page = await context.newPage();
   const pageErrors: string[] = [];
   page.on('pageerror', (e) => pageErrors.push(e.message));
+  console.log(`      mode: ${mobile ? 'mobile emulation (Pixel 7 profile)' : 'desktop'}, fake camera ${camW}x${camH}`);
 
   // 1. Online first visit: service worker installs and precaches.
   await page.goto(`${url}#/about`);
@@ -53,6 +63,16 @@ try {
   await page.locator('#phone').dispatchEvent('change');
   await page.goto(`${url}#/camera`);
   await page.waitForFunction(() => /\d+×\d+/.test(document.querySelector('.res-info')?.textContent ?? ''), null, { timeout: 15000 });
+  const res = await page.textContent('.res-info');
+  check(res?.startsWith(`${camW}×${camH}`) ?? false, `camera frame ${res} (expected ${camW}×${camH})`);
+  if (mobile) {
+    const env = await page.evaluate(() => {
+      const r = document.querySelector('svg.overlay .outline')!;
+      return { ua: navigator.userAgent, touch: navigator.maxTouchPoints, outlineW: Number(r.getAttribute('width')), outlineH: Number(r.getAttribute('height')) };
+    });
+    check(/Android/.test(env.ua) && env.touch > 0, `phone emulation active (Android UA, ${env.touch} touch points)`);
+    check(env.outlineH > env.outlineW, `framing outline is portrait on a portrait frame (${env.outlineW.toFixed(0)}x${env.outlineH.toFixed(0)})`);
+  }
   await page.selectOption('select[aria-label="Photo tag"]', 'daylight');
   await page.click('button[data-copy="A"]');
   await page.waitForFunction(() => !(document.querySelector('button.shutter') as HTMLButtonElement).disabled);
@@ -78,6 +98,7 @@ try {
     const c = await loadCapture(p);
     check(c.fileHashMatches === true && c.pixelHashMatches === true, `${n}: file and pixel hashes match the sidecar`);
     check(c.sidecar?.app.commit === build, `${n}: sidecar records the deployed build ${c.sidecar?.app.commit}`);
+    check(c.image.width === camW && c.image.height === camH, `${n}: full-resolution ${c.image.width}x${c.image.height}`);
   }
 
   // 6. Card PDF from the About screen, offline, identical to print/mat_A4_sheet.pdf.

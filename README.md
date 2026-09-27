@@ -21,6 +21,7 @@ npm test               # unit tests (Node)
 npm run test:browser   # pixel-contract tests in real Chromium (installed Edge on Windows)
 npm run test:e2e       # built app + fake camera: data collection, export, hash checks
 npm run test:offline   # deployed site with the network cut: reload, capture, export, card PDF
+                       # (add -- --mobile for Pixel 7 emulation with a portrait camera)
 npm run typecheck      # app, no-DOM pipeline, Node scripts
 npm run mat            # regenerate the printable reference colour card into print/
 npm run build          # production build into dist/

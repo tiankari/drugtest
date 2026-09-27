@@ -28,8 +28,15 @@ repo.** No AI co-author trailer in commit messages (user's choice).
    deploy). https://tiankari.github.io/drugtest/ serves that build, and
    `npm run test:offline` passed against it with the network cut: reload,
    capture, zip export with hash checks, card PDF download.
-3. Pending (user): phone check — camera opens, live guidance shows, a data
-   collection capture saves, and the .zip export works.
+3. Automated stand-in done: `npm run test:offline -- --mobile` (Playwright's
+   Pixel 7 profile: Android UA, touch, phone viewport; portrait 1080×1920 fake
+   camera) passes offline, including capture at full 1080×1920 and export.
+   It found and fixed a real bug: Chrome cropped a portrait-native camera to
+   1080×1080 because the request was landscape-shaped; the camera request now
+   prefers native modes (`resizeMode: 'none'`, `src/ui/camera.ts`).
+   **Still pending (user): the real-phone check** — camera opens, live guidance
+   shows, a data collection capture saves, the .zip export works. Emulation is
+   not a phone: real sensors, rotation handling and speed are untested.
 
 **When the user says the photos are in:** first print a count of PNGs per folder
 under `data/real/mat/` and per tag (tag = first `_`-separated field of the file
@@ -123,13 +130,15 @@ On synthetic data / automated tests only:
   its sidecar. PNG encode ≈ 0.4 s per 1920×1080 frame on a desktop (phone will be slower).
 - Offline: service worker precache, update prompt, offline reload — checked in a
   local production preview, at `/` and under a sub-path; the e2e test passes with
-  the built app served at `/drugtest/`.
+  the built app served at `/drugtest/`; `npm run test:offline` (desktop and
+  `--mobile`) passes against the live GitHub Pages site with the network cut.
 - Colour conversions: internal consistency only (white point, matrix inverse,
   8-bit round trip). CIEDE2000 and published test vectors come in Step 4.
 - MAT v1 layout constraints and ID-strip codec (every single-cell misread fails parity).
 - Blur/exposure checks respond in the right direction on synthetic scenes.
 
-Not verified: any phone. Safari/iOS untested. Thresholds unvalidated.
+Not verified: any real phone (only Pixel 7 emulation in desktop Chromium).
+Safari/iOS untested. Thresholds unvalidated.
 
 ## Thresholds
 
@@ -157,8 +166,8 @@ writer), an IndexedDB wrapper, a UI framework, OpenCV.js.
 - Imports use explicit `.ts` extensions; only erasable TS syntax (no enums, no
   parameter properties, no namespaces) so Node can run scripts directly.
 - `npm run typecheck && npm test && npm run test:browser` before committing;
-  `npm run test:e2e` after UI/capture changes; `npm run test:offline [url]`
-  against the deployed site after a deploy (defaults to the Pages URL).
+  `npm run test:e2e` after UI/capture changes; `npm run test:offline -- [url]
+  [--mobile]` against the deployed site after a deploy (defaults to the Pages URL).
 - Phone testing: `npm run dev:https` works for camera checks but a self-signed
   certificate blocks service-worker registration; test offline on GitHub Pages.
 - Builds and `vite preview` serve at `/drugtest/` (open http://localhost:4173/drugtest/);
@@ -171,3 +180,6 @@ writer), an IndexedDB wrapper, a UI framework, OpenCV.js.
   pipeline's box filter. Preview only guides; the capture check is recorded.
 - Cross-engine last-bit differences in `Math.pow`/`cbrt` not measured.
 - Encode time on a cheap Android phone not measured yet (sidecar records it).
+- Camera resolution and orientation on real phones unverified: the request is
+  1920×1080 with `resizeMode: 'none'` preferred; what each phone delivers (and
+  whether portrait frames arrive rotated) is recorded in every sidecar.
