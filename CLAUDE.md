@@ -3,26 +3,31 @@
 ## STATUS: PAUSED FOR PHOTOS (Session 1 checkpoint, after Step 3)
 
 Steps 1–3 are built (scaffold + deploy, printable reference colour card, camera
-and data-collection capture tool), committed and merged to `main` **locally
-only**. Work is paused until real photos exist.
+and data-collection capture tool) and merged to `main`. Work is paused until
+real photos exist.
 
-### Leftover checkpoint tasks (mini session, before photos)
+### Personal project: identity and remote
 
-The user chose to keep everything local until they set up a personal git
-identity. **Never author commits with the work email or
-associate it with this repo in any way.** All commits so far carry the
-placeholder `unassigned <unassigned@localhost.invalid>`.
+This is a personal project. **Never use a work or organisational email,
+account, registry or repo for it, and never write such an address into the
+repo.** No AI co-author trailer in commit messages (user's choice).
 
-1. User gives their personal git name/email → set them repo-locally and rewrite
-   every commit's author and committer from the placeholder (e.g. `git
-   filter-branch --env-filter ... -- --all`, then drop `refs/original`) BEFORE
-   any push.
-2. User creates an empty GitHub repo (public on a free plan, for Pages); add it
-   as `origin`; push `main`.
-3. User switches on **Settings → Pages → Build and deployment → Source: GitHub
-   Actions**. Confirm the workflow passes and the Pages URL loads, the service
-   worker installs and an offline reload works.
-4. User confirms on a phone: camera opens, live guidance shows, a data
+- Commit identity (repo-local config only; global config is not touched):
+  `tiankari <271698808+tiankari@users.noreply.github.com>`.
+- Only remote: `origin = https://tiankari@github.com/tiankari/drugtest.git`,
+  with `credential.useHttpPath true` locally so git asks for this account. No
+  SSH, no gh CLI. If git ever offers a stored login for another account, stop
+  and tell the user; do not use or delete it.
+- GitHub Pages base path `/drugtest/` is set in `vite.config.ts`.
+
+### Remaining checkpoint tasks (before photos)
+
+1. `main` pushed to `origin` (check `git status`; the user may push it
+   themselves if a login is needed).
+2. User switches on **Settings → Pages → Build and deployment → Source: GitHub
+   Actions**. Confirm the workflow passes and https://tiankari.github.io/drugtest/
+   loads, the service worker installs and an offline reload works.
+3. User confirms on a phone: camera opens, live guidance shows, a data
    collection capture saves, and the .zip export works.
 
 **When the user says the photos are in:** first print a count of PNGs per folder
@@ -116,7 +121,8 @@ On synthetic data / automated tests only:
   captures, zip export laid out as `mat/...`, every PNG's file and pixel hashes match
   its sidecar. PNG encode ≈ 0.4 s per 1920×1080 frame on a desktop (phone will be slower).
 - Offline: service worker precache, update prompt, offline reload — checked in a
-  local production preview, at `/` and under a `/<repo>/` sub-path.
+  local production preview, at `/` and under a sub-path; the e2e test passes with
+  the built app served at `/drugtest/`.
 - Colour conversions: internal consistency only (white point, matrix inverse,
   8-bit round trip). CIEDE2000 and published test vectors come in Step 4.
 - MAT v1 layout constraints and ID-strip codec (every single-cell misread fails parity).
@@ -153,8 +159,9 @@ writer), an IndexedDB wrapper, a UI framework, OpenCV.js.
   `npm run test:e2e` after UI/capture changes.
 - Phone testing: `npm run dev:https` works for camera checks but a self-signed
   certificate blocks service-worker registration; test offline on GitHub Pages.
-- Git Bash rewrites arguments like `/repo/` into Windows paths; set `BASE_PATH`
-  from PowerShell when building locally with a sub-path.
+- Builds and `vite preview` serve at `/drugtest/` (open http://localhost:4173/drugtest/);
+  the dev server stays at `/`. To override with `BASE_PATH`, set it from
+  PowerShell: Git Bash rewrites arguments like `/x/` into Windows paths.
 
 ## Known debt (so far)
 

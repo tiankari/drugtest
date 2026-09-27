@@ -35,11 +35,8 @@ jobs:
       - run: npx playwright install --with-deps chromium
       - run: npm run test:browser
 
-      - name: Build for Pages
-        run: npm run build
-        env:
-          # Pages serves the site at /<repo>/
-          BASE_PATH: /${{ github.event.repository.name }}/
+      # Base path /drugtest/ is set in vite.config.ts.
+      - run: npm run build
 
       - uses: actions/configure-pages@v6
         if: github.ref == 'refs/heads/main' && github.event_name != 'pull_request'

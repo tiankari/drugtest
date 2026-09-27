@@ -26,7 +26,8 @@ npm run build          # production build into dist/
 ```
 
 Deployment: pushing to `main` runs `.github/workflows/deploy.yml`, which tests,
-builds with the repo's base path and deploys to GitHub Pages.
+builds with the `/drugtest/` base path (set in `vite.config.ts`) and deploys to
+GitHub Pages at https://tiankari.github.io/drugtest/.
 
 Print the card: [print/PRINT_INSTRUCTIONS.md](print/PRINT_INSTRUCTIONS.md).
 Developer notes: [CLAUDE.md](CLAUDE.md).
