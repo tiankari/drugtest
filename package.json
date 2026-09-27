@@ -1,0 +1,31 @@
+{
+  "name": "field-drug-test-companion",
+  "private": true,
+  "version": "0.1.0",
+  "type": "module",
+  "description": "Field drug-test companion (SIH26231): reference colour card, colour correction, presumptive result.",
+  "scripts": {
+    "dev": "vite",
+    "dev:https": "vite --mode https --host",
+    "build": "vite build",
+    "preview": "vite preview",
+    "typecheck": "tsc -p tsconfig.json && tsc -p tsconfig.pure.json && tsc -p tsconfig.node.json",
+    "test": "vitest run",
+    "test:browser": "vitest run --config vitest.browser.config.ts",
+    "mat": "node scripts/generate-mat.ts",
+    "icons": "node scripts/generate-icons.ts",
+    "test:e2e": "npm run build && node tests/e2e/data-collection.e2e.ts"
+  },
+  "dependencies": {
+    "fflate": "^0.8.3"
+  },
+  "devDependencies": {
+    "@types/node": "^24.19.0",
+    "@vitejs/plugin-basic-ssl": "^2.3.0",
+    "@vitest/browser-playwright": "^5.0.2",
+    "playwright": "^1.63.0",
+    "typescript": "^7.0.2",
+    "vite": "^8.3.1",
+    "vitest": "^5.0.2"
+  }
+}
