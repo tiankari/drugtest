@@ -22,13 +22,13 @@ repo.** No AI co-author trailer in commit messages (user's choice).
 
 ### Checkpoint tasks
 
-1. User pushes `main` to `origin`, signing in as tiankari (check `git status`).
-2. User switches on **Settings → Pages → Build and deployment → Source: GitHub
-   Actions**. Confirm the workflow passes and https://tiankari.github.io/drugtest/
-   serves the pushed commit, then run `npm run test:offline` against it
-   (network cut: reload, capture, zip export with hash checks, card PDF). It
-   passed against an earlier test deployment of the same code.
-3. User confirms on a phone: camera opens, live guidance shows, a data
+1. Done: the user pushed `main` to `origin`, signed in as tiankari.
+2. Done: Pages source is GitHub Actions. The workflow run for `09e25d4` passed
+   (typecheck, unit, browser pixel-contract tests on Linux Chromium, build,
+   deploy). https://tiankari.github.io/drugtest/ serves that build, and
+   `npm run test:offline` passed against it with the network cut: reload,
+   capture, zip export with hash checks, card PDF download.
+3. Pending (user): phone check — camera opens, live guidance shows, a data
    collection capture saves, and the .zip export works.
 
 **When the user says the photos are in:** first print a count of PNGs per folder
