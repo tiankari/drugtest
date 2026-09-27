@@ -1,0 +1,33 @@
+# SIH26231 — Digital Companion for Field Drug Testing (Ministry of Home Affairs)
+
+Official problem statement, saved verbatim. Check the build against this text.
+
+---
+
+Background:
+Field drug-testing kits currently in use rely on visual interpretation of a
+colour-change reaction. This makes results subjective, difficult to
+standardise across officers, and leaves no verifiable record that a test was
+actually conducted at a given place and time. As a result, field test outcomes
+cannot presently be relied upon as documentary evidence.
+
+Description:
+Participants are to build a mobile application that works alongside existing
+colorimetric field-test kits (no new hardware).
+The application should:
+* Capture an image of the test result using the device camera, using a
+  reference colour card in-frame for lighting calibration.
+* Automatically classify the result against a defined set of outcome
+  categories (e.g., positive, negative, inconclusive).
+* Generate a tamper-evident digital record of the test, capturing timestamp,
+  GPS location, and an operator identifier, together with a cryptographic hash
+  of the captured image.
+* Maintain a simple, searchable log of tests conducted.
+
+Expected Deliverables:
+A working mobile/web application prototype demonstrating image capture,
+automated result classification, and generation of a signed digital record.
+
+Note to Participants:
+The output of this application is a presumptive field-test result and a
+supporting digital record; it does not replace laboratory confirmatory testing.

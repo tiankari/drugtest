@@ -1,0 +1,11 @@
+node_modules/
+dist/
+coverage/
+*.log
+.DS_Store
+Thumbs.db
+# Vitest browser-mode failure screenshots
+.vitest/
+__screenshots__/
+# Local Claude Code settings (per machine)
+.claude/settings.local.json
