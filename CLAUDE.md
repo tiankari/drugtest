@@ -3,7 +3,27 @@
 ## STATUS: PAUSED FOR PHOTOS (Session 1 checkpoint, after Step 3)
 
 Steps 1–3 are built (scaffold + deploy, printable reference colour card, camera
-and data-collection capture tool). Work is paused until real photos exist.
+and data-collection capture tool), committed and merged to `main` **locally
+only**. Work is paused until real photos exist.
+
+### Leftover checkpoint tasks (mini session, before photos)
+
+The user chose to keep everything local until they set up a personal git
+identity. **Never author commits with the work email or
+associate it with this repo in any way.** All commits so far carry the
+placeholder `unassigned <unassigned@localhost.invalid>`.
+
+1. User gives their personal git name/email → set them repo-locally and rewrite
+   every commit's author and committer from the placeholder (e.g. `git
+   filter-branch --env-filter ... -- --all`, then drop `refs/original`) BEFORE
+   any push.
+2. User creates an empty GitHub repo (public on a free plan, for Pages); add it
+   as `origin`; push `main`.
+3. User switches on **Settings → Pages → Build and deployment → Source: GitHub
+   Actions**. Confirm the workflow passes and the Pages URL loads, the service
+   worker installs and an offline reload works.
+4. User confirms on a phone: camera opens, live guidance shows, a data
+   collection capture saves, and the .zip export works.
 
 **When the user says the photos are in:** first print a count of PNGs per folder
 under `data/real/mat/` and per tag (tag = first `_`-separated field of the file
