@@ -1,0 +1,10 @@
+{
+  // Enforces the rule that the colour pipeline and the capture-file codec have
+  // NO DOM and NO Node dependencies: only the ES2022 standard library.
+  "extends": "./tsconfig.json",
+  "compilerOptions": {
+    "lib": ["ES2022"],
+    "types": []
+  },
+  "include": ["src/pipeline/**/*.ts", "src/io/png.ts", "src/io/crc32.ts", "src/io/dataset.ts"]
+}

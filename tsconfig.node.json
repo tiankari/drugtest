@@ -1,0 +1,9 @@
+{
+  // Node scripts, build config and tests.
+  "extends": "./tsconfig.json",
+  "compilerOptions": {
+    "lib": ["ES2022", "DOM", "DOM.Iterable"],
+    "types": ["node", "vite/client"]
+  },
+  "include": ["scripts/**/*.ts", "tests/**/*.ts", "vite.config.ts", "vitest.config.ts", "vitest.browser.config.ts", "build/**/*.ts"]
+}
