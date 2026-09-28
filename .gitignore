@@ -14,3 +14,5 @@ __screenshots__/
 data/real/**/*.png
 data/real/**/*.json
 data/real/*.zip
+# Throwaway build used by tests/e2e/result.e2e.ts (bundles a synthetic reference)
+dist-e2e/

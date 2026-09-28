@@ -3,7 +3,7 @@ import { aboutScreen } from './about-screen.ts';
 import { cameraScreen } from './camera-screen.ts';
 import { capturesScreen } from './captures-screen.ts';
 import { clear, h } from './dom.ts';
-import { reviewScreen } from './review-screen.ts';
+import { resultScreen } from './result-screen.ts';
 import { loadSettings, onSettings } from './settings.ts';
 import { settingsScreen } from './settings-screen.ts';
 
@@ -14,7 +14,7 @@ const ROUTES: Record<string, { title: string; screen: Screen; nav: boolean }> = 
   '#/captures': { title: 'Captures', screen: capturesScreen, nav: true },
   '#/settings': { title: 'Settings', screen: settingsScreen, nav: true },
   '#/about': { title: 'About', screen: aboutScreen, nav: true },
-  '#/review': { title: 'Capture', screen: reviewScreen, nav: false },
+  '#/result': { title: 'Result', screen: resultScreen, nav: false },
 };
 
 const app = document.getElementById('app')!;

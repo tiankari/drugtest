@@ -1,22 +1,38 @@
 // Camera screen: live preview with plain-words guidance, the framing outline,
-// and capture. Outside data collection mode, capture is enabled only when
-// every live check passes. In data collection mode capture always fires (so
+// the detected card and its orientation, and capture. Outside data collection
+// mode, capture is enabled only when every live check passes, and the result
+// screen follows. In data collection mode capture always fires (so
 // deliberately bad photos can be collected) and no result is ever shown.
 
 import { captureBaseName, COPIES, DATA_TAGS, phoneSlug, SIDECAR_SCHEMA, TAG_INFO, type CaptureSidecar, type DataTag } from '../io/dataset.ts';
+import type { MatAnalysis } from '../pipeline/analyse.ts';
 import { THRESHOLDS, PARAMS } from '../pipeline/config.ts';
-import { checkScaleFactor, framingOutline, type FrameCheckReport } from '../pipeline/quality.ts';
+import { checkScaleFactor, framingOutline } from '../pipeline/quality.ts';
 import { Camera, CameraError, REQUESTED_CONSTRAINTS } from './camera.ts';
 import { FRAME_SOURCE, grabFrame, makeThumb, processFrame, type EncodedCapture } from './capture.ts';
 import { errorText, h, toast } from './dom.ts';
 import { loadSettings, onSettings, updateSettings } from './settings.ts';
 import { listCaptures, putCapture, requestPersistence } from './store.ts';
-import type { PreviewRequest, PreviewResponse } from './workers/preview.worker.ts';
+import type { PreviewGuidance, PreviewRequest, PreviewResponse } from './workers/preview.worker.ts';
 
 const SVG_NS = 'http://www.w3.org/2000/svg';
 
-/** Last normal-mode capture, handed to the review screen. */
-export let lastNormalCapture: { sidecar: CaptureSidecar; png: Uint8Array } | null = null;
+/** Last normal-mode capture, handed to the result screen. */
+export let lastNormalCapture: { sidecar: CaptureSidecar; png: Uint8Array; analysis: MatAnalysis; rectified: ImageData | null } | null = null;
+
+function summarise(a: MatAnalysis): NonNullable<CaptureSidecar['analysis']> {
+  const loo: { A?: number; B?: number } = {};
+  for (const m of [a.correction?.used, a.correction?.other]) if (m) loo[m.method] = m.loo.mean;
+  return {
+    verdict: a.verdict,
+    reason: a.reason,
+    copy: a.copy ?? null,
+    checks: a.checks.map(({ id, pass, value, threshold, detail }) => ({ id, pass, value, threshold, detail })),
+    unevenLight: a.unevenLight?.ratio ?? null,
+    method: a.correction?.used.method ?? null,
+    looMean: loo,
+  };
+}
 
 export function cameraScreen(root: HTMLElement, go: (route: string) => void): () => void {
   let settings = loadSettings();
@@ -26,7 +42,20 @@ export function cameraScreen(root: HTMLElement, go: (route: string) => void): ()
   svg.setAttribute('preserveAspectRatio', 'xMidYMid meet');
   const outline = document.createElementNS(SVG_NS, 'rect');
   outline.setAttribute('class', 'outline');
-  svg.append(outline);
+  // The detected card: its outline, the top-left marker, and an arrow to its top edge.
+  const cardPoly = document.createElementNS(SVG_NS, 'polygon');
+  cardPoly.setAttribute('class', 'card');
+  const upArrow = document.createElementNS(SVG_NS, 'line');
+  upArrow.setAttribute('class', 'up');
+  const tlDot = document.createElementNS(SVG_NS, 'circle');
+  tlDot.setAttribute('class', 'tl');
+  const topLabel = document.createElementNS(SVG_NS, 'text');
+  topLabel.setAttribute('class', 'top-label');
+  topLabel.textContent = 'TOP';
+  const cardGroup = document.createElementNS(SVG_NS, 'g');
+  cardGroup.setAttribute('visibility', 'hidden');
+  cardGroup.append(cardPoly, upArrow, tlDot, topLabel);
+  svg.append(outline, cardGroup);
 
   const guidance = h('div', { class: 'guidance', role: 'status', 'aria-live': 'polite' }, 'Starting camera…');
   const metrics = h('div', { class: 'metrics' });
@@ -63,7 +92,9 @@ export function cameraScreen(root: HTMLElement, go: (route: string) => void): ()
   root.append(section);
 
   const camera = new Camera(video);
-  let report: FrameCheckReport | null = null;
+  let report: PreviewGuidance | null = null;
+  /** Full-frame pixels per preview pixel. */
+  let previewScale = 1;
   let capturing = false;
   let stopped = false;
   let previewBusy = false;
@@ -123,14 +154,45 @@ export function cameraScreen(root: HTMLElement, go: (route: string) => void): ()
   function renderReport(): void {
     if (!report) return;
     const dc = settings.dataCollection;
-    guidance.textContent = report.pass ? (dc ? 'Checks pass' : 'Ready — tap to capture') : dc ? `${report.guidance} (capture still allowed)` : report.guidance;
+    guidance.textContent = report.pass ? (dc ? 'Checks pass' : 'Ready — tap to capture') : dc ? `${report.message} (capture still allowed)` : report.message;
     guidance.classList.toggle('ok', report.pass);
     guidance.classList.toggle('bad', !report.pass);
-    outline.classList.toggle('ok', report.pass);
-    const s = report.stats;
+    renderCardOverlay(report);
+    const s = report.frame.stats;
+    const light = report.checks.find((c) => c.id === 'uneven');
     metrics.hidden = !dc;
-    metrics.textContent = `sharp ${s.laplacianVariance.toFixed(0)}/${THRESHOLDS.blurMinLaplacianVariance.value} · blown ${(s.highlightClipFraction * 100).toFixed(1)}% · crushed ${(s.shadowClipFraction * 100).toFixed(1)}% · median ${s.medianLuma}`;
+    metrics.textContent =
+      `sharp ${s.laplacianVariance.toFixed(0)}/${THRESHOLDS.blurMinLaplacianVariance.value} · blown ${(s.highlightClipFraction * 100).toFixed(1)}% · median ${s.medianLuma}` +
+      (report.copy ? ` · copy ${report.copy}` : '') +
+      (light?.value !== undefined ? ` · light ${light.value.toFixed(2)}/${light.threshold}` : '');
     renderShutter();
+  }
+
+  function renderCardOverlay(g: PreviewGuidance): void {
+    const o = g.overlay;
+    cardGroup.setAttribute('visibility', o ? 'visible' : 'hidden');
+    outline.classList.toggle('dim', !!o);
+    outline.classList.toggle('ok', g.pass);
+    if (!o) return;
+    const k = previewScale;
+    const pt = (p: readonly [number, number]) => [p[0] * k, p[1] * k] as const;
+    cardPoly.setAttribute('points', o.outline.map((p) => pt(p).join(',')).join(' '));
+    cardPoly.classList.toggle('ok', g.pass);
+    const r = Math.max(video.videoWidth, video.videoHeight) / 70;
+    const [tx, ty] = pt(o.tl);
+    const [cx, cy] = pt(o.centre);
+    const [ux, uy] = pt(o.top);
+    tlDot.setAttribute('cx', String(tx));
+    tlDot.setAttribute('cy', String(ty));
+    tlDot.setAttribute('r', String(r));
+    upArrow.setAttribute('x1', String(cx));
+    upArrow.setAttribute('y1', String(cy));
+    upArrow.setAttribute('x2', String(ux));
+    upArrow.setAttribute('y2', String(uy));
+    upArrow.setAttribute('stroke-width', String(r / 3));
+    topLabel.setAttribute('x', String(cx + (ux - cx) * 0.7));
+    topLabel.setAttribute('y', String(cy + (uy - cy) * 0.7));
+    topLabel.setAttribute('font-size', String(r * 1.8));
   }
 
   function layoutOverlay(): void {
@@ -165,6 +227,7 @@ export function cameraScreen(root: HTMLElement, go: (route: string) => void): ()
     // scale. The browser's filter is not the pipeline's box filter, so the
     // preview only guides; the full-resolution check at capture is recorded.
     const k = checkScaleFactor(video.videoWidth, video.videoHeight);
+    previewScale = k;
     const pw = Math.max(1, Math.floor(video.videoWidth / k));
     const ph = Math.max(1, Math.floor(video.videoHeight / k));
     if (pvCanvas.width !== pw || pvCanvas.height !== ph) {
@@ -176,14 +239,14 @@ export function cameraScreen(root: HTMLElement, go: (route: string) => void): ()
     pvCtx.drawImage(video, 0, 0, pw, ph);
     const img = pvCtx.getImageData(0, 0, pw, ph);
     previewBusy = true;
-    const req: PreviewRequest = { width: pw, height: ph, buffer: img.data.buffer as ArrayBuffer };
+    const req: PreviewRequest = { width: pw, height: ph, buffer: img.data.buffer as ArrayBuffer, scale: k };
     previewWorker.postMessage(req, [req.buffer]);
   }
 
   previewWorker.onmessage = (e: MessageEvent<PreviewResponse>) => {
     previewBusy = false;
     if (e.data.ok) {
-      report = e.data.report;
+      report = e.data.guidance;
       renderReport();
     } else {
       guidance.textContent = `Preview check failed: ${e.data.error}`;
@@ -261,6 +324,7 @@ export function cameraScreen(root: HTMLElement, go: (route: string) => void): ()
         screen: { width: screen.width, height: screen.height },
         orientation: screen.orientation?.type ?? null,
       },
+      analysis: summarise(enc.analysis),
       timingsMs: enc.timingsMs,
     };
   }
@@ -269,7 +333,7 @@ export function cameraScreen(root: HTMLElement, go: (route: string) => void): ()
     if (capturing) return;
     capturing = true;
     renderShutter();
-    guidance.textContent = 'Saving…';
+    guidance.textContent = settings.dataCollection ? 'Saving…' : 'Analysing…';
     try {
       const iso = new Date().toISOString();
       const { frame, canvas } = grabFrame(video);
@@ -286,11 +350,12 @@ export function cameraScreen(root: HTMLElement, go: (route: string) => void): ()
         await putCapture({ id, createdAt: iso, png: new Blob([enc.png as Uint8Array<ArrayBuffer>], { type: 'image/png' }), thumb, sidecar });
         void requestPersistence();
         await refreshCounts();
-        toast(`Saved ${id}.png${enc.report.pass ? '' : ` — checks failed: ${enc.report.checks.filter((c) => !c.pass).map((c) => c.message).join(', ')}`}`);
+        const failed = enc.analysis.checks.filter((c) => !c.pass && c.id !== 'registered').map((c) => c.message);
+        toast(`Saved ${id}.png${failed.length ? ` — checks failed: ${failed.join(', ')}` : ''}`);
       } else {
         const id = `capture_${iso.replace(/[-:.]/g, '')}`;
-        lastNormalCapture = { sidecar: buildSidecar(iso, id, enc, width, height), png: enc.png };
-        go('#/review');
+        lastNormalCapture = { sidecar: buildSidecar(iso, id, enc, width, height), png: enc.png, analysis: enc.analysis, rectified: enc.rectified };
+        go('#/result');
       }
     } catch (e) {
       toast(`Capture failed: ${errorText(e)}`, 'error', 8000);

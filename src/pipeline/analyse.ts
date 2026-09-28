@@ -6,11 +6,11 @@
 import { linearLuminance, linearToSrgb, type Vec3 } from './colour.ts';
 import { DEFAULT_CORRECTION_METHOD, PARAMS, THRESHOLDS, type CorrectionMethod } from './config.ts';
 import { applyCorrection, fitCorrection, fitError, labOfLinear, leaveOneOut, type CorrectionModel, type ErrorStats } from './correct.ts';
-import { detectCard, inset, readIdStrip, type Detection } from './detect.ts';
-import { areaScale } from './homography.ts';
-import type { RgbaImage } from './image.ts';
+import { detectCard, inset, readIdStrip, type Detection, type IdRead } from './detect.ts';
+import { applyH, areaScale } from './homography.ts';
+import { clampRect, type RgbaImage } from './image.ts';
 import { MAT_V1, rectCentre, type RectMm } from './mat.ts';
-import { checkFrame, MESSAGES, type FrameCheckReport } from './quality.ts';
+import { checkFrame, checkScaleFactor, laplacianVariance, lumaPlane, MESSAGES, type FrameCheckReport } from './quality.ts';
 import type { MatReference } from './reference.ts';
 import { sampleRegion, type RegionSample } from './sample.ts';
 import { luma601 } from './image.ts';
@@ -46,6 +46,8 @@ export interface MatAnalysis {
   detection: Detection;
   copy?: string;
   version?: number;
+  /** ID strip as read at full resolution (cell values, black/white references). */
+  idRead?: IdRead;
   patches?: PatchObservation[];
   minPatchPixels?: number;
   sampleZone?: RegionSample;
@@ -113,6 +115,18 @@ export function analyseMat(img: RgbaImage, opts: AnalyseOptions = {}): MatAnalys
     return finish({ checks, frame, detection });
   }
   const { H, Hinv } = detection;
+  // Once the card is found, judge sharpness on the card itself, not the static
+  // framing outline: a small card leaves the outline mostly flat table, which
+  // scores low for the wrong reason (then "Move closer" is the right advice).
+  const corners = [applyH(H, [0, 0]), applyH(H, [MAT_V1.widthMm, 0]), applyH(H, [MAT_V1.widthMm, MAT_V1.heightMm]), applyH(H, [0, MAT_V1.heightMm])];
+  const bx = corners.map((p) => p[0]);
+  const by = corners.map((p) => p[1]);
+  const cardBox = clampRect({ x: Math.min(...bx), y: Math.min(...by), w: Math.max(...bx) - Math.min(...bx), h: Math.max(...by) - Math.min(...by) }, img.width, img.height);
+  const cardSharpness = laplacianVariance(lumaPlane(img, cardBox, opts.checkScale ?? checkScaleFactor(img.width, img.height)));
+  const blur = checks.find((c) => c.id === 'blur')!;
+  blur.value = cardSharpness;
+  blur.pass = cardSharpness >= T.blurMinLaplacianVariance.value;
+  blur.detail = 'measured on the detected card';
   // Re-read the ID strip at full resolution.
   const lumaSample = (r: RectMm) => {
     const s = sampleRegion(img, H, Hinv, r, 0);
@@ -121,7 +135,7 @@ export function analyseMat(img: RgbaImage, opts: AnalyseOptions = {}): MatAnalys
   const id = readIdStrip(lumaSample);
   if (!id.ok || id.version !== MAT_V1.version) {
     checks.push({ id: 'card', pass: false, message: CARD_MESSAGES['id-unreadable'], detail: id.reason ?? `version ${id.version}` });
-    return finish({ checks, frame, detection });
+    return finish({ checks, frame, detection, idRead: id });
   }
   checks.push({ id: 'card', pass: true, message: 'Card found', detail: `copy ${id.copy}, rotated ${Math.round(detection.rotationDeg)} deg` });
 
@@ -161,6 +175,7 @@ export function analyseMat(img: RgbaImage, opts: AnalyseOptions = {}): MatAnalys
     detection,
     copy: id.copy,
     version: id.version,
+    idRead: id,
     patches,
     minPatchPixels: pixels,
     sampleZone,

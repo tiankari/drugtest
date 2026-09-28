@@ -17,10 +17,11 @@ export interface Threshold {
 
 export const THRESHOLDS = {
   blurMinLaplacianVariance: {
-    value: 50,
-    unit: 'variance of the 4-neighbour Laplacian of 8-bit luma, at check scale, inside the framing outline',
-    status: 'provisional',
-    reason: 'Below the common ~100 rule of thumb for 640 px frames because the card is mostly flat white; to be derived from fail-blur vs registration photos.',
+    value: 680,
+    unit: 'variance of the 4-neighbour Laplacian of 8-bit luma at check scale, on the detected card (framing outline if no card)',
+    status: 'derived',
+    reason:
+      'Geometric mean of the only motion-blurred real photo (fail-blur_nothing-phone-3a_A_20260928T120754449Z: 488) and the least sharp non-blurred one (fail-shadow_nothing-phone-3a_A_20260928T120640832Z: 960). One blurred example only: re-derive when more exist. (Was 50 provisional, which let the blurred photo pass.)',
   },
   highlightClipLevel: {
     value: 254,
