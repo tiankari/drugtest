@@ -1,46 +1,29 @@
 # CLAUDE.md — Field drug-test companion (SIH26231)
 
-## STATUS: Session 1 Steps 1–5 done; Step 6 PAUSED for a registration retake
+## STATUS: Session 1 CLOSED as a hackathon prototype (2026-09-28)
 
-Built: scaffold + offline PWA + Pages deploy, printable reference colour card
-(MAT v1), camera and data-collection tool, card detection / rectification /
-ID strip / colour correction (Step 4), live guidance and result screen
-(Step 5), registration and validation scripts (Step 6).
+Submission deadline 2026-09-29. **Read `docs/session1_handoff.md` first**: it is
+the complete summary of Session 1 (what exists, real-photo evidence, decisions,
+known issues, and what Session 2 must build).
 
-**Blocker:** no printed copy is registered. The first registration shots
-(hand-held against a wall at dusk) were each fine on their own but the three
-shots of a copy disagree by 5.2 (A) / 5.5 (B) ΔE00 even after removing
-exposure/white-balance drift and the light gradient; the limit is 3. So
-colour correction has not run on a real photo, the method is not chosen and
-the correction thresholds are not derived. The user is retaking (protocol in
-`data/real/README.md`): cards flat on a table, steady daylight, exposure/WB
-lock, and a dried haldi stain as the lighting test object.
+Session 1 built capture, the reference colour card, detection, flat-field,
+correction (method B) and the result screen. Both printed copies are
+registered (`profiles/mat_reference_1_{A,B}.json`) under a **prototype
+standard**: the only registration shots (hand-held at dusk) disagree by 5.2 /
+5.5 ΔE00, so the registration limit was raised from 3 to 6 at the user's
+request. Real photos: Nothing Phone daylight/tube PASS; most OnePlus, torch and
+warm-bulb photos RETAKE; the soft half-card shadow photo PASSES (headline
+finding, a consequence of flat-field). Details: `docs/validation/mat_v1.md`.
 
-**Design decisions taken on real data (user, 2026-09-28):**
-1. **Flat-field, then check.** A per-channel plane fitted to the six white
-   patches is divided out before correction (`src/pipeline/flatfield.ts`); the
-   uneven-light check now applies to what remains (`maxResidualWhiteRatio`).
-   Consequence: the soft half-card shadow photo (`fail-shadow`) is no longer
-   refused by the light check (residual 1.14); if it PASSes once a copy is
-   registered, report it as the headline finding.
-2. **Registration normalises each shot to its own white patches** (after
-   flat-field) before the median and the spread; reference schema v2 (paper
-   white = 1). Limit stays 3 ΔE00 until re-derived.
-3. **Optional exposure/WB lock for registration shots** where the phone
-   offers manual modes (Camera tab, tag `registration`). Recorded in the
-   sidecar (`camera.lock`). Untested on a real phone; the fake camera offers no
-   manual modes, so only the fallback is tested.
-4. **Dried haldi stain** replaces the glossy cap for the lighting set.
+**Session 2 (mandatory for the submission):** kit profiles incl. the haldi
+test, sample-zone reading, POSITIVE/NEGATIVE/INCONCLUSIVE classification with
+bands from real haldi photos, ECDSA-signed tamper-evident records, hash-chained
+searchable log.
 
-**When the retake arrives:**
-1. Count PNGs per folder and per tag; verify hashes (`loadCapture`). Earlier
-   sets live in `data/real/archive/`; never mix them into `data/real/mat/`.
-2. `node scripts/register-mat.ts` → `profiles/mat_reference_1_{A,B}.json`.
-3. `node scripts/validate-mat.ts` → `docs/validation/mat_v1.md` (reports the
-   current set and every archived set separately).
-4. Choose the default method from the data (`DEFAULT_CORRECTION_METHOD`),
-   derive or keep-as-debt every provisional threshold, rewrite this file, merge.
-5. The user decides whether real photos may go into the public repo.
+**Design decisions taken on real data (user, 2026-09-28):** flat-field then
+check residual unevenness; registration normalised to each shot's whites
+(schema v2); optional exposure/WB lock for registration; method B; prototype
+registration limit 6; no retake before submission.
 
 ### Personal project: identity and remote
 
@@ -223,6 +206,7 @@ Safari/iOS, speed on a cheap Android phone.
 | Threshold | Value | Status |
 |---|---|---|
 | `blurMinLaplacianVariance` | 680 | **derived**: geometric mean of the one motion-blurred real photo (488) and the least sharp non-blurred one (960). One blurred example; re-derive with more. |
+| `DEFAULT_CORRECTION_METHOD` | B | **derived** from the cap spreads (B better in 3 of 4 groups); weak evidence |
 | `highlightClipLevel` | 254 | provisional |
 | `maxHighlightClipFraction` | 0.02 | provisional (all real photos 0–0.1% blown white) |
 | `shadowClipLevel` | 3 | provisional |
@@ -232,10 +216,9 @@ Safari/iOS, speed on a cheap Android phone.
 | `minPatchSourcePixels` | 400 | provisional, consistent with data (good 930–1227, far 256) |
 | `maxClipFraction` | 0.02 | provisional (torch/cap 5.4% → RETAKE) |
 | `maxResidualWhiteRatio` | 1.20 | provisional — residual after flat-field (registration 1.03–1.06, lighting 1.04–1.36, cap shadow 2.26); replaces the raw-ratio limit |
-| `maxLooMeanDeltaE00` | 5 | provisional (no real correction yet) |
+| `maxLooMeanDeltaE00` | 5 | provisional (real lighting photos 3.7–9.6; Nothing daylight/tube pass, OnePlus mostly fail) |
 | `maxLooP90DeltaE00` | 10 | provisional |
-| `maxRegistrationSpreadDeltaE00` | 3 | provisional |
-| `DEFAULT_CORRECTION_METHOD` | B | provisional (synthetic only) |
+| `maxRegistrationSpreadDeltaE00` | 6 | provisional — **prototype standard** (was 3; raised to accept the dusk hand-held shots, 5.2 / 5.5) |
 
 ## Dependencies (keep few)
 
@@ -269,7 +252,9 @@ framework, OpenCV.js.
 
 - **Registration photos missing** — blocks real-photo correction, the method
   choice and five thresholds (above).
-- **Registration retake pending**; the exposure/WB lock is unproven on a phone.
+- Registration is prototype-grade (limit 6); retake flat on a table in
+  daylight with the lock when time allows. The lock is unproven on a phone.
+- OnePlus corrections mostly fail the leave-one-out gate (6–8 ΔE00).
 - Flat-field runs on sRGB-decoded values, which the phone's tone curve makes
   only approximately linear.
 - With flat-field, a soft half-card shadow is corrected rather than refused;

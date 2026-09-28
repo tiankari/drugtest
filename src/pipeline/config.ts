@@ -91,11 +91,13 @@ export const THRESHOLDS = {
     reason: 'Guards against a few badly predicted colours hidden behind a good mean.',
   },
   maxRegistrationSpreadDeltaE00: {
-    value: 3,
-    unit: 'largest CIEDE2000 between any two registration photos, for any patch',
+    value: 6,
+    unit: 'largest CIEDE2000 between any two registration shots, for any patch, after flat-field and per-shot white normalisation',
     status: 'provisional',
-    reason: 'Back-to-back photos of the same print in the same light should agree closely; more than 3 means the light or the phone changed between shots.',
+    reason:
+      'PROTOTYPE STANDARD (hackathon, 2026-09-28, user decision): raised from 3 to accept the only registration shots available (copy A 5.23, copy B 5.50; hand-held at dusk). References are correspondingly less precise; a flat-on-table daylight retake should bring this back to 3.',
   },
+
 } as const satisfies Record<string, Threshold>;
 
 /** Fixed parameters (not pass/fail thresholds). */
@@ -130,6 +132,7 @@ export type CorrectionMethod = 'A' | 'B';
  */
 export const DEFAULT_CORRECTION_METHOD: { value: CorrectionMethod; status: ThresholdStatus; reason: string } = {
   value: 'B',
-  status: 'provisional',
-  reason: 'Phones apply a tone curve a single matrix cannot undo; to be decided from the real-photo comparison in docs/validation/mat_v1.md.',
+  status: 'derived',
+  reason:
+    'docs/validation/mat_v1.md (2026-09-28, prototype registration): B kept the test colour more consistent across lightings in 3 of 4 groups (both phones 20.1 vs A 23.4; Nothing 13.2 vs 18.1; accepted photos 4.9 vs 9.1; OnePlus favoured A, 11.1 vs 12.7); leave-one-out about equal (A 6.2, B 6.7). Weak evidence: glossy cap, 8 photos.',
 };

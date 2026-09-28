@@ -27,11 +27,13 @@ mat/                 the CURRENT set (what register-mat.ts and validate-mat.ts u
 archive/<date-name>/ earlier sets, kept unchanged, reported separately
 ```
 
-`archive/2026-09-28-first-set/` holds the first registration shots (hand-held
-against a wall at dusk; rejected: the three shots of each copy disagreed) and
-the first lighting set (a glossy orange-red cap as the test object).
+The current set is the **prototype standard** for the hackathon submission
+(registration shots hand-held at dusk, accepted under a raised limit; the
+lighting test object was a glossy orange-red cap). A better set can replace it
+later using the retake list below; move the old set to `archive/<date-name>/`
+first so sets never mix.
 
-## Retake shot list (MAT v1, second set)
+## Retake shot list (optional, after the submission)
 
 **Registration — 3 photos per copy, one phone (the Nothing Phone can lock):**
 - Cards cut apart. Only one card in view. Nothing in the sample zone.
