@@ -1,0 +1,4200 @@
+[
+ {
+  "shot": "01-phone-first-launch-welcome.jpg",
+  "route": "#/",
+  "items": [
+   {
+    "kind": "h1",
+    "text": "Field Test Companion"
+   },
+   {
+    "kind": "p.lead",
+    "text": "Reads a field drug-test kit with the phone camera, gives a result, and saves a sealed record."
+   },
+   {
+    "kind": "button.primary",
+    "text": "Start a test (needs the printed card)"
+   },
+   {
+    "kind": "button.big",
+    "text": "Try with sample images"
+   },
+   {
+    "kind": "a.nav-link",
+    "text": "How it works"
+   },
+   {
+    "kind": "p.hint",
+    "text": "Prototype for Smart India Hackathon 2026, SIH26231. Presumptive result only."
+   },
+   {
+    "kind": "a",
+    "text": "Test"
+   },
+   {
+    "kind": "a",
+    "text": "Log"
+   },
+   {
+    "kind": "a",
+    "text": "Settings"
+   }
+  ]
+ },
+ {
+  "shot": "02-phone-how-it-works.jpg",
+  "route": "#/about",
+  "items": [
+   {
+    "kind": "h1",
+    "text": "How it works"
+   },
+   {
+    "kind": "li",
+    "text": "Do the kit test as usual. The app works alongside the colour-change kits officers already use."
+   },
+   {
+    "kind": "li",
+    "text": "Put the test on the printed reference colour card and take a photo in the app. The test goes in the white square; the card must be fully in view."
+   },
+   {
+    "kind": "li",
+    "text": "The card’s known colours let the app correct for the lighting. Daylight, a tube light or a shadow change how colours look; the card’s colour squares show by how much."
+   },
+   {
+    "kind": "li",
+    "text": "The app compares the test colour with the kit’s reference colours: POSITIVE, NEGATIVE or INCONCLUSIVE. If the photo is not good enough (blur, shadow, glare, card too far, a corner hidden), it says Retake and why. This is detected automatically."
+   },
+   {
+    "kind": "li",
+    "text": "Saving makes a sealed record in the log. It holds the time, the place, the officer and the photo’s fingerprint. Any later change to it is caught."
+   },
+   {
+    "kind": "div.notice",
+    "text": "It gives a presumptive field result. It never replaces laboratory confirmation."
+   },
+   {
+    "kind": "p",
+    "text": "Marquis reagent — opiate screen: colours from NIJ Standard-0604.01 (a US Department of Justice standard), not yet checked on a real reaction."
+   },
+   {
+    "kind": "p",
+    "text": "A printed card with 30 known colours, four black corner squares the app finds automatically, and a white square for the test. Print it in colour on A4 at 100% and check the 50 mm bar with a ruler. Each print is set up once in the app before use; the two cards used for this prototype (A and B) are se"
+   },
+   {
+    "kind": "a.button",
+    "text": "Download card (A4 PDF)"
+   },
+   {
+    "kind": "p",
+    "text": "Everything runs on this phone. Photos are never uploaded. No server, no account."
+   },
+   {
+    "kind": "a.button",
+    "text": "Try with sample images"
+   },
+   {
+    "kind": "a.nav-link",
+    "text": "Welcome screen"
+   },
+   {
+    "kind": "th",
+    "text": "Version"
+   },
+   {
+    "kind": "th",
+    "text": "Build"
+   },
+   {
+    "kind": "th",
+    "text": "Offline"
+   },
+   {
+    "kind": "a",
+    "text": "Test"
+   },
+   {
+    "kind": "a",
+    "text": "Log"
+   },
+   {
+    "kind": "a",
+    "text": "Settings"
+   }
+  ]
+ },
+ {
+  "shot": "03-phone-officer-id.jpg",
+  "route": "#/test",
+  "items": [
+   {
+    "kind": "h1",
+    "text": "Your officer ID"
+   },
+   {
+    "kind": "p",
+    "text": "It is written on every test you save. Enter it once; you can change it in Settings."
+   },
+   {
+    "kind": "p.hint",
+    "text": "The app does not check this ID. A saved test proves it was not changed afterwards, not who took it."
+   },
+   {
+    "kind": "label",
+    "text": "Officer ID"
+   },
+   {
+    "kind": "input",
+    "text": "[text] e.g. badge or service number"
+   },
+   {
+    "kind": "button.primary",
+    "text": "Save and continue"
+   },
+   {
+    "kind": "p.hint",
+    "text": "No card? Try a sample instead"
+   },
+   {
+    "kind": "a.nav-link",
+    "text": "No card? Try a sample instead"
+   },
+   {
+    "kind": "a.active",
+    "text": "Test"
+   },
+   {
+    "kind": "a",
+    "text": "Log"
+   },
+   {
+    "kind": "a",
+    "text": "Settings"
+   }
+  ]
+ },
+ {
+  "shot": "04-phone-camera-ready.jpg",
+  "route": "#/test",
+  "items": [
+   {
+    "kind": "li",
+    "text": "Put the test in the white square."
+   },
+   {
+    "kind": "li",
+    "text": "Fit the card in the frame."
+   },
+   {
+    "kind": "li",
+    "text": "Hold still and tap Capture."
+   },
+   {
+    "kind": "div.kit-status",
+    "text": "Marquis opiate screen — colours from NIJ Standard-0604.01, not yet checked against a real reaction with this app"
+   },
+   {
+    "kind": "button.link",
+    "text": "Officer: AUDIT-01 (change)"
+   },
+   {
+    "kind": "span.geo-line",
+    "text": "Location found (within 15 m)"
+   },
+   {
+    "kind": "a.try-sample",
+    "text": "No card? Try a sample"
+   },
+   {
+    "kind": "div.guidance",
+    "text": "Ready — tap to capture"
+   },
+   {
+    "kind": "a.active",
+    "text": "Test"
+   },
+   {
+    "kind": "a",
+    "text": "Log"
+   },
+   {
+    "kind": "a",
+    "text": "Settings"
+   }
+  ]
+ },
+ {
+  "shot": "05-phone-result-positive.jpg",
+  "route": "#/result",
+  "items": [
+   {
+    "kind": "h1",
+    "text": "Result"
+   },
+   {
+    "kind": "span.verdict-badge",
+    "text": "POSITIVE"
+   },
+   {
+    "kind": "p.why",
+    "text": "The test colour matches the colour this reagent turns with heroin in the kit’s published table."
+   },
+   {
+    "kind": "h2",
+    "text": "Your test and the kit’s colours"
+   },
+   {
+    "kind": "p.hint",
+    "text": "Blue: the area the app read. Pink: coloured edges it left out."
+   },
+   {
+    "kind": "figcaption.hint",
+    "text": "The reference colour card, straightened by the app, with the white square outlined."
+   },
+   {
+    "kind": "p.kit-validation",
+    "text": "Kit: Marquis reagent — opiate screen. Marquis opiate screen — colours from NIJ Standard-0604.01, not yet checked against a real reaction with this app"
+   },
+   {
+    "kind": "div.notice",
+    "text": "Presumptive result — send for laboratory confirmation"
+   },
+   {
+    "kind": "label",
+    "text": "Case reference"
+   },
+   {
+    "kind": "input",
+    "text": "[text] Case reference (optional)"
+   },
+   {
+    "kind": "label",
+    "text": "Place note"
+   },
+   {
+    "kind": "input",
+    "text": "[text] Place note (optional), e.g. checkpoint name"
+   },
+   {
+    "kind": "label.toggle",
+    "text": "The test is in the white square Needed because the app cannot tell a colourless test from an empty square."
+   },
+   {
+    "kind": "input",
+    "text": "[checkbox] on"
+   },
+   {
+    "kind": "span.hint",
+    "text": "Needed because the app cannot tell a colourless test from an empty square."
+   },
+   {
+    "kind": "p.hint",
+    "text": "Will be saved with officer AUDIT-01, the time and the location (within 15 m), sealed on this phone."
+   },
+   {
+    "kind": "button.primary",
+    "text": "Save sealed record"
+   },
+   {
+    "kind": "p.hint",
+    "text": "Tick the box above to confirm the test is in the white square."
+   },
+   {
+    "kind": "summary",
+    "text": "Technical details"
+   },
+   {
+    "kind": "button",
+    "text": "Take another photo"
+   },
+   {
+    "kind": "a.active",
+    "text": "Test"
+   },
+   {
+    "kind": "a",
+    "text": "Log"
+   },
+   {
+    "kind": "a",
+    "text": "Settings"
+   }
+  ]
+ },
+ {
+  "shot": "06-phone-result-technical-details.jpg",
+  "route": "#/result",
+  "items": [
+   {
+    "kind": "h1",
+    "text": "Result"
+   },
+   {
+    "kind": "span.verdict-badge",
+    "text": "POSITIVE"
+   },
+   {
+    "kind": "p.why",
+    "text": "The test colour matches the colour this reagent turns with heroin in the kit’s published table."
+   },
+   {
+    "kind": "h2",
+    "text": "Your test and the kit’s colours"
+   },
+   {
+    "kind": "p.hint",
+    "text": "Blue: the area the app read. Pink: coloured edges it left out."
+   },
+   {
+    "kind": "figcaption.hint",
+    "text": "The reference colour card, straightened by the app, with the white square outlined."
+   },
+   {
+    "kind": "p.kit-validation",
+    "text": "Kit: Marquis reagent — opiate screen. Marquis opiate screen — colours from NIJ Standard-0604.01, not yet checked against a real reaction with this app"
+   },
+   {
+    "kind": "div.notice",
+    "text": "Presumptive result — send for laboratory confirmation"
+   },
+   {
+    "kind": "label",
+    "text": "Case reference"
+   },
+   {
+    "kind": "input",
+    "text": "[text] Case reference (optional)"
+   },
+   {
+    "kind": "label",
+    "text": "Place note"
+   },
+   {
+    "kind": "input",
+    "text": "[text] Place note (optional), e.g. checkpoint name"
+   },
+   {
+    "kind": "label.toggle",
+    "text": "The test is in the white square Needed because the app cannot tell a colourless test from an empty square."
+   },
+   {
+    "kind": "input",
+    "text": "[checkbox] on"
+   },
+   {
+    "kind": "span.hint",
+    "text": "Needed because the app cannot tell a colourless test from an empty square."
+   },
+   {
+    "kind": "p.hint",
+    "text": "Will be saved with officer AUDIT-01, the time and the location (within 15 m), sealed on this phone."
+   },
+   {
+    "kind": "button.primary",
+    "text": "Save sealed record"
+   },
+   {
+    "kind": "p.hint",
+    "text": "Tick the box above to confirm the test is in the white square."
+   },
+   {
+    "kind": "summary",
+    "text": "Technical details"
+   },
+   {
+    "kind": "h2",
+    "text": "Numbers behind the result"
+   },
+   {
+    "kind": "th",
+    "text": "Reason (as sealed in the record)"
+   },
+   {
+    "kind": "th",
+    "text": "Sample zone reading"
+   },
+   {
+    "kind": "th",
+    "text": "Coloured-pixel threshold"
+   },
+   {
+    "kind": "th",
+    "text": "Area read"
+   },
+   {
+    "kind": "th",
+    "text": "CIELAB before correction"
+   },
+   {
+    "kind": "th",
+    "text": "CIELAB after correction"
+   },
+   {
+    "kind": "th",
+    "text": "ΔE00 to heroin (diacetylmorphine HCl) (7.5RP 3/10)"
+   },
+   {
+    "kind": "th",
+    "text": "ΔE00 to morphine (monohydrate) (10P 3/6)"
+   },
+   {
+    "kind": "th",
+    "text": "ΔE00 to codeine (7.5P 2/4)"
+   },
+   {
+    "kind": "h2",
+    "text": "Card checks"
+   },
+   {
+    "kind": "div.verdict",
+    "text": "PASS — card checks and colour correction passed"
+   },
+   {
+    "kind": "figcaption.hint",
+    "text": "The reference colour card, straightened by the app (what the colour reading used)."
+   },
+   {
+    "kind": "h2",
+    "text": "Checks"
+   },
+   {
+    "kind": "li.ok",
+    "text": "pass dark — 109 (limit 50)"
+   },
+   {
+    "kind": "li.ok",
+    "text": "pass bright — 0.000 (limit 0.02)"
+   },
+   {
+    "kind": "li.ok",
+    "text": "pass blur — 2062 (limit 680) — measured on the detected card"
+   },
+   {
+    "kind": "li.ok",
+    "text": "pass card — copy A, rotated 360 deg"
+   },
+   {
+    "kind": "li.ok",
+    "text": "pass closer — 1024 (limit 400)"
+   },
+   {
+    "kind": "li.ok",
+    "text": "pass glare — 0.000 (limit 0.02) — most clipped: sample zone"
+   },
+   {
+    "kind": "li.ok",
+    "text": "pass uneven — 1.011 (limit 1.2) — whites 1.011 as photographed; smooth gradient 1.01 removed"
+   },
+   {
+    "kind": "li.ok",
+    "text": "pass registered — 2026-09-28T13:42:15.069Z"
+   },
+   {
+    "kind": "li.ok",
+    "text": "pass correction — 0.720 (limit 5) — leave-one-out mean 0.72, 90th pct 1.37 (limits 5, 10)"
+   },
+   {
+    "kind": "h2",
+    "text": "Details"
+   },
+   {
+    "kind": "th",
+    "text": "Card copy (from ID strip)"
+   },
+   {
+    "kind": "th",
+    "text": "Orientation"
+   },
+   {
+    "kind": "th",
+    "text": "Uneven light"
+   },
+   {
+    "kind": "th",
+    "text": "Correction method"
+   },
+   {
+    "kind": "th",
+    "text": "Leave-one-out error (ΔE00)"
+   },
+   {
+    "kind": "th",
+    "text": "Other method, for comparison"
+   },
+   {
+    "kind": "th",
+    "text": "In-sample residual (flattering)"
+   },
+   {
+    "kind": "th",
+    "text": "Pixels per patch (min)"
+   },
+   {
+    "kind": "th",
+    "text": "Resolution"
+   },
+   {
+    "kind": "th",
+    "text": "SHA-256 (PNG)"
+   },
+   {
+    "kind": "th",
+    "text": "SHA-256 (pixels)"
+   },
+   {
+    "kind": "h2",
+    "text": "Patches: before · after · reference"
+   },
+   {
+    "kind": "p.hint",
+    "text": "Each patch: the camera's colour, the corrected colour, the registered reference, and the corrected-vs-reference ΔE00."
+   },
+   {
+    "kind": "button",
+    "text": "Take another photo"
+   },
+   {
+    "kind": "a.active",
+    "text": "Test"
+   },
+   {
+    "kind": "a",
+    "text": "Log"
+   },
+   {
+    "kind": "a",
+    "text": "Settings"
+   }
+  ]
+ },
+ {
+  "shot": "07-phone-record-detail.jpg",
+  "route": "#/record/0",
+  "items": [
+   {
+    "kind": "h1",
+    "text": "Saved test, record 0"
+   },
+   {
+    "kind": "span.verdict-badge",
+    "text": "POSITIVE"
+   },
+   {
+    "kind": "p.why",
+    "text": "The test colour matches the colour this reagent turns with heroin in the kit’s published table."
+   },
+   {
+    "kind": "div.notice",
+    "text": "Presumptive field result. Not a laboratory confirmation."
+   },
+   {
+    "kind": "li.ok",
+    "text": "✓ Not changed since it was saved"
+   },
+   {
+    "kind": "li.ok",
+    "text": "✓ Nothing removed or inserted before it"
+   },
+   {
+    "kind": "li.ok",
+    "text": "✓ Photo is the original"
+   },
+   {
+    "kind": "p.meaning",
+    "text": "Sealed on this phone: any later change to this test, or removing or inserting tests before it, is caught. It does not prove who the officer was, and the time and place are what the phone reported."
+   },
+   {
+    "kind": "th",
+    "text": "Result"
+   },
+   {
+    "kind": "th",
+    "text": "Saved at (phone’s clock)"
+   },
+   {
+    "kind": "th",
+    "text": "Photo taken"
+   },
+   {
+    "kind": "th",
+    "text": "Officer ID (typed in, not checked)"
+   },
+   {
+    "kind": "th",
+    "text": "Case reference"
+   },
+   {
+    "kind": "th",
+    "text": "Place note"
+   },
+   {
+    "kind": "th",
+    "text": "Place (from the phone)"
+   },
+   {
+    "kind": "th",
+    "text": "Officer confirmed the test is in the white square"
+   },
+   {
+    "kind": "th",
+    "text": "Kit"
+   },
+   {
+    "kind": "th",
+    "text": "Photo from"
+   },
+   {
+    "kind": "summary",
+    "text": "Technical details"
+   },
+   {
+    "kind": "button",
+    "text": "Download this test (for the lab)"
+   },
+   {
+    "kind": "button",
+    "text": "Back to log"
+   },
+   {
+    "kind": "a",
+    "text": "Test"
+   },
+   {
+    "kind": "a.active",
+    "text": "Log"
+   },
+   {
+    "kind": "a",
+    "text": "Settings"
+   }
+  ]
+ },
+ {
+  "shot": "08-phone-log-with-records.jpg",
+  "route": "#/log",
+  "items": [
+   {
+    "kind": "h1",
+    "text": "Log"
+   },
+   {
+    "kind": "p",
+    "text": "Every saved test is sealed on this phone and linked to the one before it, like numbered pages in a register."
+   },
+   {
+    "kind": "p",
+    "text": "If anyone changes, removes or reorders a record, Check log shows exactly which one."
+   },
+   {
+    "kind": "button.primary",
+    "text": "Check log"
+   },
+   {
+    "kind": "button",
+    "text": "See tamper detection"
+   },
+   {
+    "kind": "p.hint",
+    "text": "Tamper detection changes one result in a copy of the log, in memory only, and runs the same check on the copy."
+   },
+   {
+    "kind": "input",
+    "text": "[search] Search officer, case, place"
+   },
+   {
+    "kind": "select",
+    "text": "[select] Any result | POSITIVE | NEGATIVE | INCONCLUSIVE"
+   },
+   {
+    "kind": "select",
+    "text": "[select] Any kit | Marquis reagent — opiate screen"
+   },
+   {
+    "kind": "select",
+    "text": "[select] Camera and samples | Camera photos only | Samples only"
+   },
+   {
+    "kind": "label",
+    "text": "From"
+   },
+   {
+    "kind": "input",
+    "text": "[date] filter-from"
+   },
+   {
+    "kind": "label",
+    "text": "To"
+   },
+   {
+    "kind": "input",
+    "text": "[date] filter-to"
+   },
+   {
+    "kind": "p.hint",
+    "text": "2 of 2 saved tests"
+   },
+   {
+    "kind": "li",
+    "text": "POSITIVE #1 · 29/9/2026 1:05:46 am Officer AUDIT-01 · Marquis reagent — opiate screen 28.61390, 77.20900 (within 15 m)"
+   },
+   {
+    "kind": "button.log-row",
+    "text": "POSITIVE #1 · 29/9/2026 1:05:46 am Officer AUDIT-01 · Marquis reagent — opiate screen 28.61390, 77.20900 (within 15 m)"
+   },
+   {
+    "kind": "span.verdict-badge",
+    "text": "POSITIVE"
+   },
+   {
+    "kind": "span.hint",
+    "text": "28.61390, 77.20900 (within 15 m)"
+   },
+   {
+    "kind": "li",
+    "text": "POSITIVE #0 · 29/9/2026 1:05:43 am Officer AUDIT-01 · Marquis reagent — opiate screen Case AUDIT-CASE-1 · 28.61390, 77.20900 (within 15 m)"
+   },
+   {
+    "kind": "button.log-row",
+    "text": "POSITIVE #0 · 29/9/2026 1:05:43 am Officer AUDIT-01 · Marquis reagent — opiate screen Case AUDIT-CASE-1 · 28.61390, 77.20900 (within 15 m)"
+   },
+   {
+    "kind": "span.hint",
+    "text": "Case AUDIT-CASE-1 · 28.61390, 77.20900 (within 15 m)"
+   },
+   {
+    "kind": "summary",
+    "text": "Advanced"
+   },
+   {
+    "kind": "input",
+    "text": "[text] Code you wrote down earlier"
+   },
+   {
+    "kind": "p.hint",
+    "text": "One file with every saved test, its photo, and instructions for checking it on a computer."
+   },
+   {
+    "kind": "button.primary",
+    "text": "Download log (for the lab)"
+   },
+   {
+    "kind": "button",
+    "text": "Share log file"
+   },
+   {
+    "kind": "p.warn-text",
+    "text": "If this browser’s data is cleared, the saved tests are deleted with it. Download the log regularly."
+   },
+   {
+    "kind": "a",
+    "text": "Test"
+   },
+   {
+    "kind": "a.active",
+    "text": "Log"
+   },
+   {
+    "kind": "a",
+    "text": "Settings"
+   }
+  ]
+ },
+ {
+  "shot": "09-phone-log-checked-and-tamper-detection.jpg",
+  "route": "#/log",
+  "items": [
+   {
+    "kind": "h1",
+    "text": "Log"
+   },
+   {
+    "kind": "p",
+    "text": "Every saved test is sealed on this phone and linked to the one before it, like numbered pages in a register."
+   },
+   {
+    "kind": "p",
+    "text": "If anyone changes, removes or reorders a record, Check log shows exactly which one."
+   },
+   {
+    "kind": "button.primary",
+    "text": "Check log"
+   },
+   {
+    "kind": "button",
+    "text": "See tamper detection"
+   },
+   {
+    "kind": "p.strong",
+    "text": "✓ All 2 saved tests: not changed, nothing removed or inserted, photos original."
+   },
+   {
+    "kind": "p.hint",
+    "text": "Tamper detection changes one result in a copy of the log, in memory only, and runs the same check on the copy."
+   },
+   {
+    "kind": "p.strong",
+    "text": "In a copy, record 0’s result was changed from POSITIVE to NEGATIVE. Check log on the copy:"
+   },
+   {
+    "kind": "p",
+    "text": "Record 0: ✗ Not changed since it was saved"
+   },
+   {
+    "kind": "p",
+    "text": "Record 1: ✗ Nothing removed or inserted before it"
+   },
+   {
+    "kind": "p",
+    "text": "Your real log was not changed."
+   },
+   {
+    "kind": "input",
+    "text": "[search] Search officer, case, place"
+   },
+   {
+    "kind": "select",
+    "text": "[select] Any result | POSITIVE | NEGATIVE | INCONCLUSIVE"
+   },
+   {
+    "kind": "select",
+    "text": "[select] Any kit | Marquis reagent — opiate screen"
+   },
+   {
+    "kind": "select",
+    "text": "[select] Camera and samples | Camera photos only | Samples only"
+   },
+   {
+    "kind": "label",
+    "text": "From"
+   },
+   {
+    "kind": "input",
+    "text": "[date] filter-from"
+   },
+   {
+    "kind": "label",
+    "text": "To"
+   },
+   {
+    "kind": "input",
+    "text": "[date] filter-to"
+   },
+   {
+    "kind": "p.hint",
+    "text": "2 of 2 saved tests"
+   },
+   {
+    "kind": "li",
+    "text": "POSITIVE #1 · 29/9/2026 1:05:46 am Officer AUDIT-01 · Marquis reagent — opiate screen 28.61390, 77.20900 (within 15 m)"
+   },
+   {
+    "kind": "button.log-row",
+    "text": "POSITIVE #1 · 29/9/2026 1:05:46 am Officer AUDIT-01 · Marquis reagent — opiate screen 28.61390, 77.20900 (within 15 m)"
+   },
+   {
+    "kind": "span.verdict-badge",
+    "text": "POSITIVE"
+   },
+   {
+    "kind": "span.hint",
+    "text": "28.61390, 77.20900 (within 15 m)"
+   },
+   {
+    "kind": "li",
+    "text": "POSITIVE #0 · 29/9/2026 1:05:43 am Officer AUDIT-01 · Marquis reagent — opiate screen Case AUDIT-CASE-1 · 28.61390, 77.20900 (within 15 m)"
+   },
+   {
+    "kind": "button.log-row",
+    "text": "POSITIVE #0 · 29/9/2026 1:05:43 am Officer AUDIT-01 · Marquis reagent — opiate screen Case AUDIT-CASE-1 · 28.61390, 77.20900 (within 15 m)"
+   },
+   {
+    "kind": "span.hint",
+    "text": "Case AUDIT-CASE-1 · 28.61390, 77.20900 (within 15 m)"
+   },
+   {
+    "kind": "summary",
+    "text": "Advanced"
+   },
+   {
+    "kind": "input",
+    "text": "[text] Code you wrote down earlier"
+   },
+   {
+    "kind": "p.hint",
+    "text": "One file with every saved test, its photo, and instructions for checking it on a computer."
+   },
+   {
+    "kind": "button.primary",
+    "text": "Download log (for the lab)"
+   },
+   {
+    "kind": "button",
+    "text": "Share log file"
+   },
+   {
+    "kind": "p.warn-text",
+    "text": "If this browser’s data is cleared, the saved tests are deleted with it. Download the log regularly."
+   },
+   {
+    "kind": "a",
+    "text": "Test"
+   },
+   {
+    "kind": "a.active",
+    "text": "Log"
+   },
+   {
+    "kind": "a",
+    "text": "Settings"
+   }
+  ]
+ },
+ {
+  "shot": "10-phone-log-advanced-wrong-code.jpg",
+  "route": "#/log",
+  "items": [
+   {
+    "kind": "h1",
+    "text": "Log"
+   },
+   {
+    "kind": "p",
+    "text": "Every saved test is sealed on this phone and linked to the one before it, like numbered pages in a register."
+   },
+   {
+    "kind": "p",
+    "text": "If anyone changes, removes or reorders a record, Check log shows exactly which one."
+   },
+   {
+    "kind": "button.primary",
+    "text": "Check log"
+   },
+   {
+    "kind": "button",
+    "text": "See tamper detection"
+   },
+   {
+    "kind": "p.strong",
+    "text": "✓ All 2 saved tests: not changed, nothing removed or inserted, photos original."
+   },
+   {
+    "kind": "p.hint",
+    "text": "Tamper detection changes one result in a copy of the log, in memory only, and runs the same check on the copy."
+   },
+   {
+    "kind": "p.strong",
+    "text": "In a copy, record 0’s result was changed from POSITIVE to NEGATIVE. Check log on the copy:"
+   },
+   {
+    "kind": "p",
+    "text": "Record 0: ✗ Not changed since it was saved"
+   },
+   {
+    "kind": "p",
+    "text": "Record 1: ✗ Nothing removed or inserted before it"
+   },
+   {
+    "kind": "p",
+    "text": "Your real log was not changed."
+   },
+   {
+    "kind": "input",
+    "text": "[search] Search officer, case, place"
+   },
+   {
+    "kind": "select",
+    "text": "[select] Any result | POSITIVE | NEGATIVE | INCONCLUSIVE"
+   },
+   {
+    "kind": "select",
+    "text": "[select] Any kit | Marquis reagent — opiate screen"
+   },
+   {
+    "kind": "select",
+    "text": "[select] Camera and samples | Camera photos only | Samples only"
+   },
+   {
+    "kind": "label",
+    "text": "From"
+   },
+   {
+    "kind": "input",
+    "text": "[date] filter-from"
+   },
+   {
+    "kind": "label",
+    "text": "To"
+   },
+   {
+    "kind": "input",
+    "text": "[date] filter-to"
+   },
+   {
+    "kind": "p.hint",
+    "text": "2 of 2 saved tests"
+   },
+   {
+    "kind": "li",
+    "text": "POSITIVE #1 · 29/9/2026 1:05:46 am Officer AUDIT-01 · Marquis reagent — opiate screen 28.61390, 77.20900 (within 15 m)"
+   },
+   {
+    "kind": "button.log-row",
+    "text": "POSITIVE #1 · 29/9/2026 1:05:46 am Officer AUDIT-01 · Marquis reagent — opiate screen 28.61390, 77.20900 (within 15 m)"
+   },
+   {
+    "kind": "span.verdict-badge",
+    "text": "POSITIVE"
+   },
+   {
+    "kind": "span.hint",
+    "text": "28.61390, 77.20900 (within 15 m)"
+   },
+   {
+    "kind": "li",
+    "text": "POSITIVE #0 · 29/9/2026 1:05:43 am Officer AUDIT-01 · Marquis reagent — opiate screen Case AUDIT-CASE-1 · 28.61390, 77.20900 (within 15 m)"
+   },
+   {
+    "kind": "button.log-row",
+    "text": "POSITIVE #0 · 29/9/2026 1:05:43 am Officer AUDIT-01 · Marquis reagent — opiate screen Case AUDIT-CASE-1 · 28.61390, 77.20900 (within 15 m)"
+   },
+   {
+    "kind": "span.hint",
+    "text": "Case AUDIT-CASE-1 · 28.61390, 77.20900 (within 15 m)"
+   },
+   {
+    "kind": "summary",
+    "text": "Advanced"
+   },
+   {
+    "kind": "button.latest-hash",
+    "text": "3be27c5816ba…08a5ff"
+   },
+   {
+    "kind": "p.hint",
+    "text": "Write this code in your case diary or send it to a supervisor. If the newest saved tests are ever deleted, the log will no longer end with this code."
+   },
+   {
+    "kind": "input",
+    "text": "[text] Code you wrote down earlier"
+   },
+   {
+    "kind": "button.small",
+    "text": "Compare"
+   },
+   {
+    "kind": "p.hint",
+    "text": "This code is not in this log: tests saved after it were deleted, or the code was copied wrongly."
+   },
+   {
+    "kind": "p.hint",
+    "text": "One file with every saved test, its photo, and instructions for checking it on a computer."
+   },
+   {
+    "kind": "button.primary",
+    "text": "Download log (for the lab)"
+   },
+   {
+    "kind": "button",
+    "text": "Share log file"
+   },
+   {
+    "kind": "p.warn-text",
+    "text": "If this browser’s data is cleared, the saved tests are deleted with it. Download the log regularly."
+   },
+   {
+    "kind": "a",
+    "text": "Test"
+   },
+   {
+    "kind": "a.active",
+    "text": "Log"
+   },
+   {
+    "kind": "a",
+    "text": "Settings"
+   }
+  ]
+ },
+ {
+  "shot": "11-phone-settings.jpg",
+  "route": "#/settings",
+  "items": [
+   {
+    "kind": "h1",
+    "text": "Settings"
+   },
+   {
+    "kind": "label",
+    "text": "Officer ID"
+   },
+   {
+    "kind": "input",
+    "text": "[text] e.g. badge or service number"
+   },
+   {
+    "kind": "p.hint",
+    "text": "Written on every test you save. The app does not check it."
+   },
+   {
+    "kind": "h2",
+    "text": "Saved tests"
+   },
+   {
+    "kind": "p.hint",
+    "text": "One file with every saved test, its photo, and instructions for checking it on a computer."
+   },
+   {
+    "kind": "button.primary",
+    "text": "Download log (for the lab)"
+   },
+   {
+    "kind": "button",
+    "text": "Share log file"
+   },
+   {
+    "kind": "p.warn-text",
+    "text": "If this browser’s data is cleared, the saved tests are deleted with it. Download the log regularly."
+   },
+   {
+    "kind": "a.nav-link",
+    "text": "About this app and how it works"
+   },
+   {
+    "kind": "a.nav-link",
+    "text": "Welcome screen"
+   },
+   {
+    "kind": "summary",
+    "text": "Developer tools"
+   },
+   {
+    "kind": "input",
+    "text": "[checkbox] on"
+   },
+   {
+    "kind": "a",
+    "text": "Test"
+   },
+   {
+    "kind": "a",
+    "text": "Log"
+   },
+   {
+    "kind": "a.active",
+    "text": "Settings"
+   }
+  ]
+ },
+ {
+  "shot": "12-phone-settings-developer-tools.jpg",
+  "route": "#/settings",
+  "items": [
+   {
+    "kind": "h1",
+    "text": "Settings"
+   },
+   {
+    "kind": "label",
+    "text": "Officer ID"
+   },
+   {
+    "kind": "input",
+    "text": "[text] e.g. badge or service number"
+   },
+   {
+    "kind": "p.hint",
+    "text": "Written on every test you save. The app does not check it."
+   },
+   {
+    "kind": "h2",
+    "text": "Saved tests"
+   },
+   {
+    "kind": "p.hint",
+    "text": "One file with every saved test, its photo, and instructions for checking it on a computer."
+   },
+   {
+    "kind": "button.primary",
+    "text": "Download log (for the lab)"
+   },
+   {
+    "kind": "button",
+    "text": "Share log file"
+   },
+   {
+    "kind": "p.warn-text",
+    "text": "If this browser’s data is cleared, the saved tests are deleted with it. Download the log regularly."
+   },
+   {
+    "kind": "a.nav-link",
+    "text": "About this app and how it works"
+   },
+   {
+    "kind": "a.nav-link",
+    "text": "Welcome screen"
+   },
+   {
+    "kind": "summary",
+    "text": "Developer tools"
+   },
+   {
+    "kind": "label.toggle",
+    "text": "Photo collection"
+   },
+   {
+    "kind": "input",
+    "text": "[checkbox] on"
+   },
+   {
+    "kind": "p.hint",
+    "text": "For the team: saves test photos to improve the app. No results, no records."
+   },
+   {
+    "kind": "p.hint",
+    "text": "While it is on, capture works even when checks fail (so deliberately bad photos can be collected), each photo is tagged and saved on this phone, and the Captures tab appears."
+   },
+   {
+    "kind": "p.hint",
+    "text": "Rear camera, 1920×1080 requested. What the phone delivers is recorded with every photo."
+   },
+   {
+    "kind": "p.hint",
+    "text": "Provisional = a reasoned starting value, not yet checked against enough real photos. Derived = computed from named real photos."
+   },
+   {
+    "kind": "li.threshold",
+    "text": "Blur check — minimum sharpness blurMinLaplacianVariance = 680 (variance of the 4-neighbour Laplacian of 8-bit luma at check scale, on the detected card (framing outline if no card)) · derived"
+   },
+   {
+    "kind": "li.threshold",
+    "text": "Overexposure — brightness counted as blown out highlightClipLevel = 254 (8-bit channel value at or above which a channel counts as clipped) · provisional"
+   },
+   {
+    "kind": "li.threshold",
+    "text": "Overexposure — share of the frame allowed to be blown out maxHighlightClipFraction = 0.02 (fraction of pixels inside the framing outline blown to white (all three channels clipped)) · provisional"
+   },
+   {
+    "kind": "li.threshold",
+    "text": "Underexposure — darkness counted as pure black shadowClipLevel = 3 (8-bit value at or below which a pixel (max channel) counts as crushed black) · provisional"
+   },
+   {
+    "kind": "li.threshold",
+    "text": "Underexposure — share of the frame allowed to be pure black maxShadowClipFraction = 0.1 (fraction of pixels inside the framing outline with max channel crushed) · provisional"
+   },
+   {
+    "kind": "li.threshold",
+    "text": "Too dark — minimum overall brightness minMedianLuma = 50 (median 8-bit Rec. 601 luma inside the framing outline) · provisional"
+   },
+   {
+    "kind": "li.threshold",
+    "text": "Card ID — how clearly each ID square must read idCellMargin = 0.15 (fraction of the (white - black) luma range either side of the midpoint where an ID cell counts as unreadable) · provisional"
+   },
+   {
+    "kind": "li.threshold",
+    "text": "Card too far — minimum camera pixels per colour square minPatchSourcePixels = 400 (camera pixels inside each patch's central 5 x 5 mm sampling square (minimum over all patches)) · provisional"
+   },
+   {
+    "kind": "li.threshold",
+    "text": "Glare on the card — share of a colour square allowed to be blown out maxClipFraction = 0.02 (fraction of pixels in any patch sampling square, or in the sample zone, with any channel at or above highlightClipLevel) · provisional"
+   },
+   {
+    "kind": "li.threshold",
+    "text": "Uneven light — most unevenness left after the light correction maxResidualWhiteRatio = 1.2 (brightest / dimmest linear luminance of the six white patches (W_T, W_B, W_L, W_R1, W_R2, N1) AFTER the fitted smooth light gradient is divided out) · provisional"
+   },
+   {
+    "kind": "li.threshold",
+    "text": "Correction quality — largest average error on the card maxLooMeanDeltaE00 = 5 (mean leave-one-out CIEDE2000 over the card patches after correction) · provisional"
+   },
+   {
+    "kind": "li.threshold",
+    "text": "Correction quality — largest error on the worst tenth of the card maxLooP90DeltaE00 = 10 (90th percentile leave-one-out CIEDE2000 over the card patches after correction) · provisional"
+   },
+   {
+    "kind": "li.threshold",
+    "text": "Card set-up — most disagreement allowed between set-up photos maxRegistrationSpreadDeltaE00 = 6 (largest CIEDE2000 between any two registration shots, for any patch, after flat-field and per-shot white normalisation) · provisional"
+   },
+   {
+    "kind": "li.threshold",
+    "text": "Test area — how far from white paper counts as colour sampleWhiteNoiseFactor = 3 (multiple of the white-paper noise (95th percentile of per-pixel ΔE76 from paper white over the six white patches, after flat-field) above which a sample-zone pixel counts as coloured) · provisional"
+   },
+   {
+    "kind": "li.threshold",
+    "text": "Test area — smallest colour difference ever counted sampleMinDeltaE = 3 (ΔE76 floor for the coloured-pixel threshold) · provisional"
+   },
+   {
+    "kind": "li.threshold",
+    "text": "Test area — edge trimmed off before reading sampleEdgeErodeMm = 0.5 (mm trimmed off the edge of the coloured region (square erosion) before sampling) · provisional"
+   },
+   {
+    "kind": "li.threshold",
+    "text": "Test area — specks smaller than this are ignored sampleNoiseFloorMm2 = 2 (mm² (after erosion): a largest coloured region smaller than this counts as no coloured region) · provisional"
+   },
+   {
+    "kind": "li.threshold",
+    "text": "Test area — smallest test that can be read sampleMinAreaMm2 = 10 (mm² (after erosion) the coloured region must cover to be read (\"Coloured area too small\" below it)) · provisional"
+   },
+   {
+    "kind": "li.threshold",
+    "text": "Test area — a second patch this big means two tests sampleSecondRegionMm2 = 10 (mm² (after erosion): a second separate coloured region at least this big means two tests (\"Two separate coloured areas\")) · provisional"
+   },
+   {
+    "kind": "li.threshold",
+    "text": "Glare on the test — share of the test allowed to be blown out maxSampleClipFraction = 0.02 (fraction of the coloured region (holes filled) with any channel at or above highlightClipLevel) · provisional"
+   },
+   {
+    "kind": "li.threshold",
+    "text": "Test area — pixels too dark to use sampleDarkLevel = 10 (8-bit max channel at or below which a sample pixel is dropped as too dark to carry colour) · provisional"
+   },
+   {
+    "kind": "li.threshold",
+    "text": "Patchy test — most colour variation allowed maxSampleSpreadDeltaE = 15 (90th percentile ΔE76 of the sampled pixels from their median colour (flat-fielded, white-normalised, before correction)) · provisional"
+   },
+   {
+    "kind": "a",
+    "text": "Test"
+   },
+   {
+    "kind": "a",
+    "text": "Log"
+   },
+   {
+    "kind": "a.active",
+    "text": "Settings"
+   }
+  ]
+ },
+ {
+  "shot": "13-phone-settings-photo-collection-on.jpg",
+  "route": "#/settings",
+  "items": [
+   {
+    "kind": "div.dc-banner",
+    "text": "Photo collection is on: photos are saved for the team — no results, no records. Turn off"
+   },
+   {
+    "kind": "button.small",
+    "text": "Turn off"
+   },
+   {
+    "kind": "h1",
+    "text": "Settings"
+   },
+   {
+    "kind": "label",
+    "text": "Officer ID"
+   },
+   {
+    "kind": "input",
+    "text": "[text] e.g. badge or service number"
+   },
+   {
+    "kind": "p.hint",
+    "text": "Written on every test you save. The app does not check it."
+   },
+   {
+    "kind": "h2",
+    "text": "Saved tests"
+   },
+   {
+    "kind": "p.hint",
+    "text": "One file with every saved test, its photo, and instructions for checking it on a computer."
+   },
+   {
+    "kind": "button.primary",
+    "text": "Download log (for the lab)"
+   },
+   {
+    "kind": "button",
+    "text": "Share log file"
+   },
+   {
+    "kind": "p.warn-text",
+    "text": "If this browser’s data is cleared, the saved tests are deleted with it. Download the log regularly."
+   },
+   {
+    "kind": "a.nav-link",
+    "text": "About this app and how it works"
+   },
+   {
+    "kind": "a.nav-link",
+    "text": "Welcome screen"
+   },
+   {
+    "kind": "summary",
+    "text": "Developer tools"
+   },
+   {
+    "kind": "label.toggle",
+    "text": "Photo collection"
+   },
+   {
+    "kind": "input",
+    "text": "[checkbox] on"
+   },
+   {
+    "kind": "p.hint",
+    "text": "For the team: saves test photos to improve the app. No results, no records."
+   },
+   {
+    "kind": "p.hint",
+    "text": "While it is on, capture works even when checks fail (so deliberately bad photos can be collected), each photo is tagged and saved on this phone, and the Captures tab appears."
+   },
+   {
+    "kind": "label",
+    "text": "Phone model (for photo file names)"
+   },
+   {
+    "kind": "input",
+    "text": "[text] e.g. Redmi Note 12"
+   },
+   {
+    "kind": "span.hint",
+    "text": "File names will use: audit-phone"
+   },
+   {
+    "kind": "p.hint",
+    "text": "Rear camera, 1920×1080 requested. What the phone delivers is recorded with every photo."
+   },
+   {
+    "kind": "p.hint",
+    "text": "Provisional = a reasoned starting value, not yet checked against enough real photos. Derived = computed from named real photos."
+   },
+   {
+    "kind": "li.threshold",
+    "text": "Blur check — minimum sharpness blurMinLaplacianVariance = 680 (variance of the 4-neighbour Laplacian of 8-bit luma at check scale, on the detected card (framing outline if no card)) · derived"
+   },
+   {
+    "kind": "li.threshold",
+    "text": "Overexposure — brightness counted as blown out highlightClipLevel = 254 (8-bit channel value at or above which a channel counts as clipped) · provisional"
+   },
+   {
+    "kind": "li.threshold",
+    "text": "Overexposure — share of the frame allowed to be blown out maxHighlightClipFraction = 0.02 (fraction of pixels inside the framing outline blown to white (all three channels clipped)) · provisional"
+   },
+   {
+    "kind": "li.threshold",
+    "text": "Underexposure — darkness counted as pure black shadowClipLevel = 3 (8-bit value at or below which a pixel (max channel) counts as crushed black) · provisional"
+   },
+   {
+    "kind": "li.threshold",
+    "text": "Underexposure — share of the frame allowed to be pure black maxShadowClipFraction = 0.1 (fraction of pixels inside the framing outline with max channel crushed) · provisional"
+   },
+   {
+    "kind": "li.threshold",
+    "text": "Too dark — minimum overall brightness minMedianLuma = 50 (median 8-bit Rec. 601 luma inside the framing outline) · provisional"
+   },
+   {
+    "kind": "li.threshold",
+    "text": "Card ID — how clearly each ID square must read idCellMargin = 0.15 (fraction of the (white - black) luma range either side of the midpoint where an ID cell counts as unreadable) · provisional"
+   },
+   {
+    "kind": "li.threshold",
+    "text": "Card too far — minimum camera pixels per colour square minPatchSourcePixels = 400 (camera pixels inside each patch's central 5 x 5 mm sampling square (minimum over all patches)) · provisional"
+   },
+   {
+    "kind": "li.threshold",
+    "text": "Glare on the card — share of a colour square allowed to be blown out maxClipFraction = 0.02 (fraction of pixels in any patch sampling square, or in the sample zone, with any channel at or above highlightClipLevel) · provisional"
+   },
+   {
+    "kind": "li.threshold",
+    "text": "Uneven light — most unevenness left after the light correction maxResidualWhiteRatio = 1.2 (brightest / dimmest linear luminance of the six white patches (W_T, W_B, W_L, W_R1, W_R2, N1) AFTER the fitted smooth light gradient is divided out) · provisional"
+   },
+   {
+    "kind": "li.threshold",
+    "text": "Correction quality — largest average error on the card maxLooMeanDeltaE00 = 5 (mean leave-one-out CIEDE2000 over the card patches after correction) · provisional"
+   },
+   {
+    "kind": "li.threshold",
+    "text": "Correction quality — largest error on the worst tenth of the card maxLooP90DeltaE00 = 10 (90th percentile leave-one-out CIEDE2000 over the card patches after correction) · provisional"
+   },
+   {
+    "kind": "li.threshold",
+    "text": "Card set-up — most disagreement allowed between set-up photos maxRegistrationSpreadDeltaE00 = 6 (largest CIEDE2000 between any two registration shots, for any patch, after flat-field and per-shot white normalisation) · provisional"
+   },
+   {
+    "kind": "li.threshold",
+    "text": "Test area — how far from white paper counts as colour sampleWhiteNoiseFactor = 3 (multiple of the white-paper noise (95th percentile of per-pixel ΔE76 from paper white over the six white patches, after flat-field) above which a sample-zone pixel counts as coloured) · provisional"
+   },
+   {
+    "kind": "li.threshold",
+    "text": "Test area — smallest colour difference ever counted sampleMinDeltaE = 3 (ΔE76 floor for the coloured-pixel threshold) · provisional"
+   },
+   {
+    "kind": "li.threshold",
+    "text": "Test area — edge trimmed off before reading sampleEdgeErodeMm = 0.5 (mm trimmed off the edge of the coloured region (square erosion) before sampling) · provisional"
+   },
+   {
+    "kind": "li.threshold",
+    "text": "Test area — specks smaller than this are ignored sampleNoiseFloorMm2 = 2 (mm² (after erosion): a largest coloured region smaller than this counts as no coloured region) · provisional"
+   },
+   {
+    "kind": "li.threshold",
+    "text": "Test area — smallest test that can be read sampleMinAreaMm2 = 10 (mm² (after erosion) the coloured region must cover to be read (\"Coloured area too small\" below it)) · provisional"
+   },
+   {
+    "kind": "li.threshold",
+    "text": "Test area — a second patch this big means two tests sampleSecondRegionMm2 = 10 (mm² (after erosion): a second separate coloured region at least this big means two tests (\"Two separate coloured areas\")) · provisional"
+   },
+   {
+    "kind": "li.threshold",
+    "text": "Glare on the test — share of the test allowed to be blown out maxSampleClipFraction = 0.02 (fraction of the coloured region (holes filled) with any channel at or above highlightClipLevel) · provisional"
+   },
+   {
+    "kind": "li.threshold",
+    "text": "Test area — pixels too dark to use sampleDarkLevel = 10 (8-bit max channel at or below which a sample pixel is dropped as too dark to carry colour) · provisional"
+   },
+   {
+    "kind": "li.threshold",
+    "text": "Patchy test — most colour variation allowed maxSampleSpreadDeltaE = 15 (90th percentile ΔE76 of the sampled pixels from their median colour (flat-fielded, white-normalised, before correction)) · provisional"
+   },
+   {
+    "kind": "a",
+    "text": "Test"
+   },
+   {
+    "kind": "a",
+    "text": "Log"
+   },
+   {
+    "kind": "a",
+    "text": "Captures"
+   },
+   {
+    "kind": "a.active",
+    "text": "Settings"
+   },
+   {
+    "kind": "div.toast",
+    "text": "Phone model saved"
+   }
+  ]
+ },
+ {
+  "shot": "14-phone-camera-photo-collection.jpg",
+  "route": "#/test",
+  "items": [
+   {
+    "kind": "div.dc-banner",
+    "text": "Photo collection is on: photos are saved for the team — no results, no records. Turn off"
+   },
+   {
+    "kind": "button.small",
+    "text": "Turn off"
+   },
+   {
+    "kind": "div.guidance",
+    "text": "Checks pass"
+   },
+   {
+    "kind": "div.metrics",
+    "text": "sharp 1014/680 · blown 0.0% · median 111 · copy A · light 1.02/1.2"
+   },
+   {
+    "kind": "select",
+    "text": "[select] Card set-up photo (clean card, 3 per card) | Test object in daylight | Test object under a tube light | Test object under a warm bulb | Test object lit by the phone torch | Corner covered (checks the app refuses it) | Shadow across half the card (checks the app refuses it) | Glare spot on t"
+   },
+   {
+    "kind": "button.seg",
+    "text": "Card A"
+   },
+   {
+    "kind": "button.seg",
+    "text": "Card B"
+   },
+   {
+    "kind": "button.link",
+    "text": "Phone model: Audit Phone (change)"
+   },
+   {
+    "kind": "div.hint",
+    "text": "Card set-up photos, card A: 0 of 3"
+   },
+   {
+    "kind": "span.hint",
+    "text": "This phone cannot lock exposure or white balance (auto is fine)."
+   },
+   {
+    "kind": "div.hint",
+    "text": "Clean card lying flat on a table, steady daylight (not dusk), no direct sun. Tap Lock, then 3 photos without moving. 3 per card."
+   },
+   {
+    "kind": "div.res-info",
+    "text": "1080×1920"
+   },
+   {
+    "kind": "a.active",
+    "text": "Test"
+   },
+   {
+    "kind": "a",
+    "text": "Log"
+   },
+   {
+    "kind": "a",
+    "text": "Captures"
+   },
+   {
+    "kind": "a",
+    "text": "Settings"
+   }
+  ]
+ },
+ {
+  "shot": "15-phone-photo-collection-saved-toast.jpg",
+  "route": "#/test",
+  "items": [
+   {
+    "kind": "div.dc-banner",
+    "text": "Photo collection is on: photos are saved for the team — no results, no records. Turn off"
+   },
+   {
+    "kind": "button.small",
+    "text": "Turn off"
+   },
+   {
+    "kind": "div.guidance",
+    "text": "Checks pass"
+   },
+   {
+    "kind": "div.metrics",
+    "text": "sharp 1013/680 · blown 0.0% · median 111 · copy A · light 1.02/1.2"
+   },
+   {
+    "kind": "select",
+    "text": "[select] Card set-up photo (clean card, 3 per card) | Test object in daylight | Test object under a tube light | Test object under a warm bulb | Test object lit by the phone torch | Corner covered (checks the app refuses it) | Shadow across half the card (checks the app refuses it) | Glare spot on t"
+   },
+   {
+    "kind": "button.seg",
+    "text": "Card A"
+   },
+   {
+    "kind": "button.seg",
+    "text": "Card B"
+   },
+   {
+    "kind": "button.link",
+    "text": "Phone model: Audit Phone (change)"
+   },
+   {
+    "kind": "div.hint",
+    "text": "Card set-up photos, card A: 1 of 3"
+   },
+   {
+    "kind": "span.hint",
+    "text": "This phone cannot lock exposure or white balance (auto is fine)."
+   },
+   {
+    "kind": "div.hint",
+    "text": "Clean card lying flat on a table, steady daylight (not dusk), no direct sun. Tap Lock, then 3 photos without moving. 3 per card."
+   },
+   {
+    "kind": "div.res-info",
+    "text": "1080×1920"
+   },
+   {
+    "kind": "a.active",
+    "text": "Test"
+   },
+   {
+    "kind": "a",
+    "text": "Log"
+   },
+   {
+    "kind": "a",
+    "text": "Captures"
+   },
+   {
+    "kind": "a",
+    "text": "Settings"
+   },
+   {
+    "kind": "div.toast",
+    "text": "Saved registration_audit-phone_A_20260928T193550724Z.png for the team"
+   }
+  ]
+ },
+ {
+  "shot": "16-phone-log-while-photo-collection-on.jpg",
+  "route": "#/log",
+  "items": [
+   {
+    "kind": "div.dc-banner",
+    "text": "Photo collection is on: photos are saved for the team — no results, no records. Turn off"
+   },
+   {
+    "kind": "button.small",
+    "text": "Turn off"
+   },
+   {
+    "kind": "h1",
+    "text": "Log"
+   },
+   {
+    "kind": "p",
+    "text": "Every saved test is sealed on this phone and linked to the one before it, like numbered pages in a register."
+   },
+   {
+    "kind": "p",
+    "text": "If anyone changes, removes or reorders a record, Check log shows exactly which one."
+   },
+   {
+    "kind": "button.primary",
+    "text": "Check log"
+   },
+   {
+    "kind": "button",
+    "text": "See tamper detection"
+   },
+   {
+    "kind": "p.hint",
+    "text": "Tamper detection changes one result in a copy of the log, in memory only, and runs the same check on the copy."
+   },
+   {
+    "kind": "input",
+    "text": "[search] Search officer, case, place"
+   },
+   {
+    "kind": "select",
+    "text": "[select] Any result | POSITIVE | NEGATIVE | INCONCLUSIVE"
+   },
+   {
+    "kind": "select",
+    "text": "[select] Any kit | Marquis reagent — opiate screen"
+   },
+   {
+    "kind": "select",
+    "text": "[select] Camera and samples | Camera photos only | Samples only"
+   },
+   {
+    "kind": "label",
+    "text": "From"
+   },
+   {
+    "kind": "input",
+    "text": "[date] filter-from"
+   },
+   {
+    "kind": "label",
+    "text": "To"
+   },
+   {
+    "kind": "input",
+    "text": "[date] filter-to"
+   },
+   {
+    "kind": "p.hint",
+    "text": "2 of 2 saved tests"
+   },
+   {
+    "kind": "li",
+    "text": "POSITIVE #1 · 29/9/2026 1:05:46 am Officer AUDIT-01 · Marquis reagent — opiate screen 28.61390, 77.20900 (within 15 m)"
+   },
+   {
+    "kind": "button.log-row",
+    "text": "POSITIVE #1 · 29/9/2026 1:05:46 am Officer AUDIT-01 · Marquis reagent — opiate screen 28.61390, 77.20900 (within 15 m)"
+   },
+   {
+    "kind": "span.verdict-badge",
+    "text": "POSITIVE"
+   },
+   {
+    "kind": "span.hint",
+    "text": "28.61390, 77.20900 (within 15 m)"
+   },
+   {
+    "kind": "li",
+    "text": "POSITIVE #0 · 29/9/2026 1:05:43 am Officer AUDIT-01 · Marquis reagent — opiate screen Case AUDIT-CASE-1 · 28.61390, 77.20900 (within 15 m)"
+   },
+   {
+    "kind": "button.log-row",
+    "text": "POSITIVE #0 · 29/9/2026 1:05:43 am Officer AUDIT-01 · Marquis reagent — opiate screen Case AUDIT-CASE-1 · 28.61390, 77.20900 (within 15 m)"
+   },
+   {
+    "kind": "span.hint",
+    "text": "Case AUDIT-CASE-1 · 28.61390, 77.20900 (within 15 m)"
+   },
+   {
+    "kind": "summary",
+    "text": "Advanced"
+   },
+   {
+    "kind": "input",
+    "text": "[text] Code you wrote down earlier"
+   },
+   {
+    "kind": "p.hint",
+    "text": "One file with every saved test, its photo, and instructions for checking it on a computer."
+   },
+   {
+    "kind": "button.primary",
+    "text": "Download log (for the lab)"
+   },
+   {
+    "kind": "button",
+    "text": "Share log file"
+   },
+   {
+    "kind": "p.warn-text",
+    "text": "If this browser’s data is cleared, the saved tests are deleted with it. Download the log regularly."
+   },
+   {
+    "kind": "a",
+    "text": "Test"
+   },
+   {
+    "kind": "a.active",
+    "text": "Log"
+   },
+   {
+    "kind": "a",
+    "text": "Captures"
+   },
+   {
+    "kind": "a",
+    "text": "Settings"
+   }
+  ]
+ },
+ {
+  "shot": "17-phone-captures.jpg",
+  "route": "#/captures",
+  "items": [
+   {
+    "kind": "div.dc-banner",
+    "text": "Photo collection is on: photos are saved for the team — no results, no records. Turn off"
+   },
+   {
+    "kind": "button.small",
+    "text": "Turn off"
+   },
+   {
+    "kind": "h1",
+    "text": "Collected photos (for the team)"
+   },
+   {
+    "kind": "p.hint",
+    "text": "Saved on this phone only. Export the .zip and unzip it into data/real/ in the repo; the folders already match."
+   },
+   {
+    "kind": "th",
+    "text": "Card set-up photos, card A"
+   },
+   {
+    "kind": "th",
+    "text": "Card set-up photos, card B"
+   },
+   {
+    "kind": "th",
+    "text": "Lighting photos (test object)"
+   },
+   {
+    "kind": "th",
+    "text": "Photos the app must refuse"
+   },
+   {
+    "kind": "th",
+    "text": "Phones on this device"
+   },
+   {
+    "kind": "button.primary",
+    "text": "Download all as .zip"
+   },
+   {
+    "kind": "button",
+    "text": "Share .zip"
+   },
+   {
+    "kind": "button.danger",
+    "text": "Delete all"
+   },
+   {
+    "kind": "p.hint",
+    "text": "1 captures, 2.1 MB · storage used 9.7 MB of 4105.7 MB"
+   },
+   {
+    "kind": "li",
+    "text": "registration_audit-phone_A_20260928T193550724Z.png 1080×1920 · 2.1 MB · checks pass sha256 32a20ab4ce5f9ce9… Delete"
+   },
+   {
+    "kind": "button.small",
+    "text": "Delete"
+   },
+   {
+    "kind": "a",
+    "text": "Test"
+   },
+   {
+    "kind": "a",
+    "text": "Log"
+   },
+   {
+    "kind": "a.active",
+    "text": "Captures"
+   },
+   {
+    "kind": "a",
+    "text": "Settings"
+   }
+  ]
+ },
+ {
+  "shot": "18-phone-samples.jpg",
+  "route": "#/samples",
+  "items": [
+   {
+    "kind": "h1",
+    "text": "Try with sample images"
+   },
+   {
+    "kind": "p",
+    "text": "No printed card? Pick a sample. The app reads it exactly as it reads a camera photo, then shows whatever it finds. You can save the result and see it in the log, marked as a sample."
+   },
+   {
+    "kind": "button.sample-card",
+    "text": "Empty card Real photo We expect: NEGATIVE"
+   },
+   {
+    "kind": "button.sample-card",
+    "text": "Orange cap, not a drug-test colour Real photo We expect: INCONCLUSIVE"
+   },
+   {
+    "kind": "button.sample-card",
+    "text": "Opiate-type colour Computer-drawn image No real reaction was photographed; this shows what the app does with that colour. We expect: POSITIVE"
+   },
+   {
+    "kind": "span.hint",
+    "text": "No real reaction was photographed; this shows what the app does with that colour."
+   },
+   {
+    "kind": "button.sample-card",
+    "text": "Blurred photo Real photo We expect: Retake, with the reason"
+   },
+   {
+    "kind": "p.hint",
+    "text": "The real photos were taken with the app on a Nothing Phone (3a) and cropped to the card. Samples are always labelled as samples, on screen and in saved tests."
+   },
+   {
+    "kind": "a.active",
+    "text": "Test"
+   },
+   {
+    "kind": "a",
+    "text": "Log"
+   },
+   {
+    "kind": "a",
+    "text": "Settings"
+   }
+  ]
+ },
+ {
+  "shot": "19-phone-sample-result-empty-card.jpg",
+  "route": "#/result",
+  "items": [
+   {
+    "kind": "h1",
+    "text": "Result"
+   },
+   {
+    "kind": "span.verdict-badge",
+    "text": "NEGATIVE"
+   },
+   {
+    "kind": "p.why",
+    "text": "No colour developed. The app cannot tell this from an empty white square; the saved photo shows which it was."
+   },
+   {
+    "kind": "h2",
+    "text": "Your test and the kit’s colours"
+   },
+   {
+    "kind": "p.hint",
+    "text": "Nothing in the white square differs from the card’s white paper. The app cannot tell a colourless test from an empty square."
+   },
+   {
+    "kind": "figcaption.hint",
+    "text": "The reference colour card, straightened by the app, with the white square outlined."
+   },
+   {
+    "kind": "p.kit-validation",
+    "text": "Kit: Marquis reagent — opiate screen. Marquis opiate screen — colours from NIJ Standard-0604.01, not yet checked against a real reaction with this app"
+   },
+   {
+    "kind": "div.notice",
+    "text": "Presumptive result — send for laboratory confirmation"
+   },
+   {
+    "kind": "label",
+    "text": "Case reference"
+   },
+   {
+    "kind": "input",
+    "text": "[text] Case reference (optional)"
+   },
+   {
+    "kind": "label",
+    "text": "Place note"
+   },
+   {
+    "kind": "input",
+    "text": "[text] Place note (optional), e.g. checkpoint name"
+   },
+   {
+    "kind": "p.hint",
+    "text": "Will be saved as a SAMPLE (real photo), with officer AUDIT-01 and the time, sealed on this phone. No place: the photo was not taken here."
+   },
+   {
+    "kind": "button.primary",
+    "text": "Save sealed record"
+   },
+   {
+    "kind": "summary",
+    "text": "Technical details"
+   },
+   {
+    "kind": "button",
+    "text": "Try another sample"
+   },
+   {
+    "kind": "a.active",
+    "text": "Test"
+   },
+   {
+    "kind": "a",
+    "text": "Log"
+   },
+   {
+    "kind": "a",
+    "text": "Settings"
+   }
+  ]
+ },
+ {
+  "shot": "20-phone-sample-result-orange-cap.jpg",
+  "route": "#/result",
+  "items": [
+   {
+    "kind": "h1",
+    "text": "Result"
+   },
+   {
+    "kind": "span.verdict-badge",
+    "text": "INCONCLUSIVE"
+   },
+   {
+    "kind": "p.why",
+    "text": "The test colour does not match any of this kit’s reaction colours, so the app cannot decide."
+   },
+   {
+    "kind": "h2",
+    "text": "Your test and the kit’s colours"
+   },
+   {
+    "kind": "p.hint",
+    "text": "Blue: the area the app read. Pink: coloured edges it left out."
+   },
+   {
+    "kind": "figcaption.hint",
+    "text": "The reference colour card, straightened by the app, with the white square outlined."
+   },
+   {
+    "kind": "p.kit-validation",
+    "text": "Kit: Marquis reagent — opiate screen. Marquis opiate screen — colours from NIJ Standard-0604.01, not yet checked against a real reaction with this app"
+   },
+   {
+    "kind": "div.notice",
+    "text": "Presumptive result — send for laboratory confirmation"
+   },
+   {
+    "kind": "label",
+    "text": "Case reference"
+   },
+   {
+    "kind": "input",
+    "text": "[text] Case reference (optional)"
+   },
+   {
+    "kind": "label",
+    "text": "Place note"
+   },
+   {
+    "kind": "input",
+    "text": "[text] Place note (optional), e.g. checkpoint name"
+   },
+   {
+    "kind": "p.hint",
+    "text": "Will be saved as a SAMPLE (real photo), with officer AUDIT-01 and the time, sealed on this phone. No place: the photo was not taken here."
+   },
+   {
+    "kind": "button.primary",
+    "text": "Save sealed record"
+   },
+   {
+    "kind": "summary",
+    "text": "Technical details"
+   },
+   {
+    "kind": "button",
+    "text": "Try another sample"
+   },
+   {
+    "kind": "a.active",
+    "text": "Test"
+   },
+   {
+    "kind": "a",
+    "text": "Log"
+   },
+   {
+    "kind": "a",
+    "text": "Settings"
+   }
+  ]
+ },
+ {
+  "shot": "21-phone-sample-result-drawn-opiate.jpg",
+  "route": "#/result",
+  "items": [
+   {
+    "kind": "h1",
+    "text": "Result"
+   },
+   {
+    "kind": "span.verdict-badge",
+    "text": "POSITIVE"
+   },
+   {
+    "kind": "p.why",
+    "text": "The test colour matches the colour this reagent turns with heroin in the kit’s published table."
+   },
+   {
+    "kind": "h2",
+    "text": "Your test and the kit’s colours"
+   },
+   {
+    "kind": "p.hint",
+    "text": "Blue: the area the app read. Pink: coloured edges it left out."
+   },
+   {
+    "kind": "figcaption.hint",
+    "text": "The reference colour card, straightened by the app, with the white square outlined."
+   },
+   {
+    "kind": "p.kit-validation",
+    "text": "Kit: Marquis reagent — opiate screen. Marquis opiate screen — colours from NIJ Standard-0604.01, not yet checked against a real reaction with this app"
+   },
+   {
+    "kind": "div.notice",
+    "text": "Presumptive result — send for laboratory confirmation"
+   },
+   {
+    "kind": "label",
+    "text": "Case reference"
+   },
+   {
+    "kind": "input",
+    "text": "[text] Case reference (optional)"
+   },
+   {
+    "kind": "label",
+    "text": "Place note"
+   },
+   {
+    "kind": "input",
+    "text": "[text] Place note (optional), e.g. checkpoint name"
+   },
+   {
+    "kind": "p.hint",
+    "text": "Will be saved as a SAMPLE (computer-drawn image), with officer AUDIT-01 and the time, sealed on this phone. No place: the photo was not taken here."
+   },
+   {
+    "kind": "button.primary",
+    "text": "Save sealed record"
+   },
+   {
+    "kind": "summary",
+    "text": "Technical details"
+   },
+   {
+    "kind": "button",
+    "text": "Try another sample"
+   },
+   {
+    "kind": "a.active",
+    "text": "Test"
+   },
+   {
+    "kind": "a",
+    "text": "Log"
+   },
+   {
+    "kind": "a",
+    "text": "Settings"
+   }
+  ]
+ },
+ {
+  "shot": "22-phone-sample-result-blurred.jpg",
+  "route": "#/result",
+  "items": [
+   {
+    "kind": "h1",
+    "text": "Result"
+   },
+   {
+    "kind": "span.verdict-badge",
+    "text": "RETAKE"
+   },
+   {
+    "kind": "p.why",
+    "text": "Hold steady"
+   },
+   {
+    "kind": "p",
+    "text": "This sample is meant to show a photo the app refuses. Nothing is saved for a Retake."
+   },
+   {
+    "kind": "button.primary",
+    "text": "Try another sample"
+   },
+   {
+    "kind": "p.kit-validation",
+    "text": "Kit: Marquis reagent — opiate screen. Marquis opiate screen — colours from NIJ Standard-0604.01, not yet checked against a real reaction with this app"
+   },
+   {
+    "kind": "div.notice",
+    "text": "Presumptive result — send for laboratory confirmation"
+   },
+   {
+    "kind": "summary",
+    "text": "Technical details"
+   },
+   {
+    "kind": "a.active",
+    "text": "Test"
+   },
+   {
+    "kind": "a",
+    "text": "Log"
+   },
+   {
+    "kind": "a",
+    "text": "Settings"
+   }
+  ]
+ },
+ {
+  "shot": "23-phone-log-empty.jpg",
+  "route": "#/log",
+  "items": [
+   {
+    "kind": "h1",
+    "text": "Log"
+   },
+   {
+    "kind": "p",
+    "text": "Every saved test is sealed on this phone and linked to the one before it, like numbered pages in a register."
+   },
+   {
+    "kind": "p",
+    "text": "If anyone changes, removes or reorders a record, Check log shows exactly which one."
+   },
+   {
+    "kind": "p",
+    "text": "No saved tests yet. Run a test or try a sample, then tap Save."
+   },
+   {
+    "kind": "a.button",
+    "text": "Try a sample"
+   },
+   {
+    "kind": "a.nav-link",
+    "text": "Start a test"
+   },
+   {
+    "kind": "p.hint",
+    "text": "One file with every saved test, its photo, and instructions for checking it on a computer."
+   },
+   {
+    "kind": "button.primary",
+    "text": "Download log (for the lab)"
+   },
+   {
+    "kind": "button",
+    "text": "Share log file"
+   },
+   {
+    "kind": "p.warn-text",
+    "text": "If this browser’s data is cleared, the saved tests are deleted with it. Download the log regularly."
+   },
+   {
+    "kind": "a",
+    "text": "Test"
+   },
+   {
+    "kind": "a.active",
+    "text": "Log"
+   },
+   {
+    "kind": "a",
+    "text": "Settings"
+   }
+  ]
+ },
+ {
+  "shot": "24-laptop-first-launch-welcome.jpg",
+  "route": "#/",
+  "items": [
+   {
+    "kind": "h1",
+    "text": "Field Test Companion"
+   },
+   {
+    "kind": "p.lead",
+    "text": "Reads a field drug-test kit with the phone camera, gives a result, and saves a sealed record."
+   },
+   {
+    "kind": "button.primary",
+    "text": "Start a test (needs the printed card)"
+   },
+   {
+    "kind": "button.big",
+    "text": "Try with sample images"
+   },
+   {
+    "kind": "a.nav-link",
+    "text": "How it works"
+   },
+   {
+    "kind": "p.hint",
+    "text": "Prototype for Smart India Hackathon 2026, SIH26231. Presumptive result only."
+   },
+   {
+    "kind": "a",
+    "text": "Test"
+   },
+   {
+    "kind": "a",
+    "text": "Log"
+   },
+   {
+    "kind": "a",
+    "text": "Settings"
+   }
+  ]
+ },
+ {
+  "shot": "25-laptop-how-it-works.jpg",
+  "route": "#/about",
+  "items": [
+   {
+    "kind": "h1",
+    "text": "How it works"
+   },
+   {
+    "kind": "li",
+    "text": "Do the kit test as usual. The app works alongside the colour-change kits officers already use."
+   },
+   {
+    "kind": "li",
+    "text": "Put the test on the printed reference colour card and take a photo in the app. The test goes in the white square; the card must be fully in view."
+   },
+   {
+    "kind": "li",
+    "text": "The card’s known colours let the app correct for the lighting. Daylight, a tube light or a shadow change how colours look; the card’s colour squares show by how much."
+   },
+   {
+    "kind": "li",
+    "text": "The app compares the test colour with the kit’s reference colours: POSITIVE, NEGATIVE or INCONCLUSIVE. If the photo is not good enough (blur, shadow, glare, card too far, a corner hidden), it says Retake and why. This is detected automatically."
+   },
+   {
+    "kind": "li",
+    "text": "Saving makes a sealed record in the log. It holds the time, the place, the officer and the photo’s fingerprint. Any later change to it is caught."
+   },
+   {
+    "kind": "div.notice",
+    "text": "It gives a presumptive field result. It never replaces laboratory confirmation."
+   },
+   {
+    "kind": "p",
+    "text": "Marquis reagent — opiate screen: colours from NIJ Standard-0604.01 (a US Department of Justice standard), not yet checked on a real reaction."
+   },
+   {
+    "kind": "p",
+    "text": "A printed card with 30 known colours, four black corner squares the app finds automatically, and a white square for the test. Print it in colour on A4 at 100% and check the 50 mm bar with a ruler. Each print is set up once in the app before use; the two cards used for this prototype (A and B) are se"
+   },
+   {
+    "kind": "a.button",
+    "text": "Download card (A4 PDF)"
+   },
+   {
+    "kind": "p",
+    "text": "Everything runs on this phone. Photos are never uploaded. No server, no account."
+   },
+   {
+    "kind": "a.button",
+    "text": "Try with sample images"
+   },
+   {
+    "kind": "a.nav-link",
+    "text": "Welcome screen"
+   },
+   {
+    "kind": "th",
+    "text": "Version"
+   },
+   {
+    "kind": "th",
+    "text": "Build"
+   },
+   {
+    "kind": "th",
+    "text": "Offline"
+   },
+   {
+    "kind": "a",
+    "text": "Test"
+   },
+   {
+    "kind": "a",
+    "text": "Log"
+   },
+   {
+    "kind": "a",
+    "text": "Settings"
+   }
+  ]
+ },
+ {
+  "shot": "26-laptop-officer-id.jpg",
+  "route": "#/test",
+  "items": [
+   {
+    "kind": "h1",
+    "text": "Your officer ID"
+   },
+   {
+    "kind": "p",
+    "text": "It is written on every test you save. Enter it once; you can change it in Settings."
+   },
+   {
+    "kind": "p.hint",
+    "text": "The app does not check this ID. A saved test proves it was not changed afterwards, not who took it."
+   },
+   {
+    "kind": "label",
+    "text": "Officer ID"
+   },
+   {
+    "kind": "input",
+    "text": "[text] e.g. badge or service number"
+   },
+   {
+    "kind": "button.primary",
+    "text": "Save and continue"
+   },
+   {
+    "kind": "p.hint",
+    "text": "No card? Try a sample instead"
+   },
+   {
+    "kind": "a.nav-link",
+    "text": "No card? Try a sample instead"
+   },
+   {
+    "kind": "a.active",
+    "text": "Test"
+   },
+   {
+    "kind": "a",
+    "text": "Log"
+   },
+   {
+    "kind": "a",
+    "text": "Settings"
+   }
+  ]
+ },
+ {
+  "shot": "27-laptop-camera-ready.jpg",
+  "route": "#/test",
+  "items": [
+   {
+    "kind": "li",
+    "text": "Put the test in the white square."
+   },
+   {
+    "kind": "li",
+    "text": "Fit the card in the frame."
+   },
+   {
+    "kind": "li",
+    "text": "Hold still and tap Capture."
+   },
+   {
+    "kind": "div.kit-status",
+    "text": "Marquis opiate screen — colours from NIJ Standard-0604.01, not yet checked against a real reaction with this app"
+   },
+   {
+    "kind": "button.link",
+    "text": "Officer: AUDIT-01 (change)"
+   },
+   {
+    "kind": "span.geo-line",
+    "text": "Location found (within 15 m)"
+   },
+   {
+    "kind": "a.try-sample",
+    "text": "No card? Try a sample"
+   },
+   {
+    "kind": "p.laptop-note",
+    "text": "Testing needs a phone camera and the printed reference colour card. On a laptop, try a sample instead."
+   },
+   {
+    "kind": "div.guidance",
+    "text": "Ready — tap to capture"
+   },
+   {
+    "kind": "a.active",
+    "text": "Test"
+   },
+   {
+    "kind": "a",
+    "text": "Log"
+   },
+   {
+    "kind": "a",
+    "text": "Settings"
+   }
+  ]
+ },
+ {
+  "shot": "28-laptop-result-positive.jpg",
+  "route": "#/result",
+  "items": [
+   {
+    "kind": "h1",
+    "text": "Result"
+   },
+   {
+    "kind": "span.verdict-badge",
+    "text": "POSITIVE"
+   },
+   {
+    "kind": "p.why",
+    "text": "The test colour matches the colour this reagent turns with heroin in the kit’s published table."
+   },
+   {
+    "kind": "h2",
+    "text": "Your test and the kit’s colours"
+   },
+   {
+    "kind": "p.hint",
+    "text": "Blue: the area the app read. Pink: coloured edges it left out."
+   },
+   {
+    "kind": "figcaption.hint",
+    "text": "The reference colour card, straightened by the app, with the white square outlined."
+   },
+   {
+    "kind": "p.kit-validation",
+    "text": "Kit: Marquis reagent — opiate screen. Marquis opiate screen — colours from NIJ Standard-0604.01, not yet checked against a real reaction with this app"
+   },
+   {
+    "kind": "div.notice",
+    "text": "Presumptive result — send for laboratory confirmation"
+   },
+   {
+    "kind": "label",
+    "text": "Case reference"
+   },
+   {
+    "kind": "input",
+    "text": "[text] Case reference (optional)"
+   },
+   {
+    "kind": "label",
+    "text": "Place note"
+   },
+   {
+    "kind": "input",
+    "text": "[text] Place note (optional), e.g. checkpoint name"
+   },
+   {
+    "kind": "label.toggle",
+    "text": "The test is in the white square Needed because the app cannot tell a colourless test from an empty square."
+   },
+   {
+    "kind": "input",
+    "text": "[checkbox] on"
+   },
+   {
+    "kind": "span.hint",
+    "text": "Needed because the app cannot tell a colourless test from an empty square."
+   },
+   {
+    "kind": "p.hint",
+    "text": "Will be saved with officer AUDIT-01, the time and the location (within 15 m), sealed on this phone."
+   },
+   {
+    "kind": "button.primary",
+    "text": "Save sealed record"
+   },
+   {
+    "kind": "p.hint",
+    "text": "Tick the box above to confirm the test is in the white square."
+   },
+   {
+    "kind": "summary",
+    "text": "Technical details"
+   },
+   {
+    "kind": "button",
+    "text": "Take another photo"
+   },
+   {
+    "kind": "a.active",
+    "text": "Test"
+   },
+   {
+    "kind": "a",
+    "text": "Log"
+   },
+   {
+    "kind": "a",
+    "text": "Settings"
+   }
+  ]
+ },
+ {
+  "shot": "29-laptop-result-technical-details.jpg",
+  "route": "#/result",
+  "items": [
+   {
+    "kind": "h1",
+    "text": "Result"
+   },
+   {
+    "kind": "span.verdict-badge",
+    "text": "POSITIVE"
+   },
+   {
+    "kind": "p.why",
+    "text": "The test colour matches the colour this reagent turns with heroin in the kit’s published table."
+   },
+   {
+    "kind": "h2",
+    "text": "Your test and the kit’s colours"
+   },
+   {
+    "kind": "p.hint",
+    "text": "Blue: the area the app read. Pink: coloured edges it left out."
+   },
+   {
+    "kind": "figcaption.hint",
+    "text": "The reference colour card, straightened by the app, with the white square outlined."
+   },
+   {
+    "kind": "p.kit-validation",
+    "text": "Kit: Marquis reagent — opiate screen. Marquis opiate screen — colours from NIJ Standard-0604.01, not yet checked against a real reaction with this app"
+   },
+   {
+    "kind": "div.notice",
+    "text": "Presumptive result — send for laboratory confirmation"
+   },
+   {
+    "kind": "label",
+    "text": "Case reference"
+   },
+   {
+    "kind": "input",
+    "text": "[text] Case reference (optional)"
+   },
+   {
+    "kind": "label",
+    "text": "Place note"
+   },
+   {
+    "kind": "input",
+    "text": "[text] Place note (optional), e.g. checkpoint name"
+   },
+   {
+    "kind": "label.toggle",
+    "text": "The test is in the white square Needed because the app cannot tell a colourless test from an empty square."
+   },
+   {
+    "kind": "input",
+    "text": "[checkbox] on"
+   },
+   {
+    "kind": "span.hint",
+    "text": "Needed because the app cannot tell a colourless test from an empty square."
+   },
+   {
+    "kind": "p.hint",
+    "text": "Will be saved with officer AUDIT-01, the time and the location (within 15 m), sealed on this phone."
+   },
+   {
+    "kind": "button.primary",
+    "text": "Save sealed record"
+   },
+   {
+    "kind": "p.hint",
+    "text": "Tick the box above to confirm the test is in the white square."
+   },
+   {
+    "kind": "summary",
+    "text": "Technical details"
+   },
+   {
+    "kind": "h2",
+    "text": "Numbers behind the result"
+   },
+   {
+    "kind": "th",
+    "text": "Reason (as sealed in the record)"
+   },
+   {
+    "kind": "th",
+    "text": "Sample zone reading"
+   },
+   {
+    "kind": "th",
+    "text": "Coloured-pixel threshold"
+   },
+   {
+    "kind": "th",
+    "text": "Area read"
+   },
+   {
+    "kind": "th",
+    "text": "CIELAB before correction"
+   },
+   {
+    "kind": "th",
+    "text": "CIELAB after correction"
+   },
+   {
+    "kind": "th",
+    "text": "ΔE00 to heroin (diacetylmorphine HCl) (7.5RP 3/10)"
+   },
+   {
+    "kind": "th",
+    "text": "ΔE00 to morphine (monohydrate) (10P 3/6)"
+   },
+   {
+    "kind": "th",
+    "text": "ΔE00 to codeine (7.5P 2/4)"
+   },
+   {
+    "kind": "h2",
+    "text": "Card checks"
+   },
+   {
+    "kind": "div.verdict",
+    "text": "PASS — card checks and colour correction passed"
+   },
+   {
+    "kind": "figcaption.hint",
+    "text": "The reference colour card, straightened by the app (what the colour reading used)."
+   },
+   {
+    "kind": "h2",
+    "text": "Checks"
+   },
+   {
+    "kind": "li.ok",
+    "text": "pass dark — 109 (limit 50)"
+   },
+   {
+    "kind": "li.ok",
+    "text": "pass bright — 0.000 (limit 0.02)"
+   },
+   {
+    "kind": "li.ok",
+    "text": "pass blur — 2062 (limit 680) — measured on the detected card"
+   },
+   {
+    "kind": "li.ok",
+    "text": "pass card — copy A, rotated 360 deg"
+   },
+   {
+    "kind": "li.ok",
+    "text": "pass closer — 1024 (limit 400)"
+   },
+   {
+    "kind": "li.ok",
+    "text": "pass glare — 0.000 (limit 0.02) — most clipped: sample zone"
+   },
+   {
+    "kind": "li.ok",
+    "text": "pass uneven — 1.011 (limit 1.2) — whites 1.011 as photographed; smooth gradient 1.01 removed"
+   },
+   {
+    "kind": "li.ok",
+    "text": "pass registered — 2026-09-28T13:42:15.069Z"
+   },
+   {
+    "kind": "li.ok",
+    "text": "pass correction — 0.720 (limit 5) — leave-one-out mean 0.72, 90th pct 1.37 (limits 5, 10)"
+   },
+   {
+    "kind": "h2",
+    "text": "Details"
+   },
+   {
+    "kind": "th",
+    "text": "Card copy (from ID strip)"
+   },
+   {
+    "kind": "th",
+    "text": "Orientation"
+   },
+   {
+    "kind": "th",
+    "text": "Uneven light"
+   },
+   {
+    "kind": "th",
+    "text": "Correction method"
+   },
+   {
+    "kind": "th",
+    "text": "Leave-one-out error (ΔE00)"
+   },
+   {
+    "kind": "th",
+    "text": "Other method, for comparison"
+   },
+   {
+    "kind": "th",
+    "text": "In-sample residual (flattering)"
+   },
+   {
+    "kind": "th",
+    "text": "Pixels per patch (min)"
+   },
+   {
+    "kind": "th",
+    "text": "Resolution"
+   },
+   {
+    "kind": "th",
+    "text": "SHA-256 (PNG)"
+   },
+   {
+    "kind": "th",
+    "text": "SHA-256 (pixels)"
+   },
+   {
+    "kind": "h2",
+    "text": "Patches: before · after · reference"
+   },
+   {
+    "kind": "p.hint",
+    "text": "Each patch: the camera's colour, the corrected colour, the registered reference, and the corrected-vs-reference ΔE00."
+   },
+   {
+    "kind": "button",
+    "text": "Take another photo"
+   },
+   {
+    "kind": "a.active",
+    "text": "Test"
+   },
+   {
+    "kind": "a",
+    "text": "Log"
+   },
+   {
+    "kind": "a",
+    "text": "Settings"
+   }
+  ]
+ },
+ {
+  "shot": "30-laptop-record-detail.jpg",
+  "route": "#/record/0",
+  "items": [
+   {
+    "kind": "h1",
+    "text": "Saved test, record 0"
+   },
+   {
+    "kind": "span.verdict-badge",
+    "text": "POSITIVE"
+   },
+   {
+    "kind": "p.why",
+    "text": "The test colour matches the colour this reagent turns with heroin in the kit’s published table."
+   },
+   {
+    "kind": "div.notice",
+    "text": "Presumptive field result. Not a laboratory confirmation."
+   },
+   {
+    "kind": "li.ok",
+    "text": "✓ Not changed since it was saved"
+   },
+   {
+    "kind": "li.ok",
+    "text": "✓ Nothing removed or inserted before it"
+   },
+   {
+    "kind": "li.ok",
+    "text": "✓ Photo is the original"
+   },
+   {
+    "kind": "p.meaning",
+    "text": "Sealed on this phone: any later change to this test, or removing or inserting tests before it, is caught. It does not prove who the officer was, and the time and place are what the phone reported."
+   },
+   {
+    "kind": "th",
+    "text": "Result"
+   },
+   {
+    "kind": "th",
+    "text": "Saved at (phone’s clock)"
+   },
+   {
+    "kind": "th",
+    "text": "Photo taken"
+   },
+   {
+    "kind": "th",
+    "text": "Officer ID (typed in, not checked)"
+   },
+   {
+    "kind": "th",
+    "text": "Case reference"
+   },
+   {
+    "kind": "th",
+    "text": "Place note"
+   },
+   {
+    "kind": "th",
+    "text": "Place (from the phone)"
+   },
+   {
+    "kind": "th",
+    "text": "Officer confirmed the test is in the white square"
+   },
+   {
+    "kind": "th",
+    "text": "Kit"
+   },
+   {
+    "kind": "th",
+    "text": "Photo from"
+   },
+   {
+    "kind": "summary",
+    "text": "Technical details"
+   },
+   {
+    "kind": "button",
+    "text": "Download this test (for the lab)"
+   },
+   {
+    "kind": "button",
+    "text": "Back to log"
+   },
+   {
+    "kind": "a",
+    "text": "Test"
+   },
+   {
+    "kind": "a.active",
+    "text": "Log"
+   },
+   {
+    "kind": "a",
+    "text": "Settings"
+   }
+  ]
+ },
+ {
+  "shot": "31-laptop-log-with-records.jpg",
+  "route": "#/log",
+  "items": [
+   {
+    "kind": "h1",
+    "text": "Log"
+   },
+   {
+    "kind": "p",
+    "text": "Every saved test is sealed on this phone and linked to the one before it, like numbered pages in a register."
+   },
+   {
+    "kind": "p",
+    "text": "If anyone changes, removes or reorders a record, Check log shows exactly which one."
+   },
+   {
+    "kind": "button.primary",
+    "text": "Check log"
+   },
+   {
+    "kind": "button",
+    "text": "See tamper detection"
+   },
+   {
+    "kind": "p.hint",
+    "text": "Tamper detection changes one result in a copy of the log, in memory only, and runs the same check on the copy."
+   },
+   {
+    "kind": "input",
+    "text": "[search] Search officer, case, place"
+   },
+   {
+    "kind": "select",
+    "text": "[select] Any result | POSITIVE | NEGATIVE | INCONCLUSIVE"
+   },
+   {
+    "kind": "select",
+    "text": "[select] Any kit | Marquis reagent — opiate screen"
+   },
+   {
+    "kind": "select",
+    "text": "[select] Camera and samples | Camera photos only | Samples only"
+   },
+   {
+    "kind": "label",
+    "text": "From"
+   },
+   {
+    "kind": "input",
+    "text": "[date] filter-from"
+   },
+   {
+    "kind": "label",
+    "text": "To"
+   },
+   {
+    "kind": "input",
+    "text": "[date] filter-to"
+   },
+   {
+    "kind": "p.hint",
+    "text": "1 of 1 saved test"
+   },
+   {
+    "kind": "li",
+    "text": "POSITIVE #0 · 29/9/2026 1:06:11 am Officer AUDIT-01 · Marquis reagent — opiate screen Case AUDIT-CASE-1 · 28.61390, 77.20900 (within 15 m)"
+   },
+   {
+    "kind": "button.log-row",
+    "text": "POSITIVE #0 · 29/9/2026 1:06:11 am Officer AUDIT-01 · Marquis reagent — opiate screen Case AUDIT-CASE-1 · 28.61390, 77.20900 (within 15 m)"
+   },
+   {
+    "kind": "span.verdict-badge",
+    "text": "POSITIVE"
+   },
+   {
+    "kind": "span.hint",
+    "text": "Case AUDIT-CASE-1 · 28.61390, 77.20900 (within 15 m)"
+   },
+   {
+    "kind": "summary",
+    "text": "Advanced"
+   },
+   {
+    "kind": "input",
+    "text": "[text] Code you wrote down earlier"
+   },
+   {
+    "kind": "p.hint",
+    "text": "One file with every saved test, its photo, and instructions for checking it on a computer."
+   },
+   {
+    "kind": "button.primary",
+    "text": "Download log (for the lab)"
+   },
+   {
+    "kind": "button",
+    "text": "Share log file"
+   },
+   {
+    "kind": "p.warn-text",
+    "text": "If this browser’s data is cleared, the saved tests are deleted with it. Download the log regularly."
+   },
+   {
+    "kind": "a",
+    "text": "Test"
+   },
+   {
+    "kind": "a.active",
+    "text": "Log"
+   },
+   {
+    "kind": "a",
+    "text": "Settings"
+   }
+  ]
+ },
+ {
+  "shot": "32-laptop-log-checked-and-tamper-detection.jpg",
+  "route": "#/log",
+  "items": [
+   {
+    "kind": "h1",
+    "text": "Log"
+   },
+   {
+    "kind": "p",
+    "text": "Every saved test is sealed on this phone and linked to the one before it, like numbered pages in a register."
+   },
+   {
+    "kind": "p",
+    "text": "If anyone changes, removes or reorders a record, Check log shows exactly which one."
+   },
+   {
+    "kind": "button.primary",
+    "text": "Check log"
+   },
+   {
+    "kind": "button",
+    "text": "See tamper detection"
+   },
+   {
+    "kind": "p.strong",
+    "text": "✓ All 1 saved test: not changed, nothing removed or inserted, photos original."
+   },
+   {
+    "kind": "p.hint",
+    "text": "Tamper detection changes one result in a copy of the log, in memory only, and runs the same check on the copy."
+   },
+   {
+    "kind": "p.strong",
+    "text": "In a copy, record 0’s result was changed from POSITIVE to NEGATIVE. Check log on the copy:"
+   },
+   {
+    "kind": "p",
+    "text": "Record 0: ✗ Not changed since it was saved"
+   },
+   {
+    "kind": "p",
+    "text": "Your real log was not changed."
+   },
+   {
+    "kind": "input",
+    "text": "[search] Search officer, case, place"
+   },
+   {
+    "kind": "select",
+    "text": "[select] Any result | POSITIVE | NEGATIVE | INCONCLUSIVE"
+   },
+   {
+    "kind": "select",
+    "text": "[select] Any kit | Marquis reagent — opiate screen"
+   },
+   {
+    "kind": "select",
+    "text": "[select] Camera and samples | Camera photos only | Samples only"
+   },
+   {
+    "kind": "label",
+    "text": "From"
+   },
+   {
+    "kind": "input",
+    "text": "[date] filter-from"
+   },
+   {
+    "kind": "label",
+    "text": "To"
+   },
+   {
+    "kind": "input",
+    "text": "[date] filter-to"
+   },
+   {
+    "kind": "p.hint",
+    "text": "1 of 1 saved test"
+   },
+   {
+    "kind": "li",
+    "text": "POSITIVE #0 · 29/9/2026 1:06:11 am Officer AUDIT-01 · Marquis reagent — opiate screen Case AUDIT-CASE-1 · 28.61390, 77.20900 (within 15 m)"
+   },
+   {
+    "kind": "button.log-row",
+    "text": "POSITIVE #0 · 29/9/2026 1:06:11 am Officer AUDIT-01 · Marquis reagent — opiate screen Case AUDIT-CASE-1 · 28.61390, 77.20900 (within 15 m)"
+   },
+   {
+    "kind": "span.verdict-badge",
+    "text": "POSITIVE"
+   },
+   {
+    "kind": "span.hint",
+    "text": "Case AUDIT-CASE-1 · 28.61390, 77.20900 (within 15 m)"
+   },
+   {
+    "kind": "summary",
+    "text": "Advanced"
+   },
+   {
+    "kind": "input",
+    "text": "[text] Code you wrote down earlier"
+   },
+   {
+    "kind": "p.hint",
+    "text": "One file with every saved test, its photo, and instructions for checking it on a computer."
+   },
+   {
+    "kind": "button.primary",
+    "text": "Download log (for the lab)"
+   },
+   {
+    "kind": "button",
+    "text": "Share log file"
+   },
+   {
+    "kind": "p.warn-text",
+    "text": "If this browser’s data is cleared, the saved tests are deleted with it. Download the log regularly."
+   },
+   {
+    "kind": "a",
+    "text": "Test"
+   },
+   {
+    "kind": "a.active",
+    "text": "Log"
+   },
+   {
+    "kind": "a",
+    "text": "Settings"
+   }
+  ]
+ },
+ {
+  "shot": "33-laptop-log-advanced-wrong-code.jpg",
+  "route": "#/log",
+  "items": [
+   {
+    "kind": "h1",
+    "text": "Log"
+   },
+   {
+    "kind": "p",
+    "text": "Every saved test is sealed on this phone and linked to the one before it, like numbered pages in a register."
+   },
+   {
+    "kind": "p",
+    "text": "If anyone changes, removes or reorders a record, Check log shows exactly which one."
+   },
+   {
+    "kind": "button.primary",
+    "text": "Check log"
+   },
+   {
+    "kind": "button",
+    "text": "See tamper detection"
+   },
+   {
+    "kind": "p.strong",
+    "text": "✓ All 1 saved test: not changed, nothing removed or inserted, photos original."
+   },
+   {
+    "kind": "p.hint",
+    "text": "Tamper detection changes one result in a copy of the log, in memory only, and runs the same check on the copy."
+   },
+   {
+    "kind": "p.strong",
+    "text": "In a copy, record 0’s result was changed from POSITIVE to NEGATIVE. Check log on the copy:"
+   },
+   {
+    "kind": "p",
+    "text": "Record 0: ✗ Not changed since it was saved"
+   },
+   {
+    "kind": "p",
+    "text": "Your real log was not changed."
+   },
+   {
+    "kind": "input",
+    "text": "[search] Search officer, case, place"
+   },
+   {
+    "kind": "select",
+    "text": "[select] Any result | POSITIVE | NEGATIVE | INCONCLUSIVE"
+   },
+   {
+    "kind": "select",
+    "text": "[select] Any kit | Marquis reagent — opiate screen"
+   },
+   {
+    "kind": "select",
+    "text": "[select] Camera and samples | Camera photos only | Samples only"
+   },
+   {
+    "kind": "label",
+    "text": "From"
+   },
+   {
+    "kind": "input",
+    "text": "[date] filter-from"
+   },
+   {
+    "kind": "label",
+    "text": "To"
+   },
+   {
+    "kind": "input",
+    "text": "[date] filter-to"
+   },
+   {
+    "kind": "p.hint",
+    "text": "1 of 1 saved test"
+   },
+   {
+    "kind": "li",
+    "text": "POSITIVE #0 · 29/9/2026 1:06:11 am Officer AUDIT-01 · Marquis reagent — opiate screen Case AUDIT-CASE-1 · 28.61390, 77.20900 (within 15 m)"
+   },
+   {
+    "kind": "button.log-row",
+    "text": "POSITIVE #0 · 29/9/2026 1:06:11 am Officer AUDIT-01 · Marquis reagent — opiate screen Case AUDIT-CASE-1 · 28.61390, 77.20900 (within 15 m)"
+   },
+   {
+    "kind": "span.verdict-badge",
+    "text": "POSITIVE"
+   },
+   {
+    "kind": "span.hint",
+    "text": "Case AUDIT-CASE-1 · 28.61390, 77.20900 (within 15 m)"
+   },
+   {
+    "kind": "summary",
+    "text": "Advanced"
+   },
+   {
+    "kind": "button.latest-hash",
+    "text": "1724d4ebb44c…3f838d"
+   },
+   {
+    "kind": "p.hint",
+    "text": "Write this code in your case diary or send it to a supervisor. If the newest saved tests are ever deleted, the log will no longer end with this code."
+   },
+   {
+    "kind": "input",
+    "text": "[text] Code you wrote down earlier"
+   },
+   {
+    "kind": "button.small",
+    "text": "Compare"
+   },
+   {
+    "kind": "p.hint",
+    "text": "This code is not in this log: tests saved after it were deleted, or the code was copied wrongly."
+   },
+   {
+    "kind": "p.hint",
+    "text": "One file with every saved test, its photo, and instructions for checking it on a computer."
+   },
+   {
+    "kind": "button.primary",
+    "text": "Download log (for the lab)"
+   },
+   {
+    "kind": "button",
+    "text": "Share log file"
+   },
+   {
+    "kind": "p.warn-text",
+    "text": "If this browser’s data is cleared, the saved tests are deleted with it. Download the log regularly."
+   },
+   {
+    "kind": "a",
+    "text": "Test"
+   },
+   {
+    "kind": "a.active",
+    "text": "Log"
+   },
+   {
+    "kind": "a",
+    "text": "Settings"
+   }
+  ]
+ },
+ {
+  "shot": "34-laptop-settings.jpg",
+  "route": "#/settings",
+  "items": [
+   {
+    "kind": "h1",
+    "text": "Settings"
+   },
+   {
+    "kind": "label",
+    "text": "Officer ID"
+   },
+   {
+    "kind": "input",
+    "text": "[text] e.g. badge or service number"
+   },
+   {
+    "kind": "p.hint",
+    "text": "Written on every test you save. The app does not check it."
+   },
+   {
+    "kind": "h2",
+    "text": "Saved tests"
+   },
+   {
+    "kind": "p.hint",
+    "text": "One file with every saved test, its photo, and instructions for checking it on a computer."
+   },
+   {
+    "kind": "button.primary",
+    "text": "Download log (for the lab)"
+   },
+   {
+    "kind": "button",
+    "text": "Share log file"
+   },
+   {
+    "kind": "p.warn-text",
+    "text": "If this browser’s data is cleared, the saved tests are deleted with it. Download the log regularly."
+   },
+   {
+    "kind": "a.nav-link",
+    "text": "About this app and how it works"
+   },
+   {
+    "kind": "a.nav-link",
+    "text": "Welcome screen"
+   },
+   {
+    "kind": "summary",
+    "text": "Developer tools"
+   },
+   {
+    "kind": "input",
+    "text": "[checkbox] on"
+   },
+   {
+    "kind": "a",
+    "text": "Test"
+   },
+   {
+    "kind": "a",
+    "text": "Log"
+   },
+   {
+    "kind": "a.active",
+    "text": "Settings"
+   }
+  ]
+ },
+ {
+  "shot": "35-laptop-settings-developer-tools.jpg",
+  "route": "#/settings",
+  "items": [
+   {
+    "kind": "h1",
+    "text": "Settings"
+   },
+   {
+    "kind": "label",
+    "text": "Officer ID"
+   },
+   {
+    "kind": "input",
+    "text": "[text] e.g. badge or service number"
+   },
+   {
+    "kind": "p.hint",
+    "text": "Written on every test you save. The app does not check it."
+   },
+   {
+    "kind": "h2",
+    "text": "Saved tests"
+   },
+   {
+    "kind": "p.hint",
+    "text": "One file with every saved test, its photo, and instructions for checking it on a computer."
+   },
+   {
+    "kind": "button.primary",
+    "text": "Download log (for the lab)"
+   },
+   {
+    "kind": "button",
+    "text": "Share log file"
+   },
+   {
+    "kind": "p.warn-text",
+    "text": "If this browser’s data is cleared, the saved tests are deleted with it. Download the log regularly."
+   },
+   {
+    "kind": "a.nav-link",
+    "text": "About this app and how it works"
+   },
+   {
+    "kind": "a.nav-link",
+    "text": "Welcome screen"
+   },
+   {
+    "kind": "summary",
+    "text": "Developer tools"
+   },
+   {
+    "kind": "label.toggle",
+    "text": "Photo collection"
+   },
+   {
+    "kind": "input",
+    "text": "[checkbox] on"
+   },
+   {
+    "kind": "p.hint",
+    "text": "For the team: saves test photos to improve the app. No results, no records."
+   },
+   {
+    "kind": "p.hint",
+    "text": "While it is on, capture works even when checks fail (so deliberately bad photos can be collected), each photo is tagged and saved on this phone, and the Captures tab appears."
+   },
+   {
+    "kind": "p.hint",
+    "text": "Rear camera, 1920×1080 requested. What the phone delivers is recorded with every photo."
+   },
+   {
+    "kind": "p.hint",
+    "text": "Provisional = a reasoned starting value, not yet checked against enough real photos. Derived = computed from named real photos."
+   },
+   {
+    "kind": "li.threshold",
+    "text": "Blur check — minimum sharpness blurMinLaplacianVariance = 680 (variance of the 4-neighbour Laplacian of 8-bit luma at check scale, on the detected card (framing outline if no card)) · derived"
+   },
+   {
+    "kind": "li.threshold",
+    "text": "Overexposure — brightness counted as blown out highlightClipLevel = 254 (8-bit channel value at or above which a channel counts as clipped) · provisional"
+   },
+   {
+    "kind": "li.threshold",
+    "text": "Overexposure — share of the frame allowed to be blown out maxHighlightClipFraction = 0.02 (fraction of pixels inside the framing outline blown to white (all three channels clipped)) · provisional"
+   },
+   {
+    "kind": "li.threshold",
+    "text": "Underexposure — darkness counted as pure black shadowClipLevel = 3 (8-bit value at or below which a pixel (max channel) counts as crushed black) · provisional"
+   },
+   {
+    "kind": "li.threshold",
+    "text": "Underexposure — share of the frame allowed to be pure black maxShadowClipFraction = 0.1 (fraction of pixels inside the framing outline with max channel crushed) · provisional"
+   },
+   {
+    "kind": "li.threshold",
+    "text": "Too dark — minimum overall brightness minMedianLuma = 50 (median 8-bit Rec. 601 luma inside the framing outline) · provisional"
+   },
+   {
+    "kind": "li.threshold",
+    "text": "Card ID — how clearly each ID square must read idCellMargin = 0.15 (fraction of the (white - black) luma range either side of the midpoint where an ID cell counts as unreadable) · provisional"
+   },
+   {
+    "kind": "li.threshold",
+    "text": "Card too far — minimum camera pixels per colour square minPatchSourcePixels = 400 (camera pixels inside each patch's central 5 x 5 mm sampling square (minimum over all patches)) · provisional"
+   },
+   {
+    "kind": "li.threshold",
+    "text": "Glare on the card — share of a colour square allowed to be blown out maxClipFraction = 0.02 (fraction of pixels in any patch sampling square, or in the sample zone, with any channel at or above highlightClipLevel) · provisional"
+   },
+   {
+    "kind": "li.threshold",
+    "text": "Uneven light — most unevenness left after the light correction maxResidualWhiteRatio = 1.2 (brightest / dimmest linear luminance of the six white patches (W_T, W_B, W_L, W_R1, W_R2, N1) AFTER the fitted smooth light gradient is divided out) · provisional"
+   },
+   {
+    "kind": "li.threshold",
+    "text": "Correction quality — largest average error on the card maxLooMeanDeltaE00 = 5 (mean leave-one-out CIEDE2000 over the card patches after correction) · provisional"
+   },
+   {
+    "kind": "li.threshold",
+    "text": "Correction quality — largest error on the worst tenth of the card maxLooP90DeltaE00 = 10 (90th percentile leave-one-out CIEDE2000 over the card patches after correction) · provisional"
+   },
+   {
+    "kind": "li.threshold",
+    "text": "Card set-up — most disagreement allowed between set-up photos maxRegistrationSpreadDeltaE00 = 6 (largest CIEDE2000 between any two registration shots, for any patch, after flat-field and per-shot white normalisation) · provisional"
+   },
+   {
+    "kind": "li.threshold",
+    "text": "Test area — how far from white paper counts as colour sampleWhiteNoiseFactor = 3 (multiple of the white-paper noise (95th percentile of per-pixel ΔE76 from paper white over the six white patches, after flat-field) above which a sample-zone pixel counts as coloured) · provisional"
+   },
+   {
+    "kind": "li.threshold",
+    "text": "Test area — smallest colour difference ever counted sampleMinDeltaE = 3 (ΔE76 floor for the coloured-pixel threshold) · provisional"
+   },
+   {
+    "kind": "li.threshold",
+    "text": "Test area — edge trimmed off before reading sampleEdgeErodeMm = 0.5 (mm trimmed off the edge of the coloured region (square erosion) before sampling) · provisional"
+   },
+   {
+    "kind": "li.threshold",
+    "text": "Test area — specks smaller than this are ignored sampleNoiseFloorMm2 = 2 (mm² (after erosion): a largest coloured region smaller than this counts as no coloured region) · provisional"
+   },
+   {
+    "kind": "li.threshold",
+    "text": "Test area — smallest test that can be read sampleMinAreaMm2 = 10 (mm² (after erosion) the coloured region must cover to be read (\"Coloured area too small\" below it)) · provisional"
+   },
+   {
+    "kind": "li.threshold",
+    "text": "Test area — a second patch this big means two tests sampleSecondRegionMm2 = 10 (mm² (after erosion): a second separate coloured region at least this big means two tests (\"Two separate coloured areas\")) · provisional"
+   },
+   {
+    "kind": "li.threshold",
+    "text": "Glare on the test — share of the test allowed to be blown out maxSampleClipFraction = 0.02 (fraction of the coloured region (holes filled) with any channel at or above highlightClipLevel) · provisional"
+   },
+   {
+    "kind": "li.threshold",
+    "text": "Test area — pixels too dark to use sampleDarkLevel = 10 (8-bit max channel at or below which a sample pixel is dropped as too dark to carry colour) · provisional"
+   },
+   {
+    "kind": "li.threshold",
+    "text": "Patchy test — most colour variation allowed maxSampleSpreadDeltaE = 15 (90th percentile ΔE76 of the sampled pixels from their median colour (flat-fielded, white-normalised, before correction)) · provisional"
+   },
+   {
+    "kind": "a",
+    "text": "Test"
+   },
+   {
+    "kind": "a",
+    "text": "Log"
+   },
+   {
+    "kind": "a.active",
+    "text": "Settings"
+   }
+  ]
+ },
+ {
+  "shot": "36-laptop-samples.jpg",
+  "route": "#/samples",
+  "items": [
+   {
+    "kind": "h1",
+    "text": "Try with sample images"
+   },
+   {
+    "kind": "p",
+    "text": "No printed card? Pick a sample. The app reads it exactly as it reads a camera photo, then shows whatever it finds. You can save the result and see it in the log, marked as a sample."
+   },
+   {
+    "kind": "button.sample-card",
+    "text": "Empty card Real photo We expect: NEGATIVE"
+   },
+   {
+    "kind": "button.sample-card",
+    "text": "Orange cap, not a drug-test colour Real photo We expect: INCONCLUSIVE"
+   },
+   {
+    "kind": "button.sample-card",
+    "text": "Opiate-type colour Computer-drawn image No real reaction was photographed; this shows what the app does with that colour. We expect: POSITIVE"
+   },
+   {
+    "kind": "span.hint",
+    "text": "No real reaction was photographed; this shows what the app does with that colour."
+   },
+   {
+    "kind": "button.sample-card",
+    "text": "Blurred photo Real photo We expect: Retake, with the reason"
+   },
+   {
+    "kind": "p.hint",
+    "text": "The real photos were taken with the app on a Nothing Phone (3a) and cropped to the card. Samples are always labelled as samples, on screen and in saved tests."
+   },
+   {
+    "kind": "a.active",
+    "text": "Test"
+   },
+   {
+    "kind": "a",
+    "text": "Log"
+   },
+   {
+    "kind": "a",
+    "text": "Settings"
+   }
+  ]
+ },
+ {
+  "shot": "37-laptop-sample-result-drawn-opiate.jpg",
+  "route": "#/result",
+  "items": [
+   {
+    "kind": "h1",
+    "text": "Result"
+   },
+   {
+    "kind": "span.verdict-badge",
+    "text": "POSITIVE"
+   },
+   {
+    "kind": "p.why",
+    "text": "The test colour matches the colour this reagent turns with heroin in the kit’s published table."
+   },
+   {
+    "kind": "h2",
+    "text": "Your test and the kit’s colours"
+   },
+   {
+    "kind": "p.hint",
+    "text": "Blue: the area the app read. Pink: coloured edges it left out."
+   },
+   {
+    "kind": "figcaption.hint",
+    "text": "The reference colour card, straightened by the app, with the white square outlined."
+   },
+   {
+    "kind": "p.kit-validation",
+    "text": "Kit: Marquis reagent — opiate screen. Marquis opiate screen — colours from NIJ Standard-0604.01, not yet checked against a real reaction with this app"
+   },
+   {
+    "kind": "div.notice",
+    "text": "Presumptive result — send for laboratory confirmation"
+   },
+   {
+    "kind": "label",
+    "text": "Case reference"
+   },
+   {
+    "kind": "input",
+    "text": "[text] Case reference (optional)"
+   },
+   {
+    "kind": "label",
+    "text": "Place note"
+   },
+   {
+    "kind": "input",
+    "text": "[text] Place note (optional), e.g. checkpoint name"
+   },
+   {
+    "kind": "p.hint",
+    "text": "Will be saved as a SAMPLE (computer-drawn image), with officer AUDIT-01 and the time, sealed on this phone. No place: the photo was not taken here."
+   },
+   {
+    "kind": "button.primary",
+    "text": "Save sealed record"
+   },
+   {
+    "kind": "summary",
+    "text": "Technical details"
+   },
+   {
+    "kind": "button",
+    "text": "Try another sample"
+   },
+   {
+    "kind": "a.active",
+    "text": "Test"
+   },
+   {
+    "kind": "a",
+    "text": "Log"
+   },
+   {
+    "kind": "a",
+    "text": "Settings"
+   }
+  ]
+ },
+ {
+  "shot": "38-laptop-log-empty.jpg",
+  "route": "#/log",
+  "items": [
+   {
+    "kind": "h1",
+    "text": "Log"
+   },
+   {
+    "kind": "p",
+    "text": "Every saved test is sealed on this phone and linked to the one before it, like numbered pages in a register."
+   },
+   {
+    "kind": "p",
+    "text": "If anyone changes, removes or reorders a record, Check log shows exactly which one."
+   },
+   {
+    "kind": "p",
+    "text": "No saved tests yet. Run a test or try a sample, then tap Save."
+   },
+   {
+    "kind": "a.button",
+    "text": "Try a sample"
+   },
+   {
+    "kind": "a.nav-link",
+    "text": "Start a test"
+   },
+   {
+    "kind": "p.hint",
+    "text": "One file with every saved test, its photo, and instructions for checking it on a computer."
+   },
+   {
+    "kind": "button.primary",
+    "text": "Download log (for the lab)"
+   },
+   {
+    "kind": "button",
+    "text": "Share log file"
+   },
+   {
+    "kind": "p.warn-text",
+    "text": "If this browser’s data is cleared, the saved tests are deleted with it. Download the log regularly."
+   },
+   {
+    "kind": "a",
+    "text": "Test"
+   },
+   {
+    "kind": "a.active",
+    "text": "Log"
+   },
+   {
+    "kind": "a",
+    "text": "Settings"
+   }
+  ]
+ },
+ {
+  "shot": "39-phone-result-negative.jpg",
+  "route": "#/result",
+  "items": [
+   {
+    "kind": "h1",
+    "text": "Result"
+   },
+   {
+    "kind": "span.verdict-badge",
+    "text": "NEGATIVE"
+   },
+   {
+    "kind": "p.why",
+    "text": "No colour developed. The app cannot tell this from an empty white square; the saved photo shows which it was."
+   },
+   {
+    "kind": "h2",
+    "text": "Your test and the kit’s colours"
+   },
+   {
+    "kind": "p.hint",
+    "text": "Nothing in the white square differs from the card’s white paper. The app cannot tell a colourless test from an empty square."
+   },
+   {
+    "kind": "figcaption.hint",
+    "text": "The reference colour card, straightened by the app, with the white square outlined."
+   },
+   {
+    "kind": "p.kit-validation",
+    "text": "Kit: Marquis reagent — opiate screen. Marquis opiate screen — colours from NIJ Standard-0604.01, not yet checked against a real reaction with this app"
+   },
+   {
+    "kind": "div.notice",
+    "text": "Presumptive result — send for laboratory confirmation"
+   },
+   {
+    "kind": "label",
+    "text": "Case reference"
+   },
+   {
+    "kind": "input",
+    "text": "[text] Case reference (optional)"
+   },
+   {
+    "kind": "label",
+    "text": "Place note"
+   },
+   {
+    "kind": "input",
+    "text": "[text] Place note (optional), e.g. checkpoint name"
+   },
+   {
+    "kind": "label.toggle",
+    "text": "The test is in the white square Needed because the app cannot tell a colourless test from an empty square."
+   },
+   {
+    "kind": "input",
+    "text": "[checkbox] on"
+   },
+   {
+    "kind": "span.hint",
+    "text": "Needed because the app cannot tell a colourless test from an empty square."
+   },
+   {
+    "kind": "p.hint",
+    "text": "Will be saved with officer AUDIT-01, the time and the location (within 15 m), sealed on this phone."
+   },
+   {
+    "kind": "button.primary",
+    "text": "Save sealed record"
+   },
+   {
+    "kind": "p.hint",
+    "text": "Tick the box above to confirm the test is in the white square."
+   },
+   {
+    "kind": "summary",
+    "text": "Technical details"
+   },
+   {
+    "kind": "button",
+    "text": "Take another photo"
+   },
+   {
+    "kind": "a.active",
+    "text": "Test"
+   },
+   {
+    "kind": "a",
+    "text": "Log"
+   },
+   {
+    "kind": "a",
+    "text": "Settings"
+   }
+  ]
+ },
+ {
+  "shot": "40-phone-result-retake.jpg",
+  "route": "#/result",
+  "items": [
+   {
+    "kind": "h1",
+    "text": "Result"
+   },
+   {
+    "kind": "span.verdict-badge",
+    "text": "RETAKE"
+   },
+   {
+    "kind": "p.why",
+    "text": "Two separate coloured areas — use one test"
+   },
+   {
+    "kind": "p",
+    "text": "Nothing is saved for a Retake. Fix the problem above and take the photo again."
+   },
+   {
+    "kind": "button.primary",
+    "text": "Take the photo again"
+   },
+   {
+    "kind": "p.kit-validation",
+    "text": "Kit: Marquis reagent — opiate screen. Marquis opiate screen — colours from NIJ Standard-0604.01, not yet checked against a real reaction with this app"
+   },
+   {
+    "kind": "div.notice",
+    "text": "Presumptive result — send for laboratory confirmation"
+   },
+   {
+    "kind": "summary",
+    "text": "Technical details"
+   },
+   {
+    "kind": "a.active",
+    "text": "Test"
+   },
+   {
+    "kind": "a",
+    "text": "Log"
+   },
+   {
+    "kind": "a",
+    "text": "Settings"
+   }
+  ]
+ },
+ {
+  "shot": "41-phone-camera-no-card.jpg",
+  "route": "#/test",
+  "items": [
+   {
+    "kind": "li",
+    "text": "Put the test in the white square."
+   },
+   {
+    "kind": "li",
+    "text": "Fit the card in the frame."
+   },
+   {
+    "kind": "li",
+    "text": "Hold still and tap Capture."
+   },
+   {
+    "kind": "div.kit-status",
+    "text": "Marquis opiate screen — colours from NIJ Standard-0604.01, not yet checked against a real reaction with this app"
+   },
+   {
+    "kind": "button.link",
+    "text": "Officer: AUDIT-01 (change)"
+   },
+   {
+    "kind": "span.geo-line",
+    "text": "Location found (within 15 m)"
+   },
+   {
+    "kind": "a.try-sample",
+    "text": "No card? Try a sample"
+   },
+   {
+    "kind": "div.guidance",
+    "text": "Hold steady"
+   },
+   {
+    "kind": "a.active",
+    "text": "Test"
+   },
+   {
+    "kind": "a",
+    "text": "Log"
+   },
+   {
+    "kind": "a",
+    "text": "Settings"
+   }
+  ]
+ },
+ {
+  "shot": "42-phone-camera-unavailable.jpg",
+  "route": "#/test",
+  "items": [
+   {
+    "kind": "li",
+    "text": "Put the test in the white square."
+   },
+   {
+    "kind": "li",
+    "text": "Fit the card in the frame."
+   },
+   {
+    "kind": "li",
+    "text": "Hold still and tap Capture."
+   },
+   {
+    "kind": "div.kit-status",
+    "text": "Marquis opiate screen — colours from NIJ Standard-0604.01, not yet checked against a real reaction with this app"
+   },
+   {
+    "kind": "button.link",
+    "text": "Officer: AUDIT-01 (change)"
+   },
+   {
+    "kind": "span.geo-line",
+    "text": "Location off (location permission denied); saved tests will say so"
+   },
+   {
+    "kind": "a.try-sample",
+    "text": "No card? Try a sample"
+   },
+   {
+    "kind": "div.guidance",
+    "text": "Camera unavailable"
+   },
+   {
+    "kind": "strong",
+    "text": "Camera permission was refused. Allow camera access for this site in the browser settings, then reload."
+   },
+   {
+    "kind": "p",
+    "text": "No camera here, or no printed card? You can still try the app with sample images."
+   },
+   {
+    "kind": "a.button",
+    "text": "Try a sample"
+   },
+   {
+    "kind": "button",
+    "text": "Retry camera"
+   },
+   {
+    "kind": "summary",
+    "text": "Technical details"
+   },
+   {
+    "kind": "a.active",
+    "text": "Test"
+   },
+   {
+    "kind": "a",
+    "text": "Log"
+   },
+   {
+    "kind": "a",
+    "text": "Settings"
+   }
+  ]
+ },
+ {
+  "shot": "43-laptop-camera-unavailable.jpg",
+  "route": "#/test",
+  "items": [
+   {
+    "kind": "li",
+    "text": "Put the test in the white square."
+   },
+   {
+    "kind": "li",
+    "text": "Fit the card in the frame."
+   },
+   {
+    "kind": "li",
+    "text": "Hold still and tap Capture."
+   },
+   {
+    "kind": "div.kit-status",
+    "text": "Marquis opiate screen — colours from NIJ Standard-0604.01, not yet checked against a real reaction with this app"
+   },
+   {
+    "kind": "button.link",
+    "text": "Officer: AUDIT-01 (change)"
+   },
+   {
+    "kind": "span.geo-line",
+    "text": "Location off (location permission denied); saved tests will say so"
+   },
+   {
+    "kind": "a.try-sample",
+    "text": "No card? Try a sample"
+   },
+   {
+    "kind": "p.laptop-note",
+    "text": "Testing needs a phone camera and the printed reference colour card. On a laptop, try a sample instead."
+   },
+   {
+    "kind": "div.guidance",
+    "text": "Camera unavailable"
+   },
+   {
+    "kind": "strong",
+    "text": "Camera permission was refused. Allow camera access for this site in the browser settings, then reload."
+   },
+   {
+    "kind": "p",
+    "text": "No camera here, or no printed card? You can still try the app with sample images."
+   },
+   {
+    "kind": "a.button",
+    "text": "Try a sample"
+   },
+   {
+    "kind": "button",
+    "text": "Retry camera"
+   },
+   {
+    "kind": "summary",
+    "text": "Technical details"
+   },
+   {
+    "kind": "a.active",
+    "text": "Test"
+   },
+   {
+    "kind": "a",
+    "text": "Log"
+   },
+   {
+    "kind": "a",
+    "text": "Settings"
+   }
+  ]
+ }
+]

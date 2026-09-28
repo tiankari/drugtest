@@ -342,5 +342,6 @@ details.advanced summary { padding: 0.9em; cursor: pointer; font-weight: 700; mi
 .record-page .meaning { margin: 0; font-size: 0.95rem; }
 
 /* Camera steps */
-.camera-steps { margin: 0 0 0.2em; padding-left: 1.3em; display: flex; gap: 0.2em 1.2em; flex-wrap: wrap; font-size: 0.86rem; color: var(--cam-text); }
-.camera-steps li { padding-left: 0.1em; }
+.camera-steps { margin: 0 0 0.15em; padding: 0; list-style: none; counter-reset: cstep; display: flex; flex-wrap: wrap; gap: 0.1em 0.9em; font-size: 0.85rem; color: var(--cam-text); }
+.camera-steps li { counter-increment: cstep; white-space: nowrap; }
+.camera-steps li::before { content: counter(cstep) '. '; font-weight: 700; color: var(--cam-accent); }

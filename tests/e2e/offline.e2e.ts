@@ -66,6 +66,31 @@ try {
   const theme = await page.evaluate(() => ({ bg: getComputedStyle(document.body).backgroundColor, meta: document.querySelector('meta[name="theme-color"]')?.getAttribute('content') }));
   check(theme.bg === 'rgb(244, 246, 248)' && theme.meta === '#f4f6f8', `light theme and theme-color (${theme.bg}, ${theme.meta})`);
 
+  // 3b. A bundled sample runs offline (image from the cache, full pipeline in the worker).
+  await page.goto(`${url}#/samples`);
+  await page.waitForSelector('.sample-card');
+  await page.click('.sample-card[data-sample="empty-card"]');
+  await page.waitForURL(/#\/result/, { timeout: 60000 });
+  await page.waitForSelector('.result-verdict');
+  const offVerdict = (await page.textContent('.result-verdict .verdict-badge .word')) ?? '';
+  check(offVerdict === 'NEGATIVE', `sample image runs offline through the pipeline (empty card → ${offVerdict})`);
+  const cached = await page.evaluate(async () => {
+    let bytes = 0;
+    let samples = 0;
+    for (const k of await caches.keys()) {
+      const c = await caches.open(k);
+      for (const req of await c.keys()) {
+        const r = await c.match(req);
+        const n = r ? (await r.clone().arrayBuffer()).byteLength : 0;
+        bytes += n;
+        if (/\/assets\/(empty-card|orange-cap|drawn-opiate|blurred)-/.test(req.url)) samples += n;
+      }
+    }
+    return { bytes, samples };
+  });
+  console.log(`      precache: ${(cached.bytes / 1e6).toFixed(2)} MB in total, of which sample images ${(cached.samples / 1e6).toFixed(2)} MB`);
+  check(cached.samples > 2.5e6, 'the four sample images are in the offline cache');
+
   // 4. Data collection capture offline.
   await page.goto(`${url}#/settings`);
   await page.click('#dev-tools summary');
