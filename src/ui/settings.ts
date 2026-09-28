@@ -12,10 +12,14 @@ export interface Settings {
   operatorId: string;
   /** Selected kit profile id (only matters when more than one kit is bundled). */
   kitId: string;
+  /** The welcome screen has been shown once. */
+  welcomed: boolean;
+  /** Session 3 migration done (photo collection moved to Developer tools, turned off once). */
+  s3Migrated: boolean;
 }
 
 const KEY = 'fdtc.settings.v1';
-const DEFAULTS: Settings = { dataCollection: false, phoneModel: '', tag: 'registration', copy: 'A', operatorId: '', kitId: '' };
+const DEFAULTS: Settings = { dataCollection: false, phoneModel: '', tag: 'registration', copy: 'A', operatorId: '', kitId: '', welcomed: false, s3Migrated: false };
 
 type Listener = (s: Settings) => void;
 const listeners = new Set<Listener>();

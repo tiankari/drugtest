@@ -1,5 +1,20 @@
 # CLAUDE.md — Field drug-test companion (SIH26231)
 
+## Session 3 progress (evaluator UX; update at every merge)
+
+Plan: the Session 3 prompt. Pipeline, thresholds, kit, classification and
+signing/verification do not change; the only record change is `image.source`.
+Tag `session2-good` = ad78869 (local; push with the first approved push).
+User (2026-09-29): "do whatever you think is best" after the audit STOP;
+the sample-image review STOP stays (public repo).
+
+| Step | State |
+|---|---|
+| 0 Baseline | done (ad78869, all green, tag created) |
+| 1 Audit | done: `scripts/audit-walkthrough.ts`, `docs/audit/before/` (32 JPEG), `docs/ux_audit.md` — merged cd9d661 |
+| 2 Two modes | done: photo collection in Settings → Developer tools (off by default), banner on every screen with Turn off, plain tag names, one-time migration note — merged (see git log) |
+| 3 Samples | next |
+
 ## STATUS: Session 2 CLOSED (2026-09-28); submission 2026-09-29
 
 **Read `docs/session2_handoff.md` first** (what exists, real vs synthetic

@@ -21,20 +21,20 @@ export type DataTag = (typeof DATA_TAGS)[number];
 
 export const TAG_INFO: Record<DataTag, { label: string; hint: string; folder: 'registration' | 'lighting' | 'should_fail' }> = {
   registration: {
-    label: 'Registration',
-    hint: 'Clean card lying flat on a table, steady daylight (not dusk), no direct sun. Tap Lock, then 3 photos without moving. 3 per copy.',
+    label: 'Card set-up photo (clean card, 3 per card)',
+    hint: 'Clean card lying flat on a table, steady daylight (not dusk), no direct sun. Tap Lock, then 3 photos without moving. 3 per card.',
     folder: 'registration',
   },
-  daylight: { label: 'Daylight', hint: 'Dried haldi stain in the sample zone. Do not move it between shots.', folder: 'lighting' },
-  tube: { label: 'Tube light', hint: 'Dried haldi stain in the sample zone, fluorescent/LED tube light.', folder: 'lighting' },
-  'warm-bulb': { label: 'Warm bulb', hint: 'Dried haldi stain in the sample zone, warm yellow bulb.', folder: 'lighting' },
-  torch: { label: 'Phone torch', hint: 'Dried haldi stain in the sample zone, lit by a phone torch.', folder: 'lighting' },
-  'fail-corner': { label: 'Fail: corner covered', hint: 'Cover one corner marker (finger or paper).', folder: 'should_fail' },
-  'fail-shadow': { label: 'Fail: shadow', hint: 'Shadow across half the card.', folder: 'should_fail' },
-  'fail-glare': { label: 'Fail: glare', hint: 'A glare spot on the colour patches.', folder: 'should_fail' },
-  'fail-blur': { label: 'Fail: motion blur', hint: 'Move the phone while capturing.', folder: 'should_fail' },
-  'fail-far': { label: 'Fail: too far', hint: 'Card small in the frame (step back).', folder: 'should_fail' },
-  'fail-banding': { label: 'Fail: banding', hint: 'Tube light with visible dark bands, if you can catch it.', folder: 'should_fail' },
+  daylight: { label: 'Test object in daylight', hint: 'Any test object in the white square. Do not move it between shots.', folder: 'lighting' },
+  tube: { label: 'Test object under a tube light', hint: 'Any test object in the white square, fluorescent or LED tube light.', folder: 'lighting' },
+  'warm-bulb': { label: 'Test object under a warm bulb', hint: 'Any test object in the white square, warm yellow bulb.', folder: 'lighting' },
+  torch: { label: 'Test object lit by the phone torch', hint: 'Any test object in the white square, lit by the phone torch.', folder: 'lighting' },
+  'fail-corner': { label: 'Corner covered (checks the app refuses it)', hint: 'Cover one black corner square with a finger or paper.', folder: 'should_fail' },
+  'fail-shadow': { label: 'Shadow across half the card (checks the app refuses it)', hint: 'Cast a shadow over half the card.', folder: 'should_fail' },
+  'fail-glare': { label: 'Glare spot on the colour squares (checks the app refuses it)', hint: 'Tilt the card until a light reflects off the colour squares.', folder: 'should_fail' },
+  'fail-blur': { label: 'Deliberately blurred photo (checks the app refuses it)', hint: 'Move the phone while capturing.', folder: 'should_fail' },
+  'fail-far': { label: 'Card too far away (checks the app refuses it)', hint: 'Step back so the card is small in the frame.', folder: 'should_fail' },
+  'fail-banding': { label: 'Flickering tube-light bands (checks the app refuses it)', hint: 'Tube light with visible dark bands, if you can catch it.', folder: 'should_fail' },
 };
 
 export const COPIES = ['A', 'B'] as const;

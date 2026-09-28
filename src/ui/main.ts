@@ -6,7 +6,8 @@ import { stopGeo } from './geo.ts';
 import { logScreen } from './log-screen.ts';
 import { recordScreen } from './record-screen.ts';
 import { resultScreen } from './result-screen.ts';
-import { loadSettings, onSettings } from './settings.ts';
+import { COLLECTION_BANNER, MIGRATION_NOTE } from './plain.ts';
+import { loadSettings, onSettings, updateSettings } from './settings.ts';
 import { settingsScreen } from './settings-screen.ts';
 import { testScreen } from './test-screen.ts';
 import { icon } from './verdict.ts';
@@ -46,12 +47,20 @@ const ALIASES: Record<string, string> = { '#/camera': '#/test' };
 const app = document.getElementById('app')!;
 const main = h('main', { id: 'main' });
 const updateBar = h('div', { class: 'update-bar', hidden: true });
+// Photo collection (team only) is announced on EVERY screen while it is on.
+const collectBanner = h(
+  'div',
+  { class: 'dc-banner collect-banner', role: 'status', hidden: true },
+  h('span', {}, COLLECTION_BANNER),
+  h('button', { type: 'button', class: 'small', id: 'collection-off', onclick: () => updateSettings({ dataCollection: false }) }, 'Turn off'),
+);
+const noteBar = h('div', { class: 'note-bar', role: 'status', hidden: true });
 const nav = h('nav', { class: 'tabs', 'aria-label': 'Sections' });
 for (const [route, r] of Object.entries(ROUTES)) {
   if (!r.nav) continue;
   nav.append(h('a', { href: route, 'data-route': route, 'data-nav': r.nav }, r.icon ? icon(r.icon, 'nav-icon') : null, h('span', { class: 'nav-label' }, r.title)));
 }
-app.append(updateBar, main, nav);
+app.append(updateBar, noteBar, collectBanner, main, nav);
 
 let cleanup: (() => void) | null = null;
 
@@ -83,7 +92,23 @@ function render(): void {
 function renderModeFlag(): void {
   const dc = loadSettings().dataCollection;
   document.body.classList.toggle('dc-mode', dc);
+  collectBanner.hidden = !dc;
   for (const a of nav.querySelectorAll<HTMLAnchorElement>('a[data-nav="dc"]')) a.hidden = !dc;
+  if (!dc && location.hash === '#/captures') go('#/settings');
+}
+
+// Session 3: photo collection moved into Developer tools. On the first launch
+// after the update, a phone left in collection mode is switched back to
+// officer mode, once, with a note saying so.
+{
+  const s = loadSettings();
+  if (!s.s3Migrated) {
+    updateSettings({ s3Migrated: true, dataCollection: false });
+    if (s.dataCollection) {
+      noteBar.hidden = false;
+      noteBar.replaceChildren(h('span', {}, MIGRATION_NOTE), h('button', { type: 'button', class: 'small', onclick: () => (noteBar.hidden = true) }, 'OK'));
+    }
+  }
 }
 
 window.addEventListener('hashchange', render);

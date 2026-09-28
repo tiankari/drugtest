@@ -1,31 +1,79 @@
+// Settings: the officer ID, downloading the log, About. Everything for the
+// team (photo collection, phone model, camera request, thresholds) sits in a
+// collapsed "Developer tools" section, off by default.
+
 import { phoneSlug } from '../io/dataset.ts';
 import { PARAMS, THRESHOLDS } from '../pipeline/config.ts';
 import { h, toast } from './dom.ts';
 import { exportCard } from './log-screen.ts';
-import { loadSettings, updateSettings } from './settings.ts';
+import { COLLECTION_LINE, THRESHOLD_NAMES } from './plain.ts';
+import { loadSettings, onSettings, updateSettings } from './settings.ts';
 
 export function settingsScreen(root: HTMLElement): () => void {
   const s = loadSettings();
-  const dcToggle = h('input', { type: 'checkbox', id: 'dc-toggle', ...(s.dataCollection ? { checked: true } : {}) });
-  const phone = h('input', { type: 'text', id: 'phone', value: s.phoneModel, placeholder: 'e.g. Redmi Note 12', autocomplete: 'off' });
   const operator = h('input', { type: 'text', id: 'operator', value: s.operatorId, placeholder: 'e.g. badge or service number', autocomplete: 'off', maxlength: 80 });
   operator.addEventListener('change', () => {
     updateSettings({ operatorId: operator.value.trim() });
-    toast(operator.value.trim() ? 'Operator ID saved' : 'Operator ID cleared: you will be asked for it before the next test');
+    toast(operator.value.trim() ? 'Officer ID saved' : 'Officer ID cleared: you will be asked for it before the next test');
   });
-  const slug = h('span', { class: 'hint' });
-  const renderSlug = () => (slug.textContent = phoneSlug(phone.value) ? `File names will use: ${phoneSlug(phone.value)}` : 'Required for data collection.');
-  renderSlug();
 
+  // Developer tools
+  const dcToggle = h('input', { type: 'checkbox', id: 'dc-toggle', ...(s.dataCollection ? { checked: true } : {}) });
+  const phone = h('input', { type: 'text', id: 'phone', value: s.phoneModel, placeholder: 'e.g. Redmi Note 12', autocomplete: 'off' });
+  const slug = h('span', { class: 'hint' });
+  const renderSlug = () => (slug.textContent = phoneSlug(phone.value) ? `File names will use: ${phoneSlug(phone.value)}` : 'Needed before collecting photos.');
+  renderSlug();
+  const phoneCard = h('div', { class: 'card', hidden: !s.dataCollection }, h('label', { for: 'phone' }, h('strong', {}, 'Phone model (for photo file names)')), phone, slug);
   dcToggle.addEventListener('change', () => updateSettings({ dataCollection: dcToggle.checked }));
   phone.addEventListener('input', renderSlug);
   phone.addEventListener('change', () => {
     updateSettings({ phoneModel: phone.value.trim() });
     toast('Phone model saved');
   });
+  const off = onSettings((n) => {
+    dcToggle.checked = n.dataCollection;
+    phoneCard.hidden = !n.dataCollection;
+  });
 
-  const thresholdRows = Object.entries(THRESHOLDS).map(([k, t]) =>
-    h('tr', {}, h('th', {}, k), h('td', {}, String(t.value)), h('td', {}, h('span', { class: `badge ${t.status}` }, t.status))),
+  const thresholdRows = (Object.keys(THRESHOLDS) as (keyof typeof THRESHOLDS)[]).map((k) => {
+    const t = THRESHOLDS[k];
+    return h(
+      'li',
+      { class: 'threshold' },
+      h('span', { class: 'plain-name' }, THRESHOLD_NAMES[k]),
+      h('span', { class: 'tech-name' }, `${k} = ${t.value} (${t.unit}) · `, h('span', { class: `badge ${t.status}` }, t.status)),
+    );
+  });
+
+  const dev = h(
+    'details',
+    { class: 'dev-tools', id: 'dev-tools' },
+    h('summary', {}, 'Developer tools'),
+    h(
+      'div',
+      { class: 'tech-body' },
+      h(
+        'div',
+        { class: 'card' },
+        h('label', { class: 'toggle', for: 'dc-toggle' }, dcToggle, h('span', {}, h('strong', {}, 'Photo collection'))),
+        h('p', { class: 'hint' }, COLLECTION_LINE),
+        h('p', { class: 'hint' }, 'While it is on, capture works even when checks fail (so deliberately bad photos can be collected), each photo is tagged and saved on this phone, and the Captures tab appears.'),
+      ),
+      phoneCard,
+      h(
+        'div',
+        { class: 'card' },
+        h('strong', {}, 'Camera request'),
+        h('p', { class: 'hint' }, `Rear camera, ${PARAMS.requestWidth}×${PARAMS.requestHeight} requested. What the phone delivers is recorded with every photo.`),
+      ),
+      h(
+        'div',
+        { class: 'card' },
+        h('strong', {}, 'Checks and their limits'),
+        h('p', { class: 'hint' }, 'Provisional = a reasoned starting value, not yet checked against enough real photos. Derived = computed from named real photos.'),
+        h('ul', { class: 'thresholds' }, ...thresholdRows),
+      ),
+    ),
   );
 
   root.append(
@@ -36,38 +84,15 @@ export function settingsScreen(root: HTMLElement): () => void {
       h(
         'div',
         { class: 'card' },
-        h('label', { for: 'operator' }, h('strong', {}, 'Operator ID')),
+        h('label', { for: 'operator' }, h('strong', {}, 'Officer ID')),
         operator,
-        h('p', { class: 'hint' }, 'Written into every record you sign. The app does not verify it: a record proves it was not changed after signing on this phone, not who the officer was.'),
+        h('p', { class: 'hint' }, 'Written on every test you save. The app does not check it.'),
       ),
-      h(
-        'div',
-        { class: 'card' },
-        h('label', { class: 'toggle', for: 'dc-toggle' }, dcToggle, h('span', {}, h('strong', {}, 'Data collection mode'))),
-        h(
-          'p',
-          { class: 'hint' },
-          'For building the photo test set only. Capture works even when checks fail, so deliberately bad photos can be collected. It never shows a result. Each photo is tagged and saved on this phone until you export it.',
-        ),
-      ),
-      h('div', { class: 'card' }, h('label', { for: 'phone' }, h('strong', {}, 'Phone model')), phone, slug),
-      h(
-        'div',
-        { class: 'card' },
-        h('strong', {}, 'Camera request'),
-        h('p', { class: 'hint' }, `Rear camera, ${PARAMS.requestWidth}×${PARAMS.requestHeight} requested. What the phone actually delivers is shown on the camera screen and recorded in every capture.`),
-      ),
-      h(
-        'div',
-        { class: 'card' },
-        h('strong', {}, 'Thresholds in use'),
-        h('p', { class: 'hint' }, 'Provisional = a reasoned starting value not yet checked against real photos.'),
-        h('table', { class: 'kv small' }, ...thresholdRows),
-      ),
-      h('h2', {}, 'Signed log'),
+      h('h2', {}, 'Saved tests'),
       exportCard(),
-      h('div', { class: 'card' }, h('a', { href: '#/about', class: 'nav-link' }, 'About this app, the card PDF and the build')),
+      h('div', { class: 'card' }, h('a', { href: '#/about', class: 'nav-link' }, 'About this app and how it works'), h('a', { href: '#/welcome', class: 'nav-link' }, 'Welcome screen')),
+      dev,
     ),
   );
-  return () => {};
+  return () => off();
 }

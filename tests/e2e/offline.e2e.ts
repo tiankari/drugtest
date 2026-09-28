@@ -68,6 +68,7 @@ try {
 
   // 4. Data collection capture offline.
   await page.goto(`${url}#/settings`);
+  await page.click('#dev-tools summary');
   await page.check('#dc-toggle');
   await page.fill('#phone', 'Offline Check');
   await page.locator('#phone').dispatchEvent('change');

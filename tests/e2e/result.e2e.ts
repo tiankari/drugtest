@@ -285,6 +285,7 @@ try {
 
   // Data collection mode never shows a result.
   await page.goto(`${url}#/settings`);
+  await page.click('#dev-tools summary');
   await page.check('#dc-toggle');
   await page.fill('#phone', 'Result Test');
   await page.locator('#phone').dispatchEvent('change');
