@@ -18,7 +18,7 @@ export function capturesScreen(root: HTMLElement): () => void {
     h(
       'section',
       { class: 'page' },
-      h('h1', {}, 'Captures'),
+      h('h1', {}, 'Collected photos (for the team)'),
       h('p', { class: 'hint' }, 'Saved on this phone only. Export the .zip and unzip it into data/real/ in the repo; the folders already match.'),
       summary,
       h('div', { class: 'button-row' }, exportBtn, shareBtn, deleteAllBtn),
@@ -50,10 +50,10 @@ export function capturesScreen(root: HTMLElement): () => void {
     const phones = [...new Set(captures.map((c) => dc(c)?.phone).filter(Boolean))];
     const lightingPhones = [...new Set(captures.filter((c) => dc(c) && TAG_INFO[dc(c)!.tag].folder === 'lighting').map((c) => dc(c)!.phone))];
     const rows: [string, string][] = [
-      ['Registration, copy A', `${count((c) => dc(c)?.tag === 'registration' && dc(c)?.copy === 'A')} (need 3)`],
-      ['Registration, copy B', `${count((c) => dc(c)?.tag === 'registration' && dc(c)?.copy === 'B')} (need 3)`],
-      ['Lighting (orange strip)', `${count((c) => !!dc(c) && TAG_INFO[dc(c)!.tag].folder === 'lighting')} (need 15+, from 2+ phones; ${lightingPhones.length} so far)`],
-      ['Should fail', `${count((c) => !!dc(c) && TAG_INFO[dc(c)!.tag].folder === 'should_fail')} (about 6)`],
+      ['Card set-up photos, card A', `${count((c) => dc(c)?.tag === 'registration' && dc(c)?.copy === 'A')} of 3`],
+      ['Card set-up photos, card B', `${count((c) => dc(c)?.tag === 'registration' && dc(c)?.copy === 'B')} of 3`],
+      ['Lighting photos (test object)', `${count((c) => !!dc(c) && TAG_INFO[dc(c)!.tag].folder === 'lighting')} (need 15+, from 2+ phones; ${lightingPhones.length} so far)`],
+      ['Photos the app must refuse', `${count((c) => !!dc(c) && TAG_INFO[dc(c)!.tag].folder === 'should_fail')} (about 6)`],
       ['Phones on this device', phones.join(', ') || '—'],
     ];
     clear(summary);

@@ -71,7 +71,6 @@ export function cameraScreen(root: HTMLElement, go: (route: string) => void): ()
 
   const guidance = h('div', { class: 'guidance', role: 'status', 'aria-live': 'polite' }, 'Starting camera…');
   const metrics = h('div', { class: 'metrics' });
-  const dcBanner = h('div', { class: 'dc-banner' }, 'DATA COLLECTION MODE — captures are saved for the test set; no result is ever shown');
   // Normal mode: the kit (fixed line, or a picker when more than one is bundled), operator and location.
   const kitSelect = h('select', { 'aria-label': 'Kit', class: 'kit-select' });
   for (const k of KITS) kitSelect.append(h('option', { value: k.id }, `${k.name} (v${k.version})`));
@@ -91,8 +90,8 @@ export function cameraScreen(root: HTMLElement, go: (route: string) => void): ()
 
   // Data collection controls
   const tagSelect = h('select', { 'aria-label': 'Photo tag' });
-  for (const t of DATA_TAGS) tagSelect.append(h('option', { value: t }, t));
-  const copyButtons = COPIES.map((c) => h('button', { class: 'seg', type: 'button', 'data-copy': c }, `Copy ${c}`));
+  for (const t of DATA_TAGS) tagSelect.append(h('option', { value: t }, TAG_INFO[t].label));
+  const copyButtons = COPIES.map((c) => h('button', { class: 'seg', type: 'button', 'data-copy': c }, `Card ${c}`));
   const phoneInput = h('input', { type: 'text', placeholder: 'Phone model, e.g. Redmi Note 12', 'aria-label': 'Phone model', autocomplete: 'off' });
   const phoneSave = h('button', { type: 'button', class: 'small' }, 'Save');
   const phoneRow = h('div', { class: 'phone-row' }, phoneInput, phoneSave);
@@ -117,7 +116,7 @@ export function cameraScreen(root: HTMLElement, go: (route: string) => void): ()
   const resInfo = h('div', { class: 'res-info' });
   const controls = h('div', { class: 'controls' }, dcControls, h('div', { class: 'shutter-row' }, torchBtn, shutter, resInfo));
 
-  const section = h('section', { class: 'camera-screen' }, dcBanner, testBar, viewport, controls);
+  const section = h('section', { class: 'camera-screen' }, testBar, viewport, controls);
   root.append(section);
 
   const camera = new Camera(video);
@@ -148,7 +147,7 @@ export function cameraScreen(root: HTMLElement, go: (route: string) => void): ()
   function renderSettings(): void {
     const dc = settings.dataCollection;
     section.classList.toggle('dc', dc);
-    dcBanner.hidden = !dc;
+    resInfo.hidden = !dc;
     testBar.hidden = dc;
     renderTestBar();
     dcControls.hidden = !dc;
@@ -157,7 +156,7 @@ export function cameraScreen(root: HTMLElement, go: (route: string) => void): ()
     const needPhone = dc && !phoneSlug(settings.phoneModel);
     phoneRow.hidden = !needPhone;
     phoneLabel.hidden = needPhone;
-    phoneLabel.textContent = `Phone: ${settings.phoneModel} (change)`;
+    phoneLabel.textContent = `Phone model: ${settings.phoneModel} (change)`;
     tagHint.textContent = TAG_INFO[settings.tag].hint;
     renderLock();
     renderCounts();
@@ -185,7 +184,7 @@ export function cameraScreen(root: HTMLElement, go: (route: string) => void): ()
   function renderCounts(): void {
     const key = `${settings.tag}|${settings.tag === 'registration' ? settings.copy : ''}`;
     const n = tagCounts.get(key) ?? 0;
-    counts.textContent = settings.tag === 'registration' ? `registration ${settings.copy} on this phone: ${n} (need 3)` : `${settings.tag} on this phone: ${n}`;
+    counts.textContent = settings.tag === 'registration' ? `Card set-up photos, card ${settings.copy}: ${n} of 3` : `${TAG_INFO[settings.tag].label}: ${n} on this phone`;
   }
 
   async function refreshCounts(): Promise<void> {
@@ -415,7 +414,7 @@ export function cameraScreen(root: HTMLElement, go: (route: string) => void): ()
         void requestPersistence();
         await refreshCounts();
         const failed = enc.analysis.checks.filter((c) => !c.pass && c.id !== 'registered').map((c) => c.message);
-        toast(`Saved ${id}.png${failed.length ? ` — checks failed: ${failed.join(', ')}` : ''}`);
+        toast(`Saved ${id}.png for the team${failed.length ? ` — checks failed: ${failed.join(', ')}` : ''}`);
       } else {
         const id = `capture_${iso.replace(/[-:.]/g, '')}`;
         lastNormalCapture = {

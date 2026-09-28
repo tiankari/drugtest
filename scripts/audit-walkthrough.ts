@@ -93,7 +93,7 @@ async function shot(page: Page, vp: string, state: string, full = true): Promise
   const onCamera = await page.evaluate(() => document.querySelector('main')?.classList.contains('full') ?? false);
   const style = full && !onCamera ? await page.addStyleTag({ content: '#app{height:auto!important} main{overflow:visible!important}' }) : null;
   await page.screenshot({ path: join(OUT_DIR, name), fullPage: full && !onCamera, type: 'jpeg', quality: 80 });
-  if (style) await style.evaluate((s) => s.remove());
+  if (style) await style.evaluate((s) => (s as Element).remove());
   inventory.push({ shot: name, route: new URL(page.url()).hash || '#/', items: await inventoryOf(page) });
   console.log(`      ${name}`);
 }

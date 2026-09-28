@@ -35,6 +35,7 @@ try {
   page.on('console', (m) => m.type() === 'error' && pageErrors.push(m.text()));
 
   await page.goto(`${url}#/settings`);
+  await page.click('#dev-tools summary');
   await page.check('#dc-toggle');
   await page.fill('#phone', 'E2E Fake Camera');
   await page.locator('#phone').dispatchEvent('change');
@@ -99,6 +100,30 @@ try {
     if (sc.dataCollection?.tag === 'registration') check('lock' in sc.camera, `${n}: sidecar records the lock state ${JSON.stringify(sc.camera.lock)}`);
     console.log(`      timings ${JSON.stringify(sc.timingsMs)} png ${(entries[n].length / 1e6).toFixed(2)} MB, checks pass=${sc.checks.pass} (${sc.checks.results.map((r) => `${r.id}:${r.pass ? 'ok' : 'fail'}`).join(' ')})`);
   }
+  // Photo collection is announced on every screen, and can be turned off from the banner.
+  for (const route of ['#/log', '#/settings', '#/captures']) {
+    await page.goto(`${url}${route}`);
+    check(await page.isVisible('.collect-banner'), `photo collection banner on ${route}`);
+  }
+  await page.click('#collection-off');
+  await page.waitForFunction(() => location.hash === '#/settings');
+  check(!(await page.isVisible('.collect-banner')) && !(await page.isVisible('nav.tabs a[data-route="#/captures"]')), 'Turn off hides the banner and the Captures tab (and leaves Captures)');
+  check(!(await page.isVisible('#dc-toggle')), 'the photo collection switch is inside the collapsed Developer tools');
+
+  // First launch after the Session 3 update: a phone left in collection mode is switched off once, with a note.
+  const fresh = await browser.newContext({ viewport: { width: 412, height: 915 } });
+  const p2 = await fresh.newPage();
+  await p2.goto(`${url}#/settings`);
+  await p2.evaluate(() => localStorage.setItem('fdtc.settings.v1', JSON.stringify({ dataCollection: true, phoneModel: 'Old Phone', tag: 'daylight', copy: 'A' })));
+  await p2.reload();
+  await p2.waitForSelector('.note-bar:not([hidden])');
+  const note = (await p2.textContent('.note-bar')) ?? '';
+  check(note.includes('has been turned off') && note.includes('Developer tools'), `migration note: "${note.slice(0, 90)}"`);
+  check(!(await p2.isVisible('.collect-banner')), 'collection mode is off after the migration');
+  await p2.reload();
+  check(!(await p2.isVisible('.note-bar')), 'the migration note appears only once');
+  await fresh.close();
+
   check(pageErrors.length === 0, `no page errors${pageErrors.length ? ': ' + pageErrors.join(' | ') : ''}`);
 } finally {
   await browser.close();
