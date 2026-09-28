@@ -1,0 +1,28 @@
+Chromatic adaptation: Bradford cone-response matrix and reference whites
+EXCERPT for scripts/build-kit-profile.ts (Munsell data, illuminant C -> D65).
+
+Source:   Bruce Lindbloom, "Chromatic Adaptation", http://www.brucelindbloom.com/Eqn_ChromAdapt.html
+          (page http://www.brucelindbloom.com/index.html?Eqn_ChromAdapt.html)
+Fetched:  2026-09-28
+Method:   numbers copied from the page's tables; the adaptation is
+            [M] = inverse(M_A) * diag(rho_D/rho_S, gamma_D/gamma_S, beta_D/beta_S) * M_A
+          with (rho, gamma, beta) = M_A * (reference white XYZ), as stated on the page.
+
+Bradford M_A (row-major):
+   0.8951000   0.2664000  -0.1614000
+  -0.7502000   1.7135000   0.0367000
+   0.0389000  -0.0685000   1.0296000
+
+Bradford inverse(M_A) as printed on the page (the script inverts M_A itself and checks it against this):
+   0.9869929  -0.1470543   0.1599627
+   0.4323053   0.5183603   0.0492912
+  -0.0085287   0.0400428   0.9684867
+
+Reference white tristimulus values from the page (it states they come from ASTM E308-01):
+  Illuminant C    X 0.98074   Y 1.00000   Z 1.18232
+  Illuminant D65  X 0.95047   Y 1.00000   Z 1.08883
+
+Destination white used by the app: NOT the D65 row above but the D65 white of
+src/pipeline/colour.ts (from chromaticity x 0.3127, y 0.3290: X 0.950456, Z 1.089058),
+so that paper white adapts exactly to the white of the app's CIELAB. The two D65 rows
+differ by 0.00001 in X and 0.00023 in Z.
