@@ -15,10 +15,10 @@ export function testScreen(root: HTMLElement, go: (route: string) => void): () =
   const form = h(
     'form',
     { class: 'page operator-form' },
-    h('h1', {}, 'Operator ID'),
-    h('p', {}, 'Every record carries the ID of the officer who ran the test. Enter it once; it is saved on this phone and can be changed in Settings.'),
-    h('p', { class: 'hint' }, 'The app does not check this ID against anything: a record proves it was not changed after signing, not who the officer was.'),
-    h('label', { for: 'operator-id' }, h('strong', {}, 'Operator ID')),
+    h('h1', {}, 'Your officer ID'),
+    h('p', {}, 'It is written on every test you save. Enter it once; you can change it in Settings.'),
+    h('p', { class: 'hint' }, 'The app does not check this ID. A saved test proves it was not changed afterwards, not who took it.'),
+    h('label', { for: 'operator-id' }, h('strong', {}, 'Officer ID')),
     input,
     save,
     h('p', { class: 'hint' }, h('a', { href: '#/samples', class: 'nav-link' }, 'No card? Try a sample instead')),
@@ -26,7 +26,7 @@ export function testScreen(root: HTMLElement, go: (route: string) => void): () =
   form.addEventListener('submit', (e) => {
     e.preventDefault();
     const v = input.value.trim();
-    if (!v) return toast('Enter your operator ID', 'error');
+    if (!v) return toast('Enter your officer ID', 'error');
     updateSettings({ operatorId: v });
     go(location.hash || '#/test');
   });

@@ -21,7 +21,7 @@ import { buildRecordDraft } from '../records/build.ts';
 import { isoWithOffset } from '../records/record.ts';
 import { currentCapture, type CurrentCapture } from './current.ts';
 import { errorText, formatBytes, h, toast } from './dom.ts';
-import { geoText, recordLocation } from './geo.ts';
+import { geoSaveText, recordLocation } from './geo.ts';
 import { canonicalSha256, selectedKit } from './kits.ts';
 import { saveRecord } from './log-store.ts';
 import { plainVerdictSentence, targetName } from './plain.ts';
@@ -168,7 +168,7 @@ export function resultScreen(root: HTMLElement, go: (route: string) => void): ()
     const renderFacts = () =>
       (recordFacts.textContent = isSample
         ? `Will be saved as a SAMPLE (${sampleKindText(cap.sampleImage!.kind).toLowerCase()}), with officer ${settings.operatorId || '—'} and the time, sealed on this phone. No place: the photo was not taken here.`
-        : `Will be saved with officer ${settings.operatorId || '—'}, the time and ${geoText(cap.geo).replace(/^Location/, 'the location').replace('±', 'within ')}, sealed on this phone.`);
+        : `Will be saved with officer ${settings.operatorId || '—'}, the time and ${geoSaveText(cap.geo)}, sealed on this phone.`);
     renderFacts();
     officer.addEventListener('change', () => {
       if (!officer.value.trim()) return;

@@ -28,6 +28,7 @@ import { importPublicKey } from '../../src/records/keys.ts';
 import { verifyLog } from '../../src/records/log.ts';
 import type { LogEntry } from '../../src/records/record.ts';
 import { reanalyse, readExport, verifyExport } from '../../scripts/lib/verify-export.ts';
+import { JARGON } from './jargon.ts';
 import { strToU8, zipSync } from 'fflate';
 import { browserChannel, writeY4mClip } from '../../scripts/lib/fake-camera.ts';
 import { placement, renderPhoto } from '../helpers/synth-card.ts';
@@ -42,6 +43,11 @@ const check = (ok: boolean, what: string) => {
   console.log(`${ok ? 'PASS' : 'FAIL'}  ${what}`);
   if (!ok) failures.push(what);
 };
+async function jargonCheck(page: import('playwright').Page, where: string): Promise<void> {
+  const text = await page.evaluate(() => document.body.innerText);
+  const hits = JARGON.filter((re) => re.test(text)).map((re) => `${re} ("${text.match(re)?.[0]}")`);
+  check(hits.length === 0, `plain words on the ${where}${hits.length ? `: ${hits.join(', ')}` : ''}`);
+}
 
 for (const f of [REF, KIT]) if (existsSync(f)) throw new Error(`${f} exists; refusing to overwrite it`);
 
@@ -138,8 +144,9 @@ try {
   await page.selectOption('select.kit-select', 'e2e-test-kit');
   const bar = await page.innerText('.test-bar');
   check(bar.includes('TEST-ONLY synthetic kit') && bar.includes('E2E-OFFICER-7'), `test bar shows kit, validation and operator (${bar.replace(/\s+/g, ' ').slice(0, 120)})`);
-  await page.waitForFunction(() => /Location ±\d+ m/.test(document.querySelector('.geo-line')?.textContent ?? ''), null, { timeout: 15000 }).catch(() => {});
-  check(/Location ±15 m/.test((await page.textContent('.geo-line')) ?? ''), `location fix shown with its accuracy (${await page.textContent('.geo-line')})`);
+  await page.waitForFunction(() => /Location found/.test(document.querySelector('.geo-line')?.textContent ?? ''), null, { timeout: 15000 }).catch(() => {});
+  check(/Location found \(within 15 m\)/.test((await page.textContent('.geo-line')) ?? ''), `location fix shown with its accuracy (${await page.textContent('.geo-line')})`);
+  check(((await page.innerText('.camera-steps')) ?? '').replace(/\s+/g, ' ').includes('Put the test in the white square.'), 'three short steps above the camera');
   await page.waitForFunction(() => document.querySelector('.guidance')?.textContent?.startsWith('Ready'), null, { timeout: 30000 }).catch(() => {});
   const g = (await page.textContent('.guidance')) ?? '';
   check(g.startsWith('Ready'), `live guidance says ready on a good synthetic card (got "${g}")`);
@@ -150,6 +157,7 @@ try {
   });
   check(overlay.visible === 'visible' && !!overlay.ok, 'detected card outline drawn in green');
   await page.screenshot({ path: join(shots, 'camera-ready.png') });
+  await jargonCheck(page, 'camera screen (card in view)');
 
   // Capture -> verdict
   await page.click('button.shutter');
