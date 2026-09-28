@@ -19,3 +19,5 @@ dist-e2e/
 # Local-only inputs (fonts to review before use) and the Python cross-check venv
 incoming/
 tools/.venv/
+# Throwaway build of the UX audit walkthrough (scripts/audit-walkthrough.ts)
+dist-audit/

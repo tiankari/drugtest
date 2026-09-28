@@ -1,0 +1,3282 @@
+[
+ {
+  "shot": "01-phone-first-launch.jpg",
+  "route": "#/",
+  "items": [
+   {
+    "kind": "h1",
+    "text": "Operator ID"
+   },
+   {
+    "kind": "p",
+    "text": "Every record carries the ID of the officer who ran the test. Enter it once; it is saved on this phone and can be changed in Settings."
+   },
+   {
+    "kind": "p.hint",
+    "text": "The app does not check this ID against anything: a record proves it was not changed after signing, not who the officer was."
+   },
+   {
+    "kind": "label",
+    "text": "Operator ID"
+   },
+   {
+    "kind": "input",
+    "text": "[text] e.g. badge or service number"
+   },
+   {
+    "kind": "button.primary",
+    "text": "Save and continue"
+   },
+   {
+    "kind": "a.active",
+    "text": "Test"
+   },
+   {
+    "kind": "a",
+    "text": "Log"
+   },
+   {
+    "kind": "a",
+    "text": "Settings"
+   }
+  ]
+ },
+ {
+  "shot": "02-phone-camera-ready.jpg",
+  "route": "#/test",
+  "items": [
+   {
+    "kind": "div.kit-status",
+    "text": "Marquis opiate screen — colours from NIJ Standard-0604.01, not yet checked against a real reaction with this app"
+   },
+   {
+    "kind": "button.link",
+    "text": "Operator: AUDIT-01 (change)"
+   },
+   {
+    "kind": "span.geo-line",
+    "text": "Location ±15 m"
+   },
+   {
+    "kind": "div.guidance",
+    "text": "Ready — tap to capture"
+   },
+   {
+    "kind": "div.res-info",
+    "text": "1080×1920"
+   },
+   {
+    "kind": "a.active",
+    "text": "Test"
+   },
+   {
+    "kind": "a",
+    "text": "Log"
+   },
+   {
+    "kind": "a",
+    "text": "Settings"
+   }
+  ]
+ },
+ {
+  "shot": "03-phone-result-positive.jpg",
+  "route": "#/result",
+  "items": [
+   {
+    "kind": "h1",
+    "text": "Result"
+   },
+   {
+    "kind": "span.verdict-badge",
+    "text": "POSITIVE"
+   },
+   {
+    "kind": "p.why",
+    "text": "Colour matches heroin (diacetylmorphine HCl) (7.5RP 3/10): ΔE00 2.0, within 7.9"
+   },
+   {
+    "kind": "h2",
+    "text": "Sample colour and target colours"
+   },
+   {
+    "kind": "p.hint",
+    "text": "Sampled 227 mm² (10042 camera pixels), spread 1.1 ΔE76, clipped 0.0%. Blue = sampled, pink = coloured but left out (edge, glare, dark, trimmed)."
+   },
+   {
+    "kind": "figcaption.hint",
+    "text": "The reference colour card, straightened by the app, with the sample zone outlined."
+   },
+   {
+    "kind": "p.kit-validation",
+    "text": "Marquis reagent — opiate screen: Marquis opiate screen — colours from NIJ Standard-0604.01, not yet checked against a real reaction with this app"
+   },
+   {
+    "kind": "div.notice",
+    "text": "Presumptive result — send for laboratory confirmation"
+   },
+   {
+    "kind": "label",
+    "text": "Case reference"
+   },
+   {
+    "kind": "input",
+    "text": "[text] Case reference (optional)"
+   },
+   {
+    "kind": "label",
+    "text": "Location note"
+   },
+   {
+    "kind": "input",
+    "text": "[text] Location note (optional), e.g. checkpoint name"
+   },
+   {
+    "kind": "label.toggle",
+    "text": "The test is in the sample zone Required: the app cannot tell a colourless test from an empty zone."
+   },
+   {
+    "kind": "input",
+    "text": "[checkbox] on"
+   },
+   {
+    "kind": "span.hint",
+    "text": "Required: the app cannot tell a colourless test from an empty zone."
+   },
+   {
+    "kind": "p.hint",
+    "text": "Operator AUDIT-01 · Location ±15 m · signed with this phone's key."
+   },
+   {
+    "kind": "button.primary",
+    "text": "Save signed record"
+   },
+   {
+    "kind": "p.hint",
+    "text": "Tick the box above to confirm the test is in the sample zone."
+   },
+   {
+    "kind": "summary",
+    "text": "Technical details"
+   },
+   {
+    "kind": "button",
+    "text": "Back to camera"
+   },
+   {
+    "kind": "a.active",
+    "text": "Test"
+   },
+   {
+    "kind": "a",
+    "text": "Log"
+   },
+   {
+    "kind": "a",
+    "text": "Settings"
+   }
+  ]
+ },
+ {
+  "shot": "04-phone-result-technical-details.jpg",
+  "route": "#/result",
+  "items": [
+   {
+    "kind": "h1",
+    "text": "Result"
+   },
+   {
+    "kind": "span.verdict-badge",
+    "text": "POSITIVE"
+   },
+   {
+    "kind": "p.why",
+    "text": "Colour matches heroin (diacetylmorphine HCl) (7.5RP 3/10): ΔE00 2.0, within 7.9"
+   },
+   {
+    "kind": "h2",
+    "text": "Sample colour and target colours"
+   },
+   {
+    "kind": "p.hint",
+    "text": "Sampled 227 mm² (10042 camera pixels), spread 1.1 ΔE76, clipped 0.0%. Blue = sampled, pink = coloured but left out (edge, glare, dark, trimmed)."
+   },
+   {
+    "kind": "figcaption.hint",
+    "text": "The reference colour card, straightened by the app, with the sample zone outlined."
+   },
+   {
+    "kind": "p.kit-validation",
+    "text": "Marquis reagent — opiate screen: Marquis opiate screen — colours from NIJ Standard-0604.01, not yet checked against a real reaction with this app"
+   },
+   {
+    "kind": "div.notice",
+    "text": "Presumptive result — send for laboratory confirmation"
+   },
+   {
+    "kind": "label",
+    "text": "Case reference"
+   },
+   {
+    "kind": "input",
+    "text": "[text] Case reference (optional)"
+   },
+   {
+    "kind": "label",
+    "text": "Location note"
+   },
+   {
+    "kind": "input",
+    "text": "[text] Location note (optional), e.g. checkpoint name"
+   },
+   {
+    "kind": "label.toggle",
+    "text": "The test is in the sample zone Required: the app cannot tell a colourless test from an empty zone."
+   },
+   {
+    "kind": "input",
+    "text": "[checkbox] on"
+   },
+   {
+    "kind": "span.hint",
+    "text": "Required: the app cannot tell a colourless test from an empty zone."
+   },
+   {
+    "kind": "p.hint",
+    "text": "Operator AUDIT-01 · Location ±15 m · signed with this phone's key."
+   },
+   {
+    "kind": "button.primary",
+    "text": "Save signed record"
+   },
+   {
+    "kind": "p.hint",
+    "text": "Tick the box above to confirm the test is in the sample zone."
+   },
+   {
+    "kind": "summary",
+    "text": "Technical details"
+   },
+   {
+    "kind": "div.verdict",
+    "text": "PASS — card checks and colour correction passed"
+   },
+   {
+    "kind": "figcaption.hint",
+    "text": "The reference colour card, straightened by the app (what the colour reading used)."
+   },
+   {
+    "kind": "h2",
+    "text": "Checks"
+   },
+   {
+    "kind": "li.ok",
+    "text": "pass dark — 109 (limit 50)"
+   },
+   {
+    "kind": "li.ok",
+    "text": "pass bright — 0.000 (limit 0.02)"
+   },
+   {
+    "kind": "li.ok",
+    "text": "pass blur — 2062 (limit 680) — measured on the detected card"
+   },
+   {
+    "kind": "li.ok",
+    "text": "pass card — copy A, rotated 360 deg"
+   },
+   {
+    "kind": "li.ok",
+    "text": "pass closer — 1024 (limit 400)"
+   },
+   {
+    "kind": "li.ok",
+    "text": "pass glare — 0.000 (limit 0.02) — most clipped: sample zone"
+   },
+   {
+    "kind": "li.ok",
+    "text": "pass uneven — 1.011 (limit 1.2) — whites 1.011 as photographed; smooth gradient 1.01 removed"
+   },
+   {
+    "kind": "li.ok",
+    "text": "pass registered — 2026-09-28T13:42:15.069Z"
+   },
+   {
+    "kind": "li.ok",
+    "text": "pass correction — 0.720 (limit 5) — leave-one-out mean 0.72, 90th pct 1.37 (limits 5, 10)"
+   },
+   {
+    "kind": "h2",
+    "text": "Details"
+   },
+   {
+    "kind": "th",
+    "text": "Card copy (from ID strip)"
+   },
+   {
+    "kind": "th",
+    "text": "Orientation"
+   },
+   {
+    "kind": "th",
+    "text": "Uneven light"
+   },
+   {
+    "kind": "th",
+    "text": "Correction method"
+   },
+   {
+    "kind": "th",
+    "text": "Leave-one-out error (ΔE00)"
+   },
+   {
+    "kind": "th",
+    "text": "Other method, for comparison"
+   },
+   {
+    "kind": "th",
+    "text": "In-sample residual (flattering)"
+   },
+   {
+    "kind": "th",
+    "text": "Pixels per patch (min)"
+   },
+   {
+    "kind": "th",
+    "text": "Resolution"
+   },
+   {
+    "kind": "th",
+    "text": "SHA-256 (PNG)"
+   },
+   {
+    "kind": "th",
+    "text": "SHA-256 (pixels)"
+   },
+   {
+    "kind": "h2",
+    "text": "Patches: before · after · reference"
+   },
+   {
+    "kind": "p.hint",
+    "text": "Each patch: the camera's colour, the corrected colour, the registered reference, and the corrected-vs-reference ΔE00."
+   },
+   {
+    "kind": "button",
+    "text": "Back to camera"
+   },
+   {
+    "kind": "a.active",
+    "text": "Test"
+   },
+   {
+    "kind": "a",
+    "text": "Log"
+   },
+   {
+    "kind": "a",
+    "text": "Settings"
+   }
+  ]
+ },
+ {
+  "shot": "05-phone-record-detail.jpg",
+  "route": "#/record/0",
+  "items": [
+   {
+    "kind": "h1",
+    "text": "Record 0"
+   },
+   {
+    "kind": "span.verdict-badge",
+    "text": "POSITIVE"
+   },
+   {
+    "kind": "p.why",
+    "text": "Colour matches heroin (diacetylmorphine HCl) (7.5RP 3/10): ΔE00 2.0, within 7.9"
+   },
+   {
+    "kind": "div.notice",
+    "text": "Presumptive field result. Not a laboratory confirmation."
+   },
+   {
+    "kind": "li.ok",
+    "text": "✓ Signature valid: yes"
+   },
+   {
+    "kind": "li.ok",
+    "text": "✓ Chain link intact: yes"
+   },
+   {
+    "kind": "li.ok",
+    "text": "✓ Photo matches record: yes"
+   },
+   {
+    "kind": "p",
+    "text": "The signature shows this record was not changed after it was signed on this phone. It does not prove who the officer is: the operator ID is typed in, not checked."
+   },
+   {
+    "kind": "p",
+    "text": "The chain means a record cannot be removed from the middle of the log, added in, or moved without this check failing. Deleting the newest records is only caught if the latest record hash was noted somewhere else (case diary, a message), which is why the log screen shows it."
+   },
+   {
+    "kind": "p",
+    "text": "An offline phone cannot prove its own clock or GPS were honest: the time and place are what this phone reported."
+   },
+   {
+    "kind": "th",
+    "text": "Result"
+   },
+   {
+    "kind": "th",
+    "text": "Why"
+   },
+   {
+    "kind": "th",
+    "text": "Recorded (phone clock)"
+   },
+   {
+    "kind": "th",
+    "text": "Photo taken"
+   },
+   {
+    "kind": "th",
+    "text": "Operator ID (typed, not verified)"
+   },
+   {
+    "kind": "th",
+    "text": "Case reference"
+   },
+   {
+    "kind": "th",
+    "text": "Location note"
+   },
+   {
+    "kind": "th",
+    "text": "Location (browser geolocation)"
+   },
+   {
+    "kind": "th",
+    "text": "Officer confirmed the test is in the sample zone"
+   },
+   {
+    "kind": "th",
+    "text": "Kit"
+   },
+   {
+    "kind": "th",
+    "text": "Kit profile SHA-256"
+   },
+   {
+    "kind": "th",
+    "text": "Card"
+   },
+   {
+    "kind": "th",
+    "text": "Card reference SHA-256"
+   },
+   {
+    "kind": "th",
+    "text": "Colour correction"
+   },
+   {
+    "kind": "th",
+    "text": "Sample zone"
+   },
+   {
+    "kind": "th",
+    "text": "Nearest target"
+   },
+   {
+    "kind": "th",
+    "text": "Record ID"
+   },
+   {
+    "kind": "th",
+    "text": "Sequence number"
+   },
+   {
+    "kind": "th",
+    "text": "Record hash (SHA-256)"
+   },
+   {
+    "kind": "th",
+    "text": "Previous record hash"
+   },
+   {
+    "kind": "th",
+    "text": "Device key ID"
+   },
+   {
+    "kind": "th",
+    "text": "Signature (ECDSA P-256, r||s, base64url)"
+   },
+   {
+    "kind": "th",
+    "text": "Photo SHA-256"
+   },
+   {
+    "kind": "th",
+    "text": "Pixels SHA-256"
+   },
+   {
+    "kind": "th",
+    "text": "Image"
+   },
+   {
+    "kind": "th",
+    "text": "App"
+   },
+   {
+    "kind": "th",
+    "text": "Notice"
+   },
+   {
+    "kind": "button",
+    "text": "Export this record (JSON + photo)"
+   },
+   {
+    "kind": "button",
+    "text": "Back to log"
+   },
+   {
+    "kind": "a",
+    "text": "Test"
+   },
+   {
+    "kind": "a.active",
+    "text": "Log"
+   },
+   {
+    "kind": "a",
+    "text": "Settings"
+   }
+  ]
+ },
+ {
+  "shot": "06-phone-log-with-records.jpg",
+  "route": "#/log",
+  "items": [
+   {
+    "kind": "h1",
+    "text": "Log"
+   },
+   {
+    "kind": "button.latest-hash",
+    "text": "9767c2c32234…6341f5"
+   },
+   {
+    "kind": "p.hint",
+    "text": "Note this down outside the phone (case diary, a message). Deleting the newest records can only be detected by comparing with a hash noted earlier."
+   },
+   {
+    "kind": "input",
+    "text": "[text] Check a hash noted earlier (12+ hex digits)"
+   },
+   {
+    "kind": "button.small",
+    "text": "Check"
+   },
+   {
+    "kind": "button",
+    "text": "Verify whole log"
+   },
+   {
+    "kind": "input",
+    "text": "[search] Search operator, case ref, location note, record ID"
+   },
+   {
+    "kind": "select",
+    "text": "[select] Any result | POSITIVE | NEGATIVE | INCONCLUSIVE"
+   },
+   {
+    "kind": "select",
+    "text": "[select] Any kit | Marquis reagent — opiate screen"
+   },
+   {
+    "kind": "label",
+    "text": "From"
+   },
+   {
+    "kind": "input",
+    "text": "[date] filter-from"
+   },
+   {
+    "kind": "label",
+    "text": "To"
+   },
+   {
+    "kind": "input",
+    "text": "[date] filter-to"
+   },
+   {
+    "kind": "p.hint",
+    "text": "2 of 2 signed records"
+   },
+   {
+    "kind": "li",
+    "text": "POSITIVE #1 · 29/9/2026 12:23:01 am Operator AUDIT-01 · Marquis reagent — opiate screen 28.61390, 77.20900 (±15 m)"
+   },
+   {
+    "kind": "button.log-row",
+    "text": "POSITIVE #1 · 29/9/2026 12:23:01 am Operator AUDIT-01 · Marquis reagent — opiate screen 28.61390, 77.20900 (±15 m)"
+   },
+   {
+    "kind": "span.verdict-badge",
+    "text": "POSITIVE"
+   },
+   {
+    "kind": "span.hint",
+    "text": "28.61390, 77.20900 (±15 m)"
+   },
+   {
+    "kind": "li",
+    "text": "POSITIVE #0 · 29/9/2026 12:22:57 am Operator AUDIT-01 · Marquis reagent — opiate screen Case AUDIT-CASE-1 · 28.61390, 77.20900 (±15 m)"
+   },
+   {
+    "kind": "button.log-row",
+    "text": "POSITIVE #0 · 29/9/2026 12:22:57 am Operator AUDIT-01 · Marquis reagent — opiate screen Case AUDIT-CASE-1 · 28.61390, 77.20900 (±15 m)"
+   },
+   {
+    "kind": "span.hint",
+    "text": "Case AUDIT-CASE-1 · 28.61390, 77.20900 (±15 m)"
+   },
+   {
+    "kind": "p.hint",
+    "text": "A .zip with every record (JSONL), every photo, the public key and VERIFY.md explaining how to check it."
+   },
+   {
+    "kind": "button.primary",
+    "text": "Export whole log (.zip)"
+   },
+   {
+    "kind": "button",
+    "text": "Share .zip"
+   },
+   {
+    "kind": "p.warn-text",
+    "text": "Clearing this site’s data (or uninstalling the browser) deletes the signing key and the whole log together. Only an exported log survives that: export regularly."
+   },
+   {
+    "kind": "a",
+    "text": "Test"
+   },
+   {
+    "kind": "a.active",
+    "text": "Log"
+   },
+   {
+    "kind": "a",
+    "text": "Settings"
+   }
+  ]
+ },
+ {
+  "shot": "07-phone-log-verified-and-wrong-code.jpg",
+  "route": "#/log",
+  "items": [
+   {
+    "kind": "h1",
+    "text": "Log"
+   },
+   {
+    "kind": "button.latest-hash",
+    "text": "9767c2c32234…6341f5"
+   },
+   {
+    "kind": "p.hint",
+    "text": "Note this down outside the phone (case diary, a message). Deleting the newest records can only be detected by comparing with a hash noted earlier."
+   },
+   {
+    "kind": "input",
+    "text": "[text] Check a hash noted earlier (12+ hex digits)"
+   },
+   {
+    "kind": "button.small",
+    "text": "Check"
+   },
+   {
+    "kind": "p.hint",
+    "text": "The noted hash is not in this log: records after it were deleted, or the note is wrong"
+   },
+   {
+    "kind": "button",
+    "text": "Verify whole log"
+   },
+   {
+    "kind": "p.strong",
+    "text": "✓ All checks passed — 2 records checked; signatures valid: 2/2; chain links intact: 2/2; photos match: 2/2; clock warnings: 0."
+   },
+   {
+    "kind": "input",
+    "text": "[search] Search operator, case ref, location note, record ID"
+   },
+   {
+    "kind": "select",
+    "text": "[select] Any result | POSITIVE | NEGATIVE | INCONCLUSIVE"
+   },
+   {
+    "kind": "select",
+    "text": "[select] Any kit | Marquis reagent — opiate screen"
+   },
+   {
+    "kind": "label",
+    "text": "From"
+   },
+   {
+    "kind": "input",
+    "text": "[date] filter-from"
+   },
+   {
+    "kind": "label",
+    "text": "To"
+   },
+   {
+    "kind": "input",
+    "text": "[date] filter-to"
+   },
+   {
+    "kind": "p.hint",
+    "text": "2 of 2 signed records"
+   },
+   {
+    "kind": "li",
+    "text": "POSITIVE #1 · 29/9/2026 12:23:01 am Operator AUDIT-01 · Marquis reagent — opiate screen 28.61390, 77.20900 (±15 m)"
+   },
+   {
+    "kind": "button.log-row",
+    "text": "POSITIVE #1 · 29/9/2026 12:23:01 am Operator AUDIT-01 · Marquis reagent — opiate screen 28.61390, 77.20900 (±15 m)"
+   },
+   {
+    "kind": "span.verdict-badge",
+    "text": "POSITIVE"
+   },
+   {
+    "kind": "span.hint",
+    "text": "28.61390, 77.20900 (±15 m)"
+   },
+   {
+    "kind": "li",
+    "text": "POSITIVE #0 · 29/9/2026 12:22:57 am Operator AUDIT-01 · Marquis reagent — opiate screen Case AUDIT-CASE-1 · 28.61390, 77.20900 (±15 m)"
+   },
+   {
+    "kind": "button.log-row",
+    "text": "POSITIVE #0 · 29/9/2026 12:22:57 am Operator AUDIT-01 · Marquis reagent — opiate screen Case AUDIT-CASE-1 · 28.61390, 77.20900 (±15 m)"
+   },
+   {
+    "kind": "span.hint",
+    "text": "Case AUDIT-CASE-1 · 28.61390, 77.20900 (±15 m)"
+   },
+   {
+    "kind": "p.hint",
+    "text": "A .zip with every record (JSONL), every photo, the public key and VERIFY.md explaining how to check it."
+   },
+   {
+    "kind": "button.primary",
+    "text": "Export whole log (.zip)"
+   },
+   {
+    "kind": "button",
+    "text": "Share .zip"
+   },
+   {
+    "kind": "p.warn-text",
+    "text": "Clearing this site’s data (or uninstalling the browser) deletes the signing key and the whole log together. Only an exported log survives that: export regularly."
+   },
+   {
+    "kind": "a",
+    "text": "Test"
+   },
+   {
+    "kind": "a.active",
+    "text": "Log"
+   },
+   {
+    "kind": "a",
+    "text": "Settings"
+   }
+  ]
+ },
+ {
+  "shot": "08-phone-settings.jpg",
+  "route": "#/settings",
+  "items": [
+   {
+    "kind": "h1",
+    "text": "Settings"
+   },
+   {
+    "kind": "label",
+    "text": "Operator ID"
+   },
+   {
+    "kind": "input",
+    "text": "[text] e.g. badge or service number"
+   },
+   {
+    "kind": "p.hint",
+    "text": "Written into every record you sign. The app does not verify it: a record proves it was not changed after signing on this phone, not who the officer was."
+   },
+   {
+    "kind": "label.toggle",
+    "text": "Data collection mode"
+   },
+   {
+    "kind": "input",
+    "text": "[checkbox] on"
+   },
+   {
+    "kind": "p.hint",
+    "text": "For building the photo test set only. Capture works even when checks fail, so deliberately bad photos can be collected. It never shows a result. Each photo is tagged and saved on this phone until you export it."
+   },
+   {
+    "kind": "label",
+    "text": "Phone model"
+   },
+   {
+    "kind": "input",
+    "text": "[text] e.g. Redmi Note 12"
+   },
+   {
+    "kind": "span.hint",
+    "text": "Required for data collection."
+   },
+   {
+    "kind": "p.hint",
+    "text": "Rear camera, 1920×1080 requested. What the phone actually delivers is shown on the camera screen and recorded in every capture."
+   },
+   {
+    "kind": "p.hint",
+    "text": "Provisional = a reasoned starting value not yet checked against real photos."
+   },
+   {
+    "kind": "th",
+    "text": "blurMinLaplacianVariance"
+   },
+   {
+    "kind": "th",
+    "text": "highlightClipLevel"
+   },
+   {
+    "kind": "th",
+    "text": "maxHighlightClipFraction"
+   },
+   {
+    "kind": "th",
+    "text": "shadowClipLevel"
+   },
+   {
+    "kind": "th",
+    "text": "maxShadowClipFraction"
+   },
+   {
+    "kind": "th",
+    "text": "minMedianLuma"
+   },
+   {
+    "kind": "th",
+    "text": "idCellMargin"
+   },
+   {
+    "kind": "th",
+    "text": "minPatchSourcePixels"
+   },
+   {
+    "kind": "th",
+    "text": "maxClipFraction"
+   },
+   {
+    "kind": "th",
+    "text": "maxResidualWhiteRatio"
+   },
+   {
+    "kind": "th",
+    "text": "maxLooMeanDeltaE00"
+   },
+   {
+    "kind": "th",
+    "text": "maxLooP90DeltaE00"
+   },
+   {
+    "kind": "th",
+    "text": "maxRegistrationSpreadDeltaE00"
+   },
+   {
+    "kind": "th",
+    "text": "sampleWhiteNoiseFactor"
+   },
+   {
+    "kind": "th",
+    "text": "sampleMinDeltaE"
+   },
+   {
+    "kind": "th",
+    "text": "sampleEdgeErodeMm"
+   },
+   {
+    "kind": "th",
+    "text": "sampleNoiseFloorMm2"
+   },
+   {
+    "kind": "th",
+    "text": "sampleMinAreaMm2"
+   },
+   {
+    "kind": "th",
+    "text": "sampleSecondRegionMm2"
+   },
+   {
+    "kind": "th",
+    "text": "maxSampleClipFraction"
+   },
+   {
+    "kind": "th",
+    "text": "sampleDarkLevel"
+   },
+   {
+    "kind": "th",
+    "text": "maxSampleSpreadDeltaE"
+   },
+   {
+    "kind": "h2",
+    "text": "Signed log"
+   },
+   {
+    "kind": "p.hint",
+    "text": "A .zip with every record (JSONL), every photo, the public key and VERIFY.md explaining how to check it."
+   },
+   {
+    "kind": "button.primary",
+    "text": "Export whole log (.zip)"
+   },
+   {
+    "kind": "button",
+    "text": "Share .zip"
+   },
+   {
+    "kind": "p.warn-text",
+    "text": "Clearing this site’s data (or uninstalling the browser) deletes the signing key and the whole log together. Only an exported log survives that: export regularly."
+   },
+   {
+    "kind": "a.nav-link",
+    "text": "About this app, the card PDF and the build"
+   },
+   {
+    "kind": "a",
+    "text": "Test"
+   },
+   {
+    "kind": "a",
+    "text": "Log"
+   },
+   {
+    "kind": "a.active",
+    "text": "Settings"
+   }
+  ]
+ },
+ {
+  "shot": "09-phone-about.jpg",
+  "route": "#/about",
+  "items": [
+   {
+    "kind": "h1",
+    "text": "About"
+   },
+   {
+    "kind": "p",
+    "text": "Field Test Companion works alongside existing colour-change drug-test kits. The officer photographs the reacted test on the reference colour card; the app corrects the colours using the card and reads the reaction colour."
+   },
+   {
+    "kind": "p.strong",
+    "text": "Its output is a presumptive field result. It never replaces laboratory confirmation."
+   },
+   {
+    "kind": "p",
+    "text": "Everything runs on this phone. Photos are never uploaded. No server, no account."
+   },
+   {
+    "kind": "p",
+    "text": "Print in colour on A4 at 100% (no fit-to-page), check the 50 mm scale bar with a ruler, cut on the crop marks, and register each copy before use."
+   },
+   {
+    "kind": "a.button",
+    "text": "Download card (A4 PDF)"
+   },
+   {
+    "kind": "th",
+    "text": "Version"
+   },
+   {
+    "kind": "th",
+    "text": "Build"
+   },
+   {
+    "kind": "th",
+    "text": "Offline"
+   },
+   {
+    "kind": "a",
+    "text": "Test"
+   },
+   {
+    "kind": "a",
+    "text": "Log"
+   },
+   {
+    "kind": "a",
+    "text": "Settings"
+   }
+  ]
+ },
+ {
+  "shot": "10-phone-settings-data-collection-on.jpg",
+  "route": "#/settings",
+  "items": [
+   {
+    "kind": "h1",
+    "text": "Settings"
+   },
+   {
+    "kind": "label",
+    "text": "Operator ID"
+   },
+   {
+    "kind": "input",
+    "text": "[text] e.g. badge or service number"
+   },
+   {
+    "kind": "p.hint",
+    "text": "Written into every record you sign. The app does not verify it: a record proves it was not changed after signing on this phone, not who the officer was."
+   },
+   {
+    "kind": "label.toggle",
+    "text": "Data collection mode"
+   },
+   {
+    "kind": "input",
+    "text": "[checkbox] on"
+   },
+   {
+    "kind": "p.hint",
+    "text": "For building the photo test set only. Capture works even when checks fail, so deliberately bad photos can be collected. It never shows a result. Each photo is tagged and saved on this phone until you export it."
+   },
+   {
+    "kind": "label",
+    "text": "Phone model"
+   },
+   {
+    "kind": "input",
+    "text": "[text] e.g. Redmi Note 12"
+   },
+   {
+    "kind": "span.hint",
+    "text": "File names will use: audit-phone"
+   },
+   {
+    "kind": "p.hint",
+    "text": "Rear camera, 1920×1080 requested. What the phone actually delivers is shown on the camera screen and recorded in every capture."
+   },
+   {
+    "kind": "p.hint",
+    "text": "Provisional = a reasoned starting value not yet checked against real photos."
+   },
+   {
+    "kind": "th",
+    "text": "blurMinLaplacianVariance"
+   },
+   {
+    "kind": "th",
+    "text": "highlightClipLevel"
+   },
+   {
+    "kind": "th",
+    "text": "maxHighlightClipFraction"
+   },
+   {
+    "kind": "th",
+    "text": "shadowClipLevel"
+   },
+   {
+    "kind": "th",
+    "text": "maxShadowClipFraction"
+   },
+   {
+    "kind": "th",
+    "text": "minMedianLuma"
+   },
+   {
+    "kind": "th",
+    "text": "idCellMargin"
+   },
+   {
+    "kind": "th",
+    "text": "minPatchSourcePixels"
+   },
+   {
+    "kind": "th",
+    "text": "maxClipFraction"
+   },
+   {
+    "kind": "th",
+    "text": "maxResidualWhiteRatio"
+   },
+   {
+    "kind": "th",
+    "text": "maxLooMeanDeltaE00"
+   },
+   {
+    "kind": "th",
+    "text": "maxLooP90DeltaE00"
+   },
+   {
+    "kind": "th",
+    "text": "maxRegistrationSpreadDeltaE00"
+   },
+   {
+    "kind": "th",
+    "text": "sampleWhiteNoiseFactor"
+   },
+   {
+    "kind": "th",
+    "text": "sampleMinDeltaE"
+   },
+   {
+    "kind": "th",
+    "text": "sampleEdgeErodeMm"
+   },
+   {
+    "kind": "th",
+    "text": "sampleNoiseFloorMm2"
+   },
+   {
+    "kind": "th",
+    "text": "sampleMinAreaMm2"
+   },
+   {
+    "kind": "th",
+    "text": "sampleSecondRegionMm2"
+   },
+   {
+    "kind": "th",
+    "text": "maxSampleClipFraction"
+   },
+   {
+    "kind": "th",
+    "text": "sampleDarkLevel"
+   },
+   {
+    "kind": "th",
+    "text": "maxSampleSpreadDeltaE"
+   },
+   {
+    "kind": "h2",
+    "text": "Signed log"
+   },
+   {
+    "kind": "p.hint",
+    "text": "A .zip with every record (JSONL), every photo, the public key and VERIFY.md explaining how to check it."
+   },
+   {
+    "kind": "button.primary",
+    "text": "Export whole log (.zip)"
+   },
+   {
+    "kind": "button",
+    "text": "Share .zip"
+   },
+   {
+    "kind": "p.warn-text",
+    "text": "Clearing this site’s data (or uninstalling the browser) deletes the signing key and the whole log together. Only an exported log survives that: export regularly."
+   },
+   {
+    "kind": "a.nav-link",
+    "text": "About this app, the card PDF and the build"
+   },
+   {
+    "kind": "a",
+    "text": "Test"
+   },
+   {
+    "kind": "a",
+    "text": "Log"
+   },
+   {
+    "kind": "a",
+    "text": "Captures"
+   },
+   {
+    "kind": "a.active",
+    "text": "Settings"
+   },
+   {
+    "kind": "div.toast",
+    "text": "Phone model saved"
+   }
+  ]
+ },
+ {
+  "shot": "11-phone-camera-data-collection.jpg",
+  "route": "#/test",
+  "items": [
+   {
+    "kind": "div.dc-banner",
+    "text": "DATA COLLECTION MODE — captures are saved for the test set; no result is ever shown"
+   },
+   {
+    "kind": "div.guidance",
+    "text": "Checks pass"
+   },
+   {
+    "kind": "div.metrics",
+    "text": "sharp 1013/680 · blown 0.0% · median 111 · copy A · light 1.02/1.2"
+   },
+   {
+    "kind": "select",
+    "text": "[select] registration | daylight | tube | warm-bulb | torch | fail-corner | fail-shadow | fail-glare | fail-blur | fail-far | fail-banding"
+   },
+   {
+    "kind": "button.seg",
+    "text": "Copy A"
+   },
+   {
+    "kind": "button.seg",
+    "text": "Copy B"
+   },
+   {
+    "kind": "button.link",
+    "text": "Phone: Audit Phone (change)"
+   },
+   {
+    "kind": "div.hint",
+    "text": "registration A on this phone: 0 (need 3)"
+   },
+   {
+    "kind": "span.hint",
+    "text": "This phone cannot lock exposure or white balance (auto is fine)."
+   },
+   {
+    "kind": "div.hint",
+    "text": "Clean card lying flat on a table, steady daylight (not dusk), no direct sun. Tap Lock, then 3 photos without moving. 3 per copy."
+   },
+   {
+    "kind": "div.res-info",
+    "text": "1080×1920"
+   },
+   {
+    "kind": "a.active",
+    "text": "Test"
+   },
+   {
+    "kind": "a",
+    "text": "Log"
+   },
+   {
+    "kind": "a",
+    "text": "Captures"
+   },
+   {
+    "kind": "a",
+    "text": "Settings"
+   },
+   {
+    "kind": "div.toast",
+    "text": "Phone model saved"
+   }
+  ]
+ },
+ {
+  "shot": "12-phone-data-collection-saved-toast.jpg",
+  "route": "#/test",
+  "items": [
+   {
+    "kind": "div.dc-banner",
+    "text": "DATA COLLECTION MODE — captures are saved for the test set; no result is ever shown"
+   },
+   {
+    "kind": "div.guidance",
+    "text": "Checks pass"
+   },
+   {
+    "kind": "div.metrics",
+    "text": "sharp 1013/680 · blown 0.0% · median 111 · copy A · light 1.02/1.2"
+   },
+   {
+    "kind": "select",
+    "text": "[select] registration | daylight | tube | warm-bulb | torch | fail-corner | fail-shadow | fail-glare | fail-blur | fail-far | fail-banding"
+   },
+   {
+    "kind": "button.seg",
+    "text": "Copy A"
+   },
+   {
+    "kind": "button.seg",
+    "text": "Copy B"
+   },
+   {
+    "kind": "button.link",
+    "text": "Phone: Audit Phone (change)"
+   },
+   {
+    "kind": "div.hint",
+    "text": "registration A on this phone: 1 (need 3)"
+   },
+   {
+    "kind": "span.hint",
+    "text": "This phone cannot lock exposure or white balance (auto is fine)."
+   },
+   {
+    "kind": "div.hint",
+    "text": "Clean card lying flat on a table, steady daylight (not dusk), no direct sun. Tap Lock, then 3 photos without moving. 3 per copy."
+   },
+   {
+    "kind": "div.res-info",
+    "text": "1080×1920"
+   },
+   {
+    "kind": "a.active",
+    "text": "Test"
+   },
+   {
+    "kind": "a",
+    "text": "Log"
+   },
+   {
+    "kind": "a",
+    "text": "Captures"
+   },
+   {
+    "kind": "a",
+    "text": "Settings"
+   },
+   {
+    "kind": "div.toast",
+    "text": "Saved registration_audit-phone_A_20260928T185304608Z.png"
+   }
+  ]
+ },
+ {
+  "shot": "13-phone-log-while-data-collection-on.jpg",
+  "route": "#/log",
+  "items": [
+   {
+    "kind": "h1",
+    "text": "Log"
+   },
+   {
+    "kind": "button.latest-hash",
+    "text": "9767c2c32234…6341f5"
+   },
+   {
+    "kind": "p.hint",
+    "text": "Note this down outside the phone (case diary, a message). Deleting the newest records can only be detected by comparing with a hash noted earlier."
+   },
+   {
+    "kind": "input",
+    "text": "[text] Check a hash noted earlier (12+ hex digits)"
+   },
+   {
+    "kind": "button.small",
+    "text": "Check"
+   },
+   {
+    "kind": "button",
+    "text": "Verify whole log"
+   },
+   {
+    "kind": "input",
+    "text": "[search] Search operator, case ref, location note, record ID"
+   },
+   {
+    "kind": "select",
+    "text": "[select] Any result | POSITIVE | NEGATIVE | INCONCLUSIVE"
+   },
+   {
+    "kind": "select",
+    "text": "[select] Any kit | Marquis reagent — opiate screen"
+   },
+   {
+    "kind": "label",
+    "text": "From"
+   },
+   {
+    "kind": "input",
+    "text": "[date] filter-from"
+   },
+   {
+    "kind": "label",
+    "text": "To"
+   },
+   {
+    "kind": "input",
+    "text": "[date] filter-to"
+   },
+   {
+    "kind": "p.hint",
+    "text": "2 of 2 signed records"
+   },
+   {
+    "kind": "li",
+    "text": "POSITIVE #1 · 29/9/2026 12:23:01 am Operator AUDIT-01 · Marquis reagent — opiate screen 28.61390, 77.20900 (±15 m)"
+   },
+   {
+    "kind": "button.log-row",
+    "text": "POSITIVE #1 · 29/9/2026 12:23:01 am Operator AUDIT-01 · Marquis reagent — opiate screen 28.61390, 77.20900 (±15 m)"
+   },
+   {
+    "kind": "span.verdict-badge",
+    "text": "POSITIVE"
+   },
+   {
+    "kind": "span.hint",
+    "text": "28.61390, 77.20900 (±15 m)"
+   },
+   {
+    "kind": "li",
+    "text": "POSITIVE #0 · 29/9/2026 12:22:57 am Operator AUDIT-01 · Marquis reagent — opiate screen Case AUDIT-CASE-1 · 28.61390, 77.20900 (±15 m)"
+   },
+   {
+    "kind": "button.log-row",
+    "text": "POSITIVE #0 · 29/9/2026 12:22:57 am Operator AUDIT-01 · Marquis reagent — opiate screen Case AUDIT-CASE-1 · 28.61390, 77.20900 (±15 m)"
+   },
+   {
+    "kind": "span.hint",
+    "text": "Case AUDIT-CASE-1 · 28.61390, 77.20900 (±15 m)"
+   },
+   {
+    "kind": "p.hint",
+    "text": "A .zip with every record (JSONL), every photo, the public key and VERIFY.md explaining how to check it."
+   },
+   {
+    "kind": "button.primary",
+    "text": "Export whole log (.zip)"
+   },
+   {
+    "kind": "button",
+    "text": "Share .zip"
+   },
+   {
+    "kind": "p.warn-text",
+    "text": "Clearing this site’s data (or uninstalling the browser) deletes the signing key and the whole log together. Only an exported log survives that: export regularly."
+   },
+   {
+    "kind": "a",
+    "text": "Test"
+   },
+   {
+    "kind": "a.active",
+    "text": "Log"
+   },
+   {
+    "kind": "a",
+    "text": "Captures"
+   },
+   {
+    "kind": "a",
+    "text": "Settings"
+   },
+   {
+    "kind": "div.toast",
+    "text": "Saved registration_audit-phone_A_20260928T185304608Z.png"
+   }
+  ]
+ },
+ {
+  "shot": "14-phone-captures.jpg",
+  "route": "#/captures",
+  "items": [
+   {
+    "kind": "h1",
+    "text": "Captures"
+   },
+   {
+    "kind": "p.hint",
+    "text": "Saved on this phone only. Export the .zip and unzip it into data/real/ in the repo; the folders already match."
+   },
+   {
+    "kind": "th",
+    "text": "Registration, copy A"
+   },
+   {
+    "kind": "th",
+    "text": "Registration, copy B"
+   },
+   {
+    "kind": "th",
+    "text": "Lighting (orange strip)"
+   },
+   {
+    "kind": "th",
+    "text": "Should fail"
+   },
+   {
+    "kind": "th",
+    "text": "Phones on this device"
+   },
+   {
+    "kind": "button.primary",
+    "text": "Download all as .zip"
+   },
+   {
+    "kind": "button",
+    "text": "Share .zip"
+   },
+   {
+    "kind": "button.danger",
+    "text": "Delete all"
+   },
+   {
+    "kind": "p.hint",
+    "text": "1 captures, 2.1 MB · storage used 6.8 MB of 4102.8 MB"
+   },
+   {
+    "kind": "li",
+    "text": "registration_audit-phone_A_20260928T185304608Z.png 1080×1920 · 2.1 MB · checks pass sha256 32a20ab4ce5f9ce9… Delete"
+   },
+   {
+    "kind": "button.small",
+    "text": "Delete"
+   },
+   {
+    "kind": "a",
+    "text": "Test"
+   },
+   {
+    "kind": "a",
+    "text": "Log"
+   },
+   {
+    "kind": "a.active",
+    "text": "Captures"
+   },
+   {
+    "kind": "a",
+    "text": "Settings"
+   },
+   {
+    "kind": "div.toast",
+    "text": "Saved registration_audit-phone_A_20260928T185304608Z.png"
+   }
+  ]
+ },
+ {
+  "shot": "15-phone-log-empty.jpg",
+  "route": "#/log",
+  "items": [
+   {
+    "kind": "h1",
+    "text": "Log"
+   },
+   {
+    "kind": "button.latest-hash",
+    "text": "— (no records yet)"
+   },
+   {
+    "kind": "p.hint",
+    "text": "Note this down outside the phone (case diary, a message). Deleting the newest records can only be detected by comparing with a hash noted earlier."
+   },
+   {
+    "kind": "input",
+    "text": "[text] Check a hash noted earlier (12+ hex digits)"
+   },
+   {
+    "kind": "button.small",
+    "text": "Check"
+   },
+   {
+    "kind": "button",
+    "text": "Verify whole log"
+   },
+   {
+    "kind": "input",
+    "text": "[search] Search operator, case ref, location note, record ID"
+   },
+   {
+    "kind": "select",
+    "text": "[select] Any result | POSITIVE | NEGATIVE | INCONCLUSIVE"
+   },
+   {
+    "kind": "select",
+    "text": "[select] Any kit"
+   },
+   {
+    "kind": "label",
+    "text": "From"
+   },
+   {
+    "kind": "input",
+    "text": "[date] filter-from"
+   },
+   {
+    "kind": "label",
+    "text": "To"
+   },
+   {
+    "kind": "input",
+    "text": "[date] filter-to"
+   },
+   {
+    "kind": "p.hint",
+    "text": "No records yet. Save a result from the Test screen."
+   },
+   {
+    "kind": "p.hint",
+    "text": "A .zip with every record (JSONL), every photo, the public key and VERIFY.md explaining how to check it."
+   },
+   {
+    "kind": "button.primary",
+    "text": "Export whole log (.zip)"
+   },
+   {
+    "kind": "button",
+    "text": "Share .zip"
+   },
+   {
+    "kind": "p.warn-text",
+    "text": "Clearing this site’s data (or uninstalling the browser) deletes the signing key and the whole log together. Only an exported log survives that: export regularly."
+   },
+   {
+    "kind": "a",
+    "text": "Test"
+   },
+   {
+    "kind": "a.active",
+    "text": "Log"
+   },
+   {
+    "kind": "a",
+    "text": "Settings"
+   }
+  ]
+ },
+ {
+  "shot": "16-phone-log-empty-code-check.jpg",
+  "route": "#/log",
+  "items": [
+   {
+    "kind": "h1",
+    "text": "Log"
+   },
+   {
+    "kind": "button.latest-hash",
+    "text": "— (no records yet)"
+   },
+   {
+    "kind": "p.hint",
+    "text": "Note this down outside the phone (case diary, a message). Deleting the newest records can only be detected by comparing with a hash noted earlier."
+   },
+   {
+    "kind": "input",
+    "text": "[text] Check a hash noted earlier (12+ hex digits)"
+   },
+   {
+    "kind": "button.small",
+    "text": "Check"
+   },
+   {
+    "kind": "p.hint",
+    "text": "The noted hash is not in this log: records after it were deleted, or the note is wrong"
+   },
+   {
+    "kind": "button",
+    "text": "Verify whole log"
+   },
+   {
+    "kind": "input",
+    "text": "[search] Search operator, case ref, location note, record ID"
+   },
+   {
+    "kind": "select",
+    "text": "[select] Any result | POSITIVE | NEGATIVE | INCONCLUSIVE"
+   },
+   {
+    "kind": "select",
+    "text": "[select] Any kit"
+   },
+   {
+    "kind": "label",
+    "text": "From"
+   },
+   {
+    "kind": "input",
+    "text": "[date] filter-from"
+   },
+   {
+    "kind": "label",
+    "text": "To"
+   },
+   {
+    "kind": "input",
+    "text": "[date] filter-to"
+   },
+   {
+    "kind": "p.hint",
+    "text": "No records yet. Save a result from the Test screen."
+   },
+   {
+    "kind": "p.hint",
+    "text": "A .zip with every record (JSONL), every photo, the public key and VERIFY.md explaining how to check it."
+   },
+   {
+    "kind": "button.primary",
+    "text": "Export whole log (.zip)"
+   },
+   {
+    "kind": "button",
+    "text": "Share .zip"
+   },
+   {
+    "kind": "p.warn-text",
+    "text": "Clearing this site’s data (or uninstalling the browser) deletes the signing key and the whole log together. Only an exported log survives that: export regularly."
+   },
+   {
+    "kind": "a",
+    "text": "Test"
+   },
+   {
+    "kind": "a.active",
+    "text": "Log"
+   },
+   {
+    "kind": "a",
+    "text": "Settings"
+   }
+  ]
+ },
+ {
+  "shot": "17-laptop-first-launch.jpg",
+  "route": "#/",
+  "items": [
+   {
+    "kind": "h1",
+    "text": "Operator ID"
+   },
+   {
+    "kind": "p",
+    "text": "Every record carries the ID of the officer who ran the test. Enter it once; it is saved on this phone and can be changed in Settings."
+   },
+   {
+    "kind": "p.hint",
+    "text": "The app does not check this ID against anything: a record proves it was not changed after signing, not who the officer was."
+   },
+   {
+    "kind": "label",
+    "text": "Operator ID"
+   },
+   {
+    "kind": "input",
+    "text": "[text] e.g. badge or service number"
+   },
+   {
+    "kind": "button.primary",
+    "text": "Save and continue"
+   },
+   {
+    "kind": "a.active",
+    "text": "Test"
+   },
+   {
+    "kind": "a",
+    "text": "Log"
+   },
+   {
+    "kind": "a",
+    "text": "Settings"
+   }
+  ]
+ },
+ {
+  "shot": "18-laptop-camera-ready.jpg",
+  "route": "#/test",
+  "items": [
+   {
+    "kind": "div.kit-status",
+    "text": "Marquis opiate screen — colours from NIJ Standard-0604.01, not yet checked against a real reaction with this app"
+   },
+   {
+    "kind": "button.link",
+    "text": "Operator: AUDIT-01 (change)"
+   },
+   {
+    "kind": "span.geo-line",
+    "text": "Location ±15 m"
+   },
+   {
+    "kind": "div.guidance",
+    "text": "Ready — tap to capture"
+   },
+   {
+    "kind": "div.res-info",
+    "text": "1080×1920"
+   },
+   {
+    "kind": "a.active",
+    "text": "Test"
+   },
+   {
+    "kind": "a",
+    "text": "Log"
+   },
+   {
+    "kind": "a",
+    "text": "Settings"
+   }
+  ]
+ },
+ {
+  "shot": "19-laptop-result-positive.jpg",
+  "route": "#/result",
+  "items": [
+   {
+    "kind": "h1",
+    "text": "Result"
+   },
+   {
+    "kind": "span.verdict-badge",
+    "text": "POSITIVE"
+   },
+   {
+    "kind": "p.why",
+    "text": "Colour matches heroin (diacetylmorphine HCl) (7.5RP 3/10): ΔE00 2.0, within 7.9"
+   },
+   {
+    "kind": "h2",
+    "text": "Sample colour and target colours"
+   },
+   {
+    "kind": "p.hint",
+    "text": "Sampled 227 mm² (10042 camera pixels), spread 1.1 ΔE76, clipped 0.0%. Blue = sampled, pink = coloured but left out (edge, glare, dark, trimmed)."
+   },
+   {
+    "kind": "figcaption.hint",
+    "text": "The reference colour card, straightened by the app, with the sample zone outlined."
+   },
+   {
+    "kind": "p.kit-validation",
+    "text": "Marquis reagent — opiate screen: Marquis opiate screen — colours from NIJ Standard-0604.01, not yet checked against a real reaction with this app"
+   },
+   {
+    "kind": "div.notice",
+    "text": "Presumptive result — send for laboratory confirmation"
+   },
+   {
+    "kind": "label",
+    "text": "Case reference"
+   },
+   {
+    "kind": "input",
+    "text": "[text] Case reference (optional)"
+   },
+   {
+    "kind": "label",
+    "text": "Location note"
+   },
+   {
+    "kind": "input",
+    "text": "[text] Location note (optional), e.g. checkpoint name"
+   },
+   {
+    "kind": "label.toggle",
+    "text": "The test is in the sample zone Required: the app cannot tell a colourless test from an empty zone."
+   },
+   {
+    "kind": "input",
+    "text": "[checkbox] on"
+   },
+   {
+    "kind": "span.hint",
+    "text": "Required: the app cannot tell a colourless test from an empty zone."
+   },
+   {
+    "kind": "p.hint",
+    "text": "Operator AUDIT-01 · Location ±15 m · signed with this phone's key."
+   },
+   {
+    "kind": "button.primary",
+    "text": "Save signed record"
+   },
+   {
+    "kind": "p.hint",
+    "text": "Tick the box above to confirm the test is in the sample zone."
+   },
+   {
+    "kind": "summary",
+    "text": "Technical details"
+   },
+   {
+    "kind": "button",
+    "text": "Back to camera"
+   },
+   {
+    "kind": "a.active",
+    "text": "Test"
+   },
+   {
+    "kind": "a",
+    "text": "Log"
+   },
+   {
+    "kind": "a",
+    "text": "Settings"
+   }
+  ]
+ },
+ {
+  "shot": "20-laptop-result-technical-details.jpg",
+  "route": "#/result",
+  "items": [
+   {
+    "kind": "h1",
+    "text": "Result"
+   },
+   {
+    "kind": "span.verdict-badge",
+    "text": "POSITIVE"
+   },
+   {
+    "kind": "p.why",
+    "text": "Colour matches heroin (diacetylmorphine HCl) (7.5RP 3/10): ΔE00 2.0, within 7.9"
+   },
+   {
+    "kind": "h2",
+    "text": "Sample colour and target colours"
+   },
+   {
+    "kind": "p.hint",
+    "text": "Sampled 227 mm² (10042 camera pixels), spread 1.1 ΔE76, clipped 0.0%. Blue = sampled, pink = coloured but left out (edge, glare, dark, trimmed)."
+   },
+   {
+    "kind": "figcaption.hint",
+    "text": "The reference colour card, straightened by the app, with the sample zone outlined."
+   },
+   {
+    "kind": "p.kit-validation",
+    "text": "Marquis reagent — opiate screen: Marquis opiate screen — colours from NIJ Standard-0604.01, not yet checked against a real reaction with this app"
+   },
+   {
+    "kind": "div.notice",
+    "text": "Presumptive result — send for laboratory confirmation"
+   },
+   {
+    "kind": "label",
+    "text": "Case reference"
+   },
+   {
+    "kind": "input",
+    "text": "[text] Case reference (optional)"
+   },
+   {
+    "kind": "label",
+    "text": "Location note"
+   },
+   {
+    "kind": "input",
+    "text": "[text] Location note (optional), e.g. checkpoint name"
+   },
+   {
+    "kind": "label.toggle",
+    "text": "The test is in the sample zone Required: the app cannot tell a colourless test from an empty zone."
+   },
+   {
+    "kind": "input",
+    "text": "[checkbox] on"
+   },
+   {
+    "kind": "span.hint",
+    "text": "Required: the app cannot tell a colourless test from an empty zone."
+   },
+   {
+    "kind": "p.hint",
+    "text": "Operator AUDIT-01 · Location ±15 m · signed with this phone's key."
+   },
+   {
+    "kind": "button.primary",
+    "text": "Save signed record"
+   },
+   {
+    "kind": "p.hint",
+    "text": "Tick the box above to confirm the test is in the sample zone."
+   },
+   {
+    "kind": "summary",
+    "text": "Technical details"
+   },
+   {
+    "kind": "div.verdict",
+    "text": "PASS — card checks and colour correction passed"
+   },
+   {
+    "kind": "figcaption.hint",
+    "text": "The reference colour card, straightened by the app (what the colour reading used)."
+   },
+   {
+    "kind": "h2",
+    "text": "Checks"
+   },
+   {
+    "kind": "li.ok",
+    "text": "pass dark — 109 (limit 50)"
+   },
+   {
+    "kind": "li.ok",
+    "text": "pass bright — 0.000 (limit 0.02)"
+   },
+   {
+    "kind": "li.ok",
+    "text": "pass blur — 2062 (limit 680) — measured on the detected card"
+   },
+   {
+    "kind": "li.ok",
+    "text": "pass card — copy A, rotated 360 deg"
+   },
+   {
+    "kind": "li.ok",
+    "text": "pass closer — 1024 (limit 400)"
+   },
+   {
+    "kind": "li.ok",
+    "text": "pass glare — 0.000 (limit 0.02) — most clipped: sample zone"
+   },
+   {
+    "kind": "li.ok",
+    "text": "pass uneven — 1.011 (limit 1.2) — whites 1.011 as photographed; smooth gradient 1.01 removed"
+   },
+   {
+    "kind": "li.ok",
+    "text": "pass registered — 2026-09-28T13:42:15.069Z"
+   },
+   {
+    "kind": "li.ok",
+    "text": "pass correction — 0.720 (limit 5) — leave-one-out mean 0.72, 90th pct 1.37 (limits 5, 10)"
+   },
+   {
+    "kind": "h2",
+    "text": "Details"
+   },
+   {
+    "kind": "th",
+    "text": "Card copy (from ID strip)"
+   },
+   {
+    "kind": "th",
+    "text": "Orientation"
+   },
+   {
+    "kind": "th",
+    "text": "Uneven light"
+   },
+   {
+    "kind": "th",
+    "text": "Correction method"
+   },
+   {
+    "kind": "th",
+    "text": "Leave-one-out error (ΔE00)"
+   },
+   {
+    "kind": "th",
+    "text": "Other method, for comparison"
+   },
+   {
+    "kind": "th",
+    "text": "In-sample residual (flattering)"
+   },
+   {
+    "kind": "th",
+    "text": "Pixels per patch (min)"
+   },
+   {
+    "kind": "th",
+    "text": "Resolution"
+   },
+   {
+    "kind": "th",
+    "text": "SHA-256 (PNG)"
+   },
+   {
+    "kind": "th",
+    "text": "SHA-256 (pixels)"
+   },
+   {
+    "kind": "h2",
+    "text": "Patches: before · after · reference"
+   },
+   {
+    "kind": "p.hint",
+    "text": "Each patch: the camera's colour, the corrected colour, the registered reference, and the corrected-vs-reference ΔE00."
+   },
+   {
+    "kind": "button",
+    "text": "Back to camera"
+   },
+   {
+    "kind": "a.active",
+    "text": "Test"
+   },
+   {
+    "kind": "a",
+    "text": "Log"
+   },
+   {
+    "kind": "a",
+    "text": "Settings"
+   }
+  ]
+ },
+ {
+  "shot": "21-laptop-record-detail.jpg",
+  "route": "#/record/0",
+  "items": [
+   {
+    "kind": "h1",
+    "text": "Record 0"
+   },
+   {
+    "kind": "span.verdict-badge",
+    "text": "POSITIVE"
+   },
+   {
+    "kind": "p.why",
+    "text": "Colour matches heroin (diacetylmorphine HCl) (7.5RP 3/10): ΔE00 2.0, within 7.9"
+   },
+   {
+    "kind": "div.notice",
+    "text": "Presumptive field result. Not a laboratory confirmation."
+   },
+   {
+    "kind": "li.ok",
+    "text": "✓ Signature valid: yes"
+   },
+   {
+    "kind": "li.ok",
+    "text": "✓ Chain link intact: yes"
+   },
+   {
+    "kind": "li.ok",
+    "text": "✓ Photo matches record: yes"
+   },
+   {
+    "kind": "p",
+    "text": "The signature shows this record was not changed after it was signed on this phone. It does not prove who the officer is: the operator ID is typed in, not checked."
+   },
+   {
+    "kind": "p",
+    "text": "The chain means a record cannot be removed from the middle of the log, added in, or moved without this check failing. Deleting the newest records is only caught if the latest record hash was noted somewhere else (case diary, a message), which is why the log screen shows it."
+   },
+   {
+    "kind": "p",
+    "text": "An offline phone cannot prove its own clock or GPS were honest: the time and place are what this phone reported."
+   },
+   {
+    "kind": "th",
+    "text": "Result"
+   },
+   {
+    "kind": "th",
+    "text": "Why"
+   },
+   {
+    "kind": "th",
+    "text": "Recorded (phone clock)"
+   },
+   {
+    "kind": "th",
+    "text": "Photo taken"
+   },
+   {
+    "kind": "th",
+    "text": "Operator ID (typed, not verified)"
+   },
+   {
+    "kind": "th",
+    "text": "Case reference"
+   },
+   {
+    "kind": "th",
+    "text": "Location note"
+   },
+   {
+    "kind": "th",
+    "text": "Location (browser geolocation)"
+   },
+   {
+    "kind": "th",
+    "text": "Officer confirmed the test is in the sample zone"
+   },
+   {
+    "kind": "th",
+    "text": "Kit"
+   },
+   {
+    "kind": "th",
+    "text": "Kit profile SHA-256"
+   },
+   {
+    "kind": "th",
+    "text": "Card"
+   },
+   {
+    "kind": "th",
+    "text": "Card reference SHA-256"
+   },
+   {
+    "kind": "th",
+    "text": "Colour correction"
+   },
+   {
+    "kind": "th",
+    "text": "Sample zone"
+   },
+   {
+    "kind": "th",
+    "text": "Nearest target"
+   },
+   {
+    "kind": "th",
+    "text": "Record ID"
+   },
+   {
+    "kind": "th",
+    "text": "Sequence number"
+   },
+   {
+    "kind": "th",
+    "text": "Record hash (SHA-256)"
+   },
+   {
+    "kind": "th",
+    "text": "Previous record hash"
+   },
+   {
+    "kind": "th",
+    "text": "Device key ID"
+   },
+   {
+    "kind": "th",
+    "text": "Signature (ECDSA P-256, r||s, base64url)"
+   },
+   {
+    "kind": "th",
+    "text": "Photo SHA-256"
+   },
+   {
+    "kind": "th",
+    "text": "Pixels SHA-256"
+   },
+   {
+    "kind": "th",
+    "text": "Image"
+   },
+   {
+    "kind": "th",
+    "text": "App"
+   },
+   {
+    "kind": "th",
+    "text": "Notice"
+   },
+   {
+    "kind": "button",
+    "text": "Export this record (JSON + photo)"
+   },
+   {
+    "kind": "button",
+    "text": "Back to log"
+   },
+   {
+    "kind": "a",
+    "text": "Test"
+   },
+   {
+    "kind": "a.active",
+    "text": "Log"
+   },
+   {
+    "kind": "a",
+    "text": "Settings"
+   }
+  ]
+ },
+ {
+  "shot": "22-laptop-log-with-records.jpg",
+  "route": "#/log",
+  "items": [
+   {
+    "kind": "h1",
+    "text": "Log"
+   },
+   {
+    "kind": "button.latest-hash",
+    "text": "3b50ba69b76f…043758"
+   },
+   {
+    "kind": "p.hint",
+    "text": "Note this down outside the phone (case diary, a message). Deleting the newest records can only be detected by comparing with a hash noted earlier."
+   },
+   {
+    "kind": "input",
+    "text": "[text] Check a hash noted earlier (12+ hex digits)"
+   },
+   {
+    "kind": "button.small",
+    "text": "Check"
+   },
+   {
+    "kind": "button",
+    "text": "Verify whole log"
+   },
+   {
+    "kind": "input",
+    "text": "[search] Search operator, case ref, location note, record ID"
+   },
+   {
+    "kind": "select",
+    "text": "[select] Any result | POSITIVE | NEGATIVE | INCONCLUSIVE"
+   },
+   {
+    "kind": "select",
+    "text": "[select] Any kit | Marquis reagent — opiate screen"
+   },
+   {
+    "kind": "label",
+    "text": "From"
+   },
+   {
+    "kind": "input",
+    "text": "[date] filter-from"
+   },
+   {
+    "kind": "label",
+    "text": "To"
+   },
+   {
+    "kind": "input",
+    "text": "[date] filter-to"
+   },
+   {
+    "kind": "p.hint",
+    "text": "1 of 1 signed record"
+   },
+   {
+    "kind": "li",
+    "text": "POSITIVE #0 · 29/9/2026 12:23:15 am Operator AUDIT-01 · Marquis reagent — opiate screen Case AUDIT-CASE-1 · 28.61390, 77.20900 (±15 m)"
+   },
+   {
+    "kind": "button.log-row",
+    "text": "POSITIVE #0 · 29/9/2026 12:23:15 am Operator AUDIT-01 · Marquis reagent — opiate screen Case AUDIT-CASE-1 · 28.61390, 77.20900 (±15 m)"
+   },
+   {
+    "kind": "span.verdict-badge",
+    "text": "POSITIVE"
+   },
+   {
+    "kind": "span.hint",
+    "text": "Case AUDIT-CASE-1 · 28.61390, 77.20900 (±15 m)"
+   },
+   {
+    "kind": "p.hint",
+    "text": "A .zip with every record (JSONL), every photo, the public key and VERIFY.md explaining how to check it."
+   },
+   {
+    "kind": "button.primary",
+    "text": "Export whole log (.zip)"
+   },
+   {
+    "kind": "button",
+    "text": "Share .zip"
+   },
+   {
+    "kind": "p.warn-text",
+    "text": "Clearing this site’s data (or uninstalling the browser) deletes the signing key and the whole log together. Only an exported log survives that: export regularly."
+   },
+   {
+    "kind": "a",
+    "text": "Test"
+   },
+   {
+    "kind": "a.active",
+    "text": "Log"
+   },
+   {
+    "kind": "a",
+    "text": "Settings"
+   }
+  ]
+ },
+ {
+  "shot": "23-laptop-log-verified-and-wrong-code.jpg",
+  "route": "#/log",
+  "items": [
+   {
+    "kind": "h1",
+    "text": "Log"
+   },
+   {
+    "kind": "button.latest-hash",
+    "text": "3b50ba69b76f…043758"
+   },
+   {
+    "kind": "p.hint",
+    "text": "Note this down outside the phone (case diary, a message). Deleting the newest records can only be detected by comparing with a hash noted earlier."
+   },
+   {
+    "kind": "input",
+    "text": "[text] Check a hash noted earlier (12+ hex digits)"
+   },
+   {
+    "kind": "button.small",
+    "text": "Check"
+   },
+   {
+    "kind": "p.hint",
+    "text": "The noted hash is not in this log: records after it were deleted, or the note is wrong"
+   },
+   {
+    "kind": "button",
+    "text": "Verify whole log"
+   },
+   {
+    "kind": "p.strong",
+    "text": "✓ All checks passed — 1 record checked; signatures valid: 1/1; chain links intact: 1/1; photos match: 1/1; clock warnings: 0."
+   },
+   {
+    "kind": "input",
+    "text": "[search] Search operator, case ref, location note, record ID"
+   },
+   {
+    "kind": "select",
+    "text": "[select] Any result | POSITIVE | NEGATIVE | INCONCLUSIVE"
+   },
+   {
+    "kind": "select",
+    "text": "[select] Any kit | Marquis reagent — opiate screen"
+   },
+   {
+    "kind": "label",
+    "text": "From"
+   },
+   {
+    "kind": "input",
+    "text": "[date] filter-from"
+   },
+   {
+    "kind": "label",
+    "text": "To"
+   },
+   {
+    "kind": "input",
+    "text": "[date] filter-to"
+   },
+   {
+    "kind": "p.hint",
+    "text": "1 of 1 signed record"
+   },
+   {
+    "kind": "li",
+    "text": "POSITIVE #0 · 29/9/2026 12:23:15 am Operator AUDIT-01 · Marquis reagent — opiate screen Case AUDIT-CASE-1 · 28.61390, 77.20900 (±15 m)"
+   },
+   {
+    "kind": "button.log-row",
+    "text": "POSITIVE #0 · 29/9/2026 12:23:15 am Operator AUDIT-01 · Marquis reagent — opiate screen Case AUDIT-CASE-1 · 28.61390, 77.20900 (±15 m)"
+   },
+   {
+    "kind": "span.verdict-badge",
+    "text": "POSITIVE"
+   },
+   {
+    "kind": "span.hint",
+    "text": "Case AUDIT-CASE-1 · 28.61390, 77.20900 (±15 m)"
+   },
+   {
+    "kind": "p.hint",
+    "text": "A .zip with every record (JSONL), every photo, the public key and VERIFY.md explaining how to check it."
+   },
+   {
+    "kind": "button.primary",
+    "text": "Export whole log (.zip)"
+   },
+   {
+    "kind": "button",
+    "text": "Share .zip"
+   },
+   {
+    "kind": "p.warn-text",
+    "text": "Clearing this site’s data (or uninstalling the browser) deletes the signing key and the whole log together. Only an exported log survives that: export regularly."
+   },
+   {
+    "kind": "a",
+    "text": "Test"
+   },
+   {
+    "kind": "a.active",
+    "text": "Log"
+   },
+   {
+    "kind": "a",
+    "text": "Settings"
+   }
+  ]
+ },
+ {
+  "shot": "24-laptop-settings.jpg",
+  "route": "#/settings",
+  "items": [
+   {
+    "kind": "h1",
+    "text": "Settings"
+   },
+   {
+    "kind": "label",
+    "text": "Operator ID"
+   },
+   {
+    "kind": "input",
+    "text": "[text] e.g. badge or service number"
+   },
+   {
+    "kind": "p.hint",
+    "text": "Written into every record you sign. The app does not verify it: a record proves it was not changed after signing on this phone, not who the officer was."
+   },
+   {
+    "kind": "label.toggle",
+    "text": "Data collection mode"
+   },
+   {
+    "kind": "input",
+    "text": "[checkbox] on"
+   },
+   {
+    "kind": "p.hint",
+    "text": "For building the photo test set only. Capture works even when checks fail, so deliberately bad photos can be collected. It never shows a result. Each photo is tagged and saved on this phone until you export it."
+   },
+   {
+    "kind": "label",
+    "text": "Phone model"
+   },
+   {
+    "kind": "input",
+    "text": "[text] e.g. Redmi Note 12"
+   },
+   {
+    "kind": "span.hint",
+    "text": "Required for data collection."
+   },
+   {
+    "kind": "p.hint",
+    "text": "Rear camera, 1920×1080 requested. What the phone actually delivers is shown on the camera screen and recorded in every capture."
+   },
+   {
+    "kind": "p.hint",
+    "text": "Provisional = a reasoned starting value not yet checked against real photos."
+   },
+   {
+    "kind": "th",
+    "text": "blurMinLaplacianVariance"
+   },
+   {
+    "kind": "th",
+    "text": "highlightClipLevel"
+   },
+   {
+    "kind": "th",
+    "text": "maxHighlightClipFraction"
+   },
+   {
+    "kind": "th",
+    "text": "shadowClipLevel"
+   },
+   {
+    "kind": "th",
+    "text": "maxShadowClipFraction"
+   },
+   {
+    "kind": "th",
+    "text": "minMedianLuma"
+   },
+   {
+    "kind": "th",
+    "text": "idCellMargin"
+   },
+   {
+    "kind": "th",
+    "text": "minPatchSourcePixels"
+   },
+   {
+    "kind": "th",
+    "text": "maxClipFraction"
+   },
+   {
+    "kind": "th",
+    "text": "maxResidualWhiteRatio"
+   },
+   {
+    "kind": "th",
+    "text": "maxLooMeanDeltaE00"
+   },
+   {
+    "kind": "th",
+    "text": "maxLooP90DeltaE00"
+   },
+   {
+    "kind": "th",
+    "text": "maxRegistrationSpreadDeltaE00"
+   },
+   {
+    "kind": "th",
+    "text": "sampleWhiteNoiseFactor"
+   },
+   {
+    "kind": "th",
+    "text": "sampleMinDeltaE"
+   },
+   {
+    "kind": "th",
+    "text": "sampleEdgeErodeMm"
+   },
+   {
+    "kind": "th",
+    "text": "sampleNoiseFloorMm2"
+   },
+   {
+    "kind": "th",
+    "text": "sampleMinAreaMm2"
+   },
+   {
+    "kind": "th",
+    "text": "sampleSecondRegionMm2"
+   },
+   {
+    "kind": "th",
+    "text": "maxSampleClipFraction"
+   },
+   {
+    "kind": "th",
+    "text": "sampleDarkLevel"
+   },
+   {
+    "kind": "th",
+    "text": "maxSampleSpreadDeltaE"
+   },
+   {
+    "kind": "h2",
+    "text": "Signed log"
+   },
+   {
+    "kind": "p.hint",
+    "text": "A .zip with every record (JSONL), every photo, the public key and VERIFY.md explaining how to check it."
+   },
+   {
+    "kind": "button.primary",
+    "text": "Export whole log (.zip)"
+   },
+   {
+    "kind": "button",
+    "text": "Share .zip"
+   },
+   {
+    "kind": "p.warn-text",
+    "text": "Clearing this site’s data (or uninstalling the browser) deletes the signing key and the whole log together. Only an exported log survives that: export regularly."
+   },
+   {
+    "kind": "a.nav-link",
+    "text": "About this app, the card PDF and the build"
+   },
+   {
+    "kind": "a",
+    "text": "Test"
+   },
+   {
+    "kind": "a",
+    "text": "Log"
+   },
+   {
+    "kind": "a.active",
+    "text": "Settings"
+   }
+  ]
+ },
+ {
+  "shot": "25-laptop-about.jpg",
+  "route": "#/about",
+  "items": [
+   {
+    "kind": "h1",
+    "text": "About"
+   },
+   {
+    "kind": "p",
+    "text": "Field Test Companion works alongside existing colour-change drug-test kits. The officer photographs the reacted test on the reference colour card; the app corrects the colours using the card and reads the reaction colour."
+   },
+   {
+    "kind": "p.strong",
+    "text": "Its output is a presumptive field result. It never replaces laboratory confirmation."
+   },
+   {
+    "kind": "p",
+    "text": "Everything runs on this phone. Photos are never uploaded. No server, no account."
+   },
+   {
+    "kind": "p",
+    "text": "Print in colour on A4 at 100% (no fit-to-page), check the 50 mm scale bar with a ruler, cut on the crop marks, and register each copy before use."
+   },
+   {
+    "kind": "a.button",
+    "text": "Download card (A4 PDF)"
+   },
+   {
+    "kind": "th",
+    "text": "Version"
+   },
+   {
+    "kind": "th",
+    "text": "Build"
+   },
+   {
+    "kind": "th",
+    "text": "Offline"
+   },
+   {
+    "kind": "a",
+    "text": "Test"
+   },
+   {
+    "kind": "a",
+    "text": "Log"
+   },
+   {
+    "kind": "a",
+    "text": "Settings"
+   }
+  ]
+ },
+ {
+  "shot": "26-laptop-log-empty.jpg",
+  "route": "#/log",
+  "items": [
+   {
+    "kind": "h1",
+    "text": "Log"
+   },
+   {
+    "kind": "button.latest-hash",
+    "text": "— (no records yet)"
+   },
+   {
+    "kind": "p.hint",
+    "text": "Note this down outside the phone (case diary, a message). Deleting the newest records can only be detected by comparing with a hash noted earlier."
+   },
+   {
+    "kind": "input",
+    "text": "[text] Check a hash noted earlier (12+ hex digits)"
+   },
+   {
+    "kind": "button.small",
+    "text": "Check"
+   },
+   {
+    "kind": "button",
+    "text": "Verify whole log"
+   },
+   {
+    "kind": "input",
+    "text": "[search] Search operator, case ref, location note, record ID"
+   },
+   {
+    "kind": "select",
+    "text": "[select] Any result | POSITIVE | NEGATIVE | INCONCLUSIVE"
+   },
+   {
+    "kind": "select",
+    "text": "[select] Any kit"
+   },
+   {
+    "kind": "label",
+    "text": "From"
+   },
+   {
+    "kind": "input",
+    "text": "[date] filter-from"
+   },
+   {
+    "kind": "label",
+    "text": "To"
+   },
+   {
+    "kind": "input",
+    "text": "[date] filter-to"
+   },
+   {
+    "kind": "p.hint",
+    "text": "No records yet. Save a result from the Test screen."
+   },
+   {
+    "kind": "p.hint",
+    "text": "A .zip with every record (JSONL), every photo, the public key and VERIFY.md explaining how to check it."
+   },
+   {
+    "kind": "button.primary",
+    "text": "Export whole log (.zip)"
+   },
+   {
+    "kind": "button",
+    "text": "Share .zip"
+   },
+   {
+    "kind": "p.warn-text",
+    "text": "Clearing this site’s data (or uninstalling the browser) deletes the signing key and the whole log together. Only an exported log survives that: export regularly."
+   },
+   {
+    "kind": "a",
+    "text": "Test"
+   },
+   {
+    "kind": "a.active",
+    "text": "Log"
+   },
+   {
+    "kind": "a",
+    "text": "Settings"
+   }
+  ]
+ },
+ {
+  "shot": "27-laptop-log-empty-code-check.jpg",
+  "route": "#/log",
+  "items": [
+   {
+    "kind": "h1",
+    "text": "Log"
+   },
+   {
+    "kind": "button.latest-hash",
+    "text": "— (no records yet)"
+   },
+   {
+    "kind": "p.hint",
+    "text": "Note this down outside the phone (case diary, a message). Deleting the newest records can only be detected by comparing with a hash noted earlier."
+   },
+   {
+    "kind": "input",
+    "text": "[text] Check a hash noted earlier (12+ hex digits)"
+   },
+   {
+    "kind": "button.small",
+    "text": "Check"
+   },
+   {
+    "kind": "p.hint",
+    "text": "The noted hash is not in this log: records after it were deleted, or the note is wrong"
+   },
+   {
+    "kind": "button",
+    "text": "Verify whole log"
+   },
+   {
+    "kind": "input",
+    "text": "[search] Search operator, case ref, location note, record ID"
+   },
+   {
+    "kind": "select",
+    "text": "[select] Any result | POSITIVE | NEGATIVE | INCONCLUSIVE"
+   },
+   {
+    "kind": "select",
+    "text": "[select] Any kit"
+   },
+   {
+    "kind": "label",
+    "text": "From"
+   },
+   {
+    "kind": "input",
+    "text": "[date] filter-from"
+   },
+   {
+    "kind": "label",
+    "text": "To"
+   },
+   {
+    "kind": "input",
+    "text": "[date] filter-to"
+   },
+   {
+    "kind": "p.hint",
+    "text": "No records yet. Save a result from the Test screen."
+   },
+   {
+    "kind": "p.hint",
+    "text": "A .zip with every record (JSONL), every photo, the public key and VERIFY.md explaining how to check it."
+   },
+   {
+    "kind": "button.primary",
+    "text": "Export whole log (.zip)"
+   },
+   {
+    "kind": "button",
+    "text": "Share .zip"
+   },
+   {
+    "kind": "p.warn-text",
+    "text": "Clearing this site’s data (or uninstalling the browser) deletes the signing key and the whole log together. Only an exported log survives that: export regularly."
+   },
+   {
+    "kind": "a",
+    "text": "Test"
+   },
+   {
+    "kind": "a.active",
+    "text": "Log"
+   },
+   {
+    "kind": "a",
+    "text": "Settings"
+   }
+  ]
+ },
+ {
+  "shot": "28-phone-result-negative.jpg",
+  "route": "#/result",
+  "items": [
+   {
+    "kind": "h1",
+    "text": "Result"
+   },
+   {
+    "kind": "span.verdict-badge",
+    "text": "NEGATIVE"
+   },
+   {
+    "kind": "p.why",
+    "text": "No colour developed in the sample zone. The app cannot tell this from an empty zone; the photo shows which it was."
+   },
+   {
+    "kind": "h2",
+    "text": "Sample colour and target colours"
+   },
+   {
+    "kind": "p.hint",
+    "text": "No pixel in the zone differs from the card's white by more than 5.8 ΔE76 (3 × this photo's paper noise). The app cannot tell a colourless test from an empty zone."
+   },
+   {
+    "kind": "figcaption.hint",
+    "text": "The reference colour card, straightened by the app, with the sample zone outlined."
+   },
+   {
+    "kind": "p.kit-validation",
+    "text": "Marquis reagent — opiate screen: Marquis opiate screen — colours from NIJ Standard-0604.01, not yet checked against a real reaction with this app"
+   },
+   {
+    "kind": "div.notice",
+    "text": "Presumptive result — send for laboratory confirmation"
+   },
+   {
+    "kind": "label",
+    "text": "Case reference"
+   },
+   {
+    "kind": "input",
+    "text": "[text] Case reference (optional)"
+   },
+   {
+    "kind": "label",
+    "text": "Location note"
+   },
+   {
+    "kind": "input",
+    "text": "[text] Location note (optional), e.g. checkpoint name"
+   },
+   {
+    "kind": "label.toggle",
+    "text": "The test is in the sample zone Required: the app cannot tell a colourless test from an empty zone."
+   },
+   {
+    "kind": "input",
+    "text": "[checkbox] on"
+   },
+   {
+    "kind": "span.hint",
+    "text": "Required: the app cannot tell a colourless test from an empty zone."
+   },
+   {
+    "kind": "p.hint",
+    "text": "Operator AUDIT-01 · Location ±15 m · signed with this phone's key."
+   },
+   {
+    "kind": "button.primary",
+    "text": "Save signed record"
+   },
+   {
+    "kind": "p.hint",
+    "text": "Tick the box above to confirm the test is in the sample zone."
+   },
+   {
+    "kind": "summary",
+    "text": "Technical details"
+   },
+   {
+    "kind": "button",
+    "text": "Back to camera"
+   },
+   {
+    "kind": "a.active",
+    "text": "Test"
+   },
+   {
+    "kind": "a",
+    "text": "Log"
+   },
+   {
+    "kind": "a",
+    "text": "Settings"
+   },
+   {
+    "kind": "div.toast",
+    "text": "Operator ID saved"
+   }
+  ]
+ },
+ {
+  "shot": "29-phone-result-retake.jpg",
+  "route": "#/result",
+  "items": [
+   {
+    "kind": "h1",
+    "text": "Result"
+   },
+   {
+    "kind": "span.verdict-badge",
+    "text": "RETAKE"
+   },
+   {
+    "kind": "p.why",
+    "text": "Two separate coloured areas — use one test"
+   },
+   {
+    "kind": "h2",
+    "text": "Sample colour and target colours"
+   },
+   {
+    "kind": "p.hint",
+    "text": "Sampled 95 mm² (4198 camera pixels), spread 0.0 ΔE76, clipped 0.0%. Blue = sampled, pink = coloured but left out (edge, glare, dark, trimmed)."
+   },
+   {
+    "kind": "figcaption.hint",
+    "text": "The reference colour card, straightened by the app, with the sample zone outlined."
+   },
+   {
+    "kind": "p.kit-validation",
+    "text": "Marquis reagent — opiate screen: Marquis opiate screen — colours from NIJ Standard-0604.01, not yet checked against a real reaction with this app"
+   },
+   {
+    "kind": "div.notice",
+    "text": "Presumptive result — send for laboratory confirmation"
+   },
+   {
+    "kind": "label",
+    "text": "Case reference"
+   },
+   {
+    "kind": "input",
+    "text": "[text] Case reference (optional)"
+   },
+   {
+    "kind": "label",
+    "text": "Location note"
+   },
+   {
+    "kind": "input",
+    "text": "[text] Location note (optional), e.g. checkpoint name"
+   },
+   {
+    "kind": "label.toggle",
+    "text": "The test is in the sample zone Required: the app cannot tell a colourless test from an empty zone."
+   },
+   {
+    "kind": "input",
+    "text": "[checkbox] on"
+   },
+   {
+    "kind": "span.hint",
+    "text": "Required: the app cannot tell a colourless test from an empty zone."
+   },
+   {
+    "kind": "p.hint",
+    "text": "Operator AUDIT-01 · Location ±15 m · signed with this phone's key."
+   },
+   {
+    "kind": "button.primary",
+    "text": "Save signed record"
+   },
+   {
+    "kind": "p.hint",
+    "text": "A RETAKE is never recorded. Fix the problem above and take the photo again."
+   },
+   {
+    "kind": "summary",
+    "text": "Technical details"
+   },
+   {
+    "kind": "button",
+    "text": "Back to camera"
+   },
+   {
+    "kind": "a.active",
+    "text": "Test"
+   },
+   {
+    "kind": "a",
+    "text": "Log"
+   },
+   {
+    "kind": "a",
+    "text": "Settings"
+   },
+   {
+    "kind": "div.toast",
+    "text": "Operator ID saved"
+   }
+  ]
+ },
+ {
+  "shot": "30-phone-camera-no-card.jpg",
+  "route": "#/test",
+  "items": [
+   {
+    "kind": "div.kit-status",
+    "text": "Marquis opiate screen — colours from NIJ Standard-0604.01, not yet checked against a real reaction with this app"
+   },
+   {
+    "kind": "button.link",
+    "text": "Operator: AUDIT-01 (change)"
+   },
+   {
+    "kind": "span.geo-line",
+    "text": "Location ±15 m"
+   },
+   {
+    "kind": "div.guidance",
+    "text": "Hold steady"
+   },
+   {
+    "kind": "div.res-info",
+    "text": "1080×1920"
+   },
+   {
+    "kind": "a.active",
+    "text": "Test"
+   },
+   {
+    "kind": "a",
+    "text": "Log"
+   },
+   {
+    "kind": "a",
+    "text": "Settings"
+   },
+   {
+    "kind": "div.toast",
+    "text": "Operator ID saved"
+   }
+  ]
+ },
+ {
+  "shot": "31-phone-camera-unavailable.jpg",
+  "route": "#/test",
+  "items": [
+   {
+    "kind": "div.kit-status",
+    "text": "Marquis opiate screen — colours from NIJ Standard-0604.01, not yet checked against a real reaction with this app"
+   },
+   {
+    "kind": "button.link",
+    "text": "Operator: AUDIT-01 (change)"
+   },
+   {
+    "kind": "span.geo-line",
+    "text": "Location unavailable: location permission denied"
+   },
+   {
+    "kind": "div.guidance",
+    "text": "Camera unavailable"
+   },
+   {
+    "kind": "strong",
+    "text": "Camera permission was refused. Allow camera access for this site in the browser settings, then reload."
+   },
+   {
+    "kind": "code",
+    "text": "NotAllowedError: Permission denied"
+   },
+   {
+    "kind": "button",
+    "text": "Retry camera"
+   },
+   {
+    "kind": "a.active",
+    "text": "Test"
+   },
+   {
+    "kind": "a",
+    "text": "Log"
+   },
+   {
+    "kind": "a",
+    "text": "Settings"
+   },
+   {
+    "kind": "div.toast",
+    "text": "Operator ID saved"
+   }
+  ]
+ },
+ {
+  "shot": "32-laptop-camera-unavailable.jpg",
+  "route": "#/test",
+  "items": [
+   {
+    "kind": "div.kit-status",
+    "text": "Marquis opiate screen — colours from NIJ Standard-0604.01, not yet checked against a real reaction with this app"
+   },
+   {
+    "kind": "button.link",
+    "text": "Operator: AUDIT-01 (change)"
+   },
+   {
+    "kind": "span.geo-line",
+    "text": "Location unavailable: location permission denied"
+   },
+   {
+    "kind": "div.guidance",
+    "text": "Camera unavailable"
+   },
+   {
+    "kind": "strong",
+    "text": "Camera permission was refused. Allow camera access for this site in the browser settings, then reload."
+   },
+   {
+    "kind": "code",
+    "text": "NotAllowedError: Permission denied"
+   },
+   {
+    "kind": "button",
+    "text": "Retry camera"
+   },
+   {
+    "kind": "a.active",
+    "text": "Test"
+   },
+   {
+    "kind": "a",
+    "text": "Log"
+   },
+   {
+    "kind": "a",
+    "text": "Settings"
+   },
+   {
+    "kind": "div.toast",
+    "text": "Operator ID saved"
+   }
+  ]
+ }
+]

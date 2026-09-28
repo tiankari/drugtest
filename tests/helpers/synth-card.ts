@@ -36,7 +36,7 @@ function inMark(m: SampleMark, u: number, v: number): boolean {
   return Math.abs(u - m.cx) <= (m.w ?? 0) / 2 && Math.abs(v - m.cy) <= (m.h ?? 0) / 2;
 }
 
-function rasterCard(copy: string, marks: readonly SampleMark[] = []): { w: number; h: number; lin: Float32Array } {
+function rasterCard(copy: string, marks: readonly SampleMark[] = [], patchColours?: Readonly<Record<string, Vec3>>): { w: number; h: number; lin: Float32Array } {
   const w = Math.round(MAT_V1.widthMm * PX_PER_MM);
   const h = Math.round(MAT_V1.heightMm * PX_PER_MM);
   const srgb = new Uint8Array(w * h * 3).fill(255);
@@ -69,6 +69,8 @@ function rasterCard(copy: string, marks: readonly SampleMark[] = []): { w: numbe
     }
   };
   for (const s of cardShapes(MAT_V1, copy)) draw(s);
+  // Optional: paint the patches with other colours (e.g. a registered copy's reference values).
+  if (patchColours) for (const p of MAT_V1.patches) if (patchColours[p.id]) fill(p.rect.x, p.rect.y, p.rect.x + p.rect.w, p.rect.y + p.rect.h, patchColours[p.id]);
   // Linear reflectance; printed black is not perfectly black.
   const lin = new Float32Array(w * h * 3);
   for (let i = 0; i < srgb.length; i++) lin[i] = Math.max(0.02, srgbToLinear(srgb[i] / 255)) * 0.9;
@@ -141,6 +143,8 @@ export interface SynthOptions {
   mirror?: boolean;
   /** Test objects in the sample zone of the (first) card. */
   marks?: readonly SampleMark[];
+  /** 8-bit sRGB colour per patch id, replacing the design colours (first card only). */
+  patchColours?: Readonly<Record<string, Vec3>>;
 }
 
 export function renderPhoto(place: Placement, opts: SynthOptions = {}): { width: number; height: number; data: Uint8Array } {
@@ -148,8 +152,9 @@ export function renderPhoto(place: Placement, opts: SynthOptions = {}): { width:
   const cards: [string, Placement][] = [[opts.copy ?? 'A', place], ...(opts.extra ?? [])];
   const maps = cards.map(([copy, p], ci) => {
     const marks = ci === 0 ? (opts.marks ?? []) : [];
+    const patches = ci === 0 ? opts.patchColours : undefined;
     // Only plain cards are cached (a raster is ~19 MB).
-    if (marks.length) return { r: rasterCard(copy, marks), Hinv: invertH(cardHomography(p))! };
+    if (marks.length || patches) return { r: rasterCard(copy, marks, patches), Hinv: invertH(cardHomography(p))! };
     if (!cache.has(copy)) cache.set(copy, rasterCard(copy));
     return { r: cache.get(copy)!, Hinv: invertH(cardHomography(p))! };
   });
