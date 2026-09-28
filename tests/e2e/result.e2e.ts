@@ -39,7 +39,7 @@ const clip = writeY4mClip('synthetic-card-N-portrait', frames);
 const perPhoto = frames.map((f) => {
   const a = analyseMat(f, { guidanceOnly: true });
   if (!a.patches) throw new Error(`synthetic frame not analysable: ${a.reason}`);
-  return Object.fromEntries(a.patches.map((p) => [p.id, p.rgb8])) as Record<string, Vec3>;
+  return Object.fromEntries(a.patches.map((p) => [p.id, p.flat])) as Record<string, Vec3>;
 });
 const c = combineRegistration(perPhoto);
 const ref: MatReference = {

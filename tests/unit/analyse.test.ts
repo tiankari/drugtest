@@ -25,7 +25,7 @@ function register(copy: string): MatReference {
   const perPhoto: Record<string, Vec3>[] = [1, 2, 3].map((seed) => {
     const a = analyseMat(renderPhoto(placement(W, H, CARD, 0), { copy, camera: { noise: 2, seed, exposure: 0.9 } }), { guidanceOnly: true });
     if (!a.patches) throw new Error(`registration render failed: ${a.reason}`);
-    return Object.fromEntries(a.patches.map((p) => [p.id, p.rgb8]));
+    return Object.fromEntries(a.patches.map((p) => [p.id, p.flat]));
   });
   const c = combineRegistration(perPhoto);
   return {
@@ -67,18 +67,28 @@ describe('full card analysis (synthetic)', () => {
     expect(a.correction!.used.loo.mean).toBeLessThan(a.correction!.other!.loo.mean);
   });
 
-  it('RETAKE "uneven light" when a shadow covers half the card', () => {
+  it('RETAKE "uneven light" when a sharp-edged shadow covers half the card (a plane cannot remove it)', () => {
     const img = renderPhoto(placement(W, H, CARD, 0), { camera: { shading: (u) => (u < 52.5 ? 0.55 : 1), noise: 2 } });
     const a = analyseMat(img, { references });
     expect(a.verdict).toBe('RETAKE');
     expect(a.reason).toMatch(/Uneven light/);
-    expect(a.unevenLight!.ratio).toBeGreaterThan(1.5);
+    expect(a.unevenLight!.residual).toBeGreaterThan(1.2);
+  });
+
+  it('a smooth light gradient is divided out: PASS, and the corrected card matches the reference', () => {
+    const img = renderPhoto(placement(W, H, CARD, 0), { camera: { shading: (_u, v) => 1 - 0.0035 * v, noise: 2, seed: 4 } });
+    const a = analyseMat(img, { references, method: 'B' });
+    expect(a.unevenLight!.ratio).toBeGreaterThan(1.3);
+    expect(a.unevenLight!.residual).toBeLessThan(1.05);
+    expect(a.verdict).toBe('PASS');
+    expect(a.correction!.used.loo.mean).toBeLessThan(2);
   });
 
   it('even light passes the uneven-light check', () => {
     const a = analyseMat(renderPhoto(placement(W, H, CARD, 0), { camera: { noise: 2 } }), { references });
     expect(a.checks.find((c) => c.id === 'uneven')!.pass).toBe(true);
     expect(a.unevenLight!.ratio).toBeLessThan(1.05);
+    expect(a.unevenLight!.residual).toBeLessThan(1.05);
   });
 
   it('RETAKE "glare" when a blown-out spot covers patches', () => {

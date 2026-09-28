@@ -20,11 +20,15 @@ export const DATA_TAGS = [
 export type DataTag = (typeof DATA_TAGS)[number];
 
 export const TAG_INFO: Record<DataTag, { label: string; hint: string; folder: 'registration' | 'lighting' | 'should_fail' }> = {
-  registration: { label: 'Registration', hint: 'Clean card, soft indirect daylight near a window, no direct sun. 3 photos per copy.', folder: 'registration' },
-  daylight: { label: 'Daylight', hint: 'Orange strip in the sample zone. Do not move it between shots.', folder: 'lighting' },
-  tube: { label: 'Tube light', hint: 'Orange strip in the sample zone, fluorescent/LED tube light.', folder: 'lighting' },
-  'warm-bulb': { label: 'Warm bulb', hint: 'Orange strip in the sample zone, warm yellow bulb.', folder: 'lighting' },
-  torch: { label: 'Phone torch', hint: 'Orange strip in the sample zone, lit by a phone torch.', folder: 'lighting' },
+  registration: {
+    label: 'Registration',
+    hint: 'Clean card lying flat on a table, steady daylight (not dusk), no direct sun. Tap Lock, then 3 photos without moving. 3 per copy.',
+    folder: 'registration',
+  },
+  daylight: { label: 'Daylight', hint: 'Dried haldi stain in the sample zone. Do not move it between shots.', folder: 'lighting' },
+  tube: { label: 'Tube light', hint: 'Dried haldi stain in the sample zone, fluorescent/LED tube light.', folder: 'lighting' },
+  'warm-bulb': { label: 'Warm bulb', hint: 'Dried haldi stain in the sample zone, warm yellow bulb.', folder: 'lighting' },
+  torch: { label: 'Phone torch', hint: 'Dried haldi stain in the sample zone, lit by a phone torch.', folder: 'lighting' },
   'fail-corner': { label: 'Fail: corner covered', hint: 'Cover one corner marker (finger or paper).', folder: 'should_fail' },
   'fail-shadow': { label: 'Fail: shadow', hint: 'Shadow across half the card.', folder: 'should_fail' },
   'fail-glare': { label: 'Fail: glare', hint: 'A glare spot on the colour patches.', folder: 'should_fail' },
@@ -99,6 +103,8 @@ export interface CaptureSidecar {
     settings: Record<string, unknown>;
     capabilities: Record<string, unknown> | null;
     torchOn: boolean;
+    /** Exposure / white-balance lock requested for this shot (registration only), and what the phone did. */
+    lock: { exposure: boolean; whiteBalance: boolean; error: string | null } | null;
   };
   checks: {
     pass: boolean;

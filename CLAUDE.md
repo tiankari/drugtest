@@ -1,29 +1,46 @@
 # CLAUDE.md — Field drug-test companion (SIH26231)
 
-## STATUS: Session 1 Steps 1–5 done; Step 6 PAUSED for registration photos
+## STATUS: Session 1 Steps 1–5 done; Step 6 PAUSED for a registration retake
 
 Built: scaffold + offline PWA + Pages deploy, printable reference colour card
 (MAT v1), camera and data-collection tool, card detection / rectification /
 ID strip / colour correction (Step 4), live guidance and result screen
 (Step 5), registration and validation scripts (Step 6).
 
-**Blocker:** the real photo set has **no registration photos** (0 of 6), so no
-printed copy has reference values. Colour correction therefore cannot run on
-real photos yet: every real photo ends RETAKE "not registered", the corrected
-columns of `docs/validation/mat_v1.md` are empty, the correction method is not
-chosen and the correction thresholds are not derived.
+**Blocker:** no printed copy is registered. The first registration shots
+(hand-held against a wall at dusk) were each fine on their own but the three
+shots of a copy disagree by 5.2 (A) / 5.5 (B) ΔE00 even after removing
+exposure/white-balance drift and the light gradient; the limit is 3. So
+colour correction has not run on a real photo, the method is not chosen and
+the correction thresholds are not derived. The user is retaking (protocol in
+`data/real/README.md`): cards flat on a table, steady daylight, exposure/WB
+lock, and a dried haldi stain as the lighting test object.
 
-**When registration photos arrive** (`data/real/mat/registration/{A,B}/`, 3
-each, clean card, soft daylight, cards cut apart):
-1. Count PNGs per folder and per tag; verify hashes (`loadCapture`).
-2. `node scripts/register-mat.ts` → `profiles/mat_reference_1_{A,B}.json`
-   (it rejects photos that fail any check, and a registration whose spread
-   exceeds the limit).
-3. `node scripts/validate-mat.ts` → `docs/validation/mat_v1.md`. Read the cap
-   spreads before/after for A and B, per phone and across phones.
-4. Choose the default method from that data (`DEFAULT_CORRECTION_METHOD`),
+**Design decisions taken on real data (user, 2026-09-28):**
+1. **Flat-field, then check.** A per-channel plane fitted to the six white
+   patches is divided out before correction (`src/pipeline/flatfield.ts`); the
+   uneven-light check now applies to what remains (`maxResidualWhiteRatio`).
+   Consequence: the soft half-card shadow photo (`fail-shadow`) is no longer
+   refused by the light check (residual 1.14); if it PASSes once a copy is
+   registered, report it as the headline finding.
+2. **Registration normalises each shot to its own white patches** (after
+   flat-field) before the median and the spread; reference schema v2 (paper
+   white = 1). Limit stays 3 ΔE00 until re-derived.
+3. **Optional exposure/WB lock for registration shots** where the phone
+   offers manual modes (Camera tab, tag `registration`). Recorded in the
+   sidecar (`camera.lock`). Untested on a real phone; the fake camera offers no
+   manual modes, so only the fallback is tested.
+4. **Dried haldi stain** replaces the glossy cap for the lighting set.
+
+**When the retake arrives:**
+1. Count PNGs per folder and per tag; verify hashes (`loadCapture`). Earlier
+   sets live in `data/real/archive/`; never mix them into `data/real/mat/`.
+2. `node scripts/register-mat.ts` → `profiles/mat_reference_1_{A,B}.json`.
+3. `node scripts/validate-mat.ts` → `docs/validation/mat_v1.md` (reports the
+   current set and every archived set separately).
+4. Choose the default method from the data (`DEFAULT_CORRECTION_METHOD`),
    derive or keep-as-debt every provisional threshold, rewrite this file, merge.
-5. The user decides whether real photos may go into the public repo (see below).
+5. The user decides whether real photos may go into the public repo.
 
 ### Personal project: identity and remote
 
@@ -105,7 +122,9 @@ silently — every check is recorded, the first failure is the RETAKE reason:
    patch's central 5 × 5 mm; trimmed median (10% off each luma end); "Move
    closer" if the smallest patch has too few camera pixels.
 6. Glare: clipped fraction in every patch and in the sample zone.
-7. Uneven light: brightest/dimmest linear luminance of the 6 white patches.
+7. Light: a per-channel plane is fitted to the 6 white patches and divided
+   out of every patch and the sample reading; RETAKE if the whites are still
+   uneven afterwards (local shadow the plane cannot model).
 8. Registered reference for the copy read (bundled from `profiles/`).
 9. Correction (`correct.ts`): A = 3×3 in linear RGB; B = per-channel power-law
    curves fitted on the neutral ramp, then 3×3. Leave-one-out CIEDE2000 decides.
@@ -121,7 +140,8 @@ silently — every check is recorded, the first failure is the RETAKE reason:
 | `src/pipeline/components.ts`, `detect.ts` | Connected components, holes, quad fit; card detection, verification, ID strip reading. |
 | `src/pipeline/homography.ts`, `linalg.ts` | Normalised DLT homography; small solvers, medians, percentiles. |
 | `src/pipeline/sample.ts`, `rectify.ts` | Patch sampling from camera pixels; canonical warp for display. |
-| `src/pipeline/correct.ts`, `reference.ts` | Methods A/B, leave-one-out; registered-reference format and combination. |
+| `src/pipeline/flatfield.ts` | Planar light field from the six whites; flat-fielding; white ratios. |
+| `src/pipeline/correct.ts`, `reference.ts` | Methods A/B, leave-one-out; registered-reference format (v2) and white-normalised combination. |
 | `src/pipeline/analyse.ts` | The whole pipeline and PASS/RETAKE with plain-words reasons. |
 | `src/pipeline/config.ts` | **Every threshold and parameter**, each provisional/derived with a reason. |
 | `src/io/png.ts`, `crc32.ts`, `hash.ts`, `dataset.ts` | Strict PNG codec, SHA-256, tags/naming/zip folders/sidecar schema. |
@@ -152,11 +172,23 @@ Nothing has been registered, so **no colour correction has run on a real photo.*
   glare photo → refused ("Show all four corners").
 - **Should-fail:** 5/5 RETAKE, none passed; right reason for blur, far, shadow
   (3/5). No banding photo was collected.
-- **Uneven light (headline finding):** the white-patch ratio of the 8 lighting
-  photos is 1.17–3.04; **7 of 8 exceed the 1.20 limit**, including daylight.
-  Causes seen: a top-to-bottom gradient in close-up shots (the phone and hand
-  above the card block light; the far shot measures 1.04) and the cap's own
-  shadow (warm-bulb shot, one white at 0.19 vs ~0.5). Not loosened.
+- **Uneven light (headline finding, led to decision 1):** as photographed, the
+  white-patch ratio was 1.17–3.04 on the 8 lighting photos and 1.24–1.61 on
+  the 6 registration photos: 13 of 14 good-intent photos over the old 1.20
+  limit. Causes seen: a top-to-bottom gradient in close-up shots (phone and
+  hand block light; the far shot measures 1.04) and the cap's own shadow
+  (warm-bulb shot, one white at 0.19 vs ~0.5). After flat-field the residual
+  is 1.025–1.055 on registration photos and 1.04–1.36 on lighting photos
+  (2.26 on the cap-shadow shot, still RETAKE).
+- **Registration repeatability:** three back-to-back hand-held shots of one
+  copy disagree by 8.3 / 9.2 ΔE00 raw, mostly auto-exposure drift (one shot
+  ~10% brighter on every patch); 5.2 / 5.5 after per-shot white
+  normalisation and flat-field (median over patches ~3). Rejected.
+- **Scratch experiment (not the app; checks waived, copy A registered from
+  those shots anyway):** leave-one-out 3–7.7 ΔE00 per lighting photo (lower
+  with flat-field); the glossy cap still spread 18.7–23.6 ΔE00 across lights
+  and phones after correction (19.4 before). Inconclusive about matte
+  reaction colours: the cap is glossy and more saturated than any patch.
 - **Glare:** the torch reflects off the glossy cap: 5.4% of the sample zone
   clipped on the OnePlus torch shot → RETAKE.
 - **The test colour before correction** (orange-red cap, central 24 mm): its
@@ -199,7 +231,7 @@ Safari/iOS, speed on a cheap Android phone.
 | `idCellMargin` | 0.15 | provisional (closest real cell 17.2%) |
 | `minPatchSourcePixels` | 400 | provisional, consistent with data (good 930–1227, far 256) |
 | `maxClipFraction` | 0.02 | provisional (torch/cap 5.4% → RETAKE) |
-| `maxWhiteLuminanceRatio` | 1.20 | provisional — **7/8 real lighting photos exceed it; needs registration data to judge** |
+| `maxResidualWhiteRatio` | 1.20 | provisional — residual after flat-field (registration 1.03–1.06, lighting 1.04–1.36, cap shadow 2.26); replaces the raw-ratio limit |
 | `maxLooMeanDeltaE00` | 5 | provisional (no real correction yet) |
 | `maxLooP90DeltaE00` | 10 | provisional |
 | `maxRegistrationSpreadDeltaE00` | 3 | provisional |
@@ -237,9 +269,11 @@ framework, OpenCV.js.
 
 - **Registration photos missing** — blocks real-photo correction, the method
   choice and five thresholds (above).
-- **Uneven light** fails most real photos. Decide with data whether the limit
-  is too strict or the unevenness really hurts correction. A spatial
-  correction from the six white patches would be a design change: ask first.
+- **Registration retake pending**; the exposure/WB lock is unproven on a phone.
+- Flat-field runs on sRGB-decoded values, which the phone's tone curve makes
+  only approximately linear.
+- With flat-field, a soft half-card shadow is corrected rather than refused;
+  whether that is acceptable depends on the correction error once registered.
 - Photo set is thin: 8 lighting photos (asked 15+), 5 should-fail, no banding;
   cards not cut apart; a glossy cap stood in for the orange strip.
 - The printer rendered colours far from design (teal nearly black, greys

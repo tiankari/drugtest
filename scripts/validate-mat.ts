@@ -20,9 +20,23 @@ import { MAT_V1 } from '../src/pipeline/mat.ts';
 import type { MatReference } from '../src/pipeline/reference.ts';
 import { loadCapture } from './lib/capture-files.ts';
 
-const ROOT = 'data/real/mat';
 const OUT = 'docs/validation/mat_v1.md';
 const ZONE_CENTRE_MM = 24;
+/**
+ * Photo sets. data/real/mat is the current set; earlier sets are kept, unchanged,
+ * under data/real/archive/<name>/ and reported separately so test objects and
+ * registrations never mix. The object in the sample zone is not recorded by
+ * the app, so it is stated here per set.
+ */
+const ARCHIVE = 'data/real/archive';
+const OBJECTS: Record<string, string> = {
+  current: process.env.TEST_OBJECT ?? 'a dried haldi (turmeric) stain on plain paper, matte, taped flat',
+  '2026-09-28-first-set': 'an orange-red plastic cap, about 5 cm across and slightly glossy (no orange card strip was available)',
+};
+const SETS = [
+  { name: 'current', dir: 'data/real/mat' },
+  ...(existsSync(ARCHIVE) ? readdirSync(ARCHIVE).sort().map((n) => ({ name: n, dir: join(ARCHIVE, n) })) : []),
+];
 
 function listPngs(dir: string): string[] {
   if (!existsSync(dir)) return [];
@@ -42,6 +56,7 @@ for (const f of existsSync('profiles') ? readdirSync('profiles') : []) {
 }
 
 interface Row {
+  set: string;
   file: string;
   folder: string;
   tag: DataTag;
@@ -53,21 +68,24 @@ interface Row {
 }
 
 const rows: Row[] = [];
-for (const path of listPngs(ROOT)) {
+for (const { name: set, dir } of SETS)
+for (const path of listPngs(dir)) {
   const name = parseCaptureName(path.split(/[\\/]/).pop()!);
   if (!name) throw new Error(`Unexpected file name ${path}`);
   const c = await loadCapture(path);
   const hashesOk = c.fileHashMatches === true && c.pixelHashMatches === true;
   if (!hashesOk) throw new Error(`${path}: hashes do not match its sidecar; refusing to validate altered data`);
   const a = analyseMat(c.image, { references, bothMethods: true, zoneCentreMm: ZONE_CENTRE_MM });
-  const row: Row = { file: relative(ROOT, path).replace(/\\/g, '/'), folder: TAG_INFO[name.tag].folder, tag: name.tag, phone: name.phone, copyExpected: name.copy, a, hashesOk };
+  const rel = relative(dir, path).replace(/\\/g, '/');
+  const row: Row = { set, file: rel, folder: rel.split('/')[0], tag: name.tag, phone: name.phone, copyExpected: name.copy, a, hashesOk };
+  if (row.folder !== TAG_INFO[name.tag].folder) throw new Error(`${path}: tag ${name.tag} does not belong in ${row.folder}/`);
   if (a.zoneCentre && a.patches) {
     const correctedLab: Partial<Record<CorrectionMethod, Vec3>> = {};
-    for (const m of [a.correction?.used, a.correction?.other]) if (m) correctedLab[m.method] = labOfLinear(applyCorrection(m.model, a.zoneCentre.linear));
+    for (const m of [a.correction?.used, a.correction?.other]) if (m) correctedLab[m.method] = labOfLinear(applyCorrection(m.model, a.zoneCentre.flat));
     row.zone = { observedLab: labOfLinear(a.zoneCentre.linear), correctedLab, clip: a.zoneCentre.clipFraction };
   }
   rows.push(row);
-  console.log(`${a.verdict.padEnd(6)} ${row.file}  ${a.reason}`);
+  console.log(`${a.verdict.padEnd(6)} [${set}] ${row.file}  ${a.reason}`);
 }
 
 // ---------------------------------------------------------------- helpers
@@ -88,7 +106,7 @@ const commitId = (() => {
 })();
 const regCopies = Object.keys(references).sort();
 const phones = [...new Set(rows.map((r) => r.phone))].sort();
-const lighting = rows.filter((r) => r.folder === 'lighting');
+const lightingSets = SETS.map((st) => ({ set: st.name, rows: rows.filter((r) => r.set === st.name && r.folder === 'lighting') })).filter((g) => g.rows.length);
 const shouldFail = rows.filter((r) => r.folder === 'should_fail');
 const hasCorrection = rows.some((r) => r.a.correction);
 
@@ -102,28 +120,34 @@ p('Every row is a **real photo** captured through the app in data collection mod
 p(`Default correction method: **${DEFAULT_CORRECTION_METHOD.value}** (${DEFAULT_CORRECTION_METHOD.status}). Registered copies: ${regCopies.length ? regCopies.join(', ') : '**none**'}.`);
 if (!regCopies.length) {
   p();
-  p('> **Colour correction is blocked on real photos: there are no registration photos**, so no copy of the card has reference values. Every photo therefore ends in RETAKE ("not registered") after the card checks, and the corrected columns below are empty. Detection, orientation, ID strip, glare, uneven-light and closeness checks are fully evaluated.');
+  p('> **Colour correction is blocked on real photos: no copy of the card is registered**, so no copy has reference values. Every photo therefore ends in RETAKE ("not registered") after the card checks, and the corrected columns below are empty. Detection, orientation, ID strip, glare, uneven-light and closeness checks are fully evaluated. (`scripts/register-mat.ts` explains why any registration photos present were not accepted.)');
 }
+p();
+const setList = SETS.map((st) => `**${st.name}** (${st.dir.split('\\').join('/')}, ${rows.filter((r) => r.set === st.name).length} photos)`).join(', ');
+p(`Sets: ${setList}. Archived sets are earlier photo sessions kept unchanged and reported separately.`);
 p();
 p('## Photos');
 p();
-p('| Folder | Tag | Phone | Photos |');
-p('|---|---|---|---|');
+p('| Set | Folder | Tag | Phone | Photos |');
+p('|---|---|---|---|---|');
 const counts = new Map<string, number>();
-for (const r of rows) counts.set(`${r.folder}|${r.tag}|${r.phone}`, (counts.get(`${r.folder}|${r.tag}|${r.phone}`) ?? 0) + 1);
-for (const [k, n] of [...counts].sort()) {
-  const [folder, tag, phone] = k.split('|');
-  p(`| ${folder} | ${tag} | ${phone} | ${n} |`);
+for (const r of rows) {
+  const k = `${r.set}|${r.folder}${r.folder === 'registration' ? '/' + r.copyExpected : ''}|${r.tag}|${r.phone}`;
+  counts.set(k, (counts.get(k) ?? 0) + 1);
 }
-for (const c of ['A', 'B']) if (!rows.some((r) => r.folder === 'registration' && r.copyExpected === c)) p(`| registration | registration (copy ${c}) | — | **0** |`);
+for (const [k, n] of [...counts].sort()) {
+  const [set, folder, tag, phone] = k.split('|');
+  p(`| ${set} | ${folder} | ${tag} | ${phone} | ${n} |`);
+}
+for (const c of ['A', 'B']) if (!rows.some((r) => r.set === 'current' && r.folder === 'registration' && r.copyExpected === c)) p(`| current | registration/${c} | registration | — | **0** |`);
 p();
 
 p('## Per photo');
 p();
-p('Uneven light = brightest / dimmest linear luminance of the six white patches (limit ' + THRESHOLDS.maxWhiteLuminanceRatio.value + '). LOO = mean leave-one-out CIEDE2000 of the card patches after correction.');
+p('Uneven light = brightest / dimmest linear luminance of the six white patches, **after** the fitted smooth gradient is divided out (limit ' + THRESHOLDS.maxResidualWhiteRatio.value + '); "as photographed" is the same ratio before. LOO = mean leave-one-out CIEDE2000 of the card patches after correction.');
 p();
-p('| File | Phone | Lighting | Detected | Copy read | Copy matches | Orientation | Uneven light | LOO A | LOO B | Result | Reason |');
-p('|---|---|---|---|---|---|---|---|---|---|---|---|');
+p('| Set | File | Phone | Lighting | Detected | Copy read | Copy matches | Orientation | Uneven light (checked) | As photographed | LOO A | LOO B | Result | Reason |');
+p('|---|---|---|---|---|---|---|---|---|---|---|---|---|---|');
 for (const r of rows) {
   const d = r.a.detection;
   const loo = (m: CorrectionMethod) => {
@@ -132,7 +156,7 @@ for (const r of rows) {
     return f1(res?.loo.mean, 2);
   };
   p(
-    `| ${r.file.split('/').pop()} | ${r.phone} | ${r.tag} | ${d.ok ? 'yes' : 'no'} | ${r.a.copy ?? '—'} | ${r.a.copy ? (r.a.copy === r.copyExpected ? 'yes' : '**no**') : '—'} | ${d.ok ? `${d.orientation}°` : '—'} | ${f1(r.a.unevenLight?.ratio, 3)} | ${loo('A')} | ${loo('B')} | ${r.a.verdict} | ${r.a.reason} |`,
+    `| ${r.set} | ${r.file.split('/').pop()} | ${r.phone} | ${r.tag} | ${d.ok ? 'yes' : 'no'} | ${r.a.copy ?? '—'} | ${r.a.copy ? (r.a.copy === r.copyExpected ? 'yes' : '**no**') : '—'} | ${d.ok ? `${d.orientation}°` : '—'} | ${f1(r.a.unevenLight?.residual, 3)} | ${f1(r.a.unevenLight?.ratio, 3)} | ${loo('A')} | ${loo('B')} | ${r.a.verdict} | ${r.a.reason} |`,
   );
 }
 p();
@@ -148,19 +172,10 @@ for (const r of rows) {
 }
 p();
 
-p('## 1. Orange strip (the orange-red cap) across lightings');
+p('## 1. Test colour in the sample zone across lightings');
 p();
-p(`The test colour is read from the central ${ZONE_CENTRE_MM} × ${ZONE_CENTRE_MM} mm of the sample zone (trimmed median, ${PARAMS.trimFraction * 100}% cut at each end of the luma order). "Before" is the camera's own colour, converted to CIELAB (D65) without correction.`);
-p('The object used was an orange-red plastic cap, about 5 cm across and slightly glossy, in place of the orange card strip (none was available).');
-p();
-p('| Phone | Lighting | Uneven light | Verdict | Clipped in reading area | CIELAB before | CIELAB after A | CIELAB after B |');
-p('|---|---|---|---|---|---|---|---|');
-for (const r of lighting) {
-  p(`| ${r.phone} | ${r.tag} | ${f1(r.a.unevenLight?.ratio, 3)} | ${r.a.verdict}${r.a.verdict === 'RETAKE' ? ` (${r.a.reason})` : ''} | ${r.zone ? (r.zone.clip * 100).toFixed(1) + '%' : '—'} | ${lab(r.zone?.observedLab)} | ${lab(r.zone?.correctedLab.A)} | ${lab(r.zone?.correctedLab.B)} |`);
-}
-p();
-p('Spread across lightings = the largest CIEDE2000 between any two photos in the group. Smaller is better: it is how differently the same colour reads under different lights.');
-p();
+p(`The test colour is read from the central ${ZONE_CENTRE_MM} × ${ZONE_CENTRE_MM} mm of the sample zone (trimmed median, ${PARAMS.trimFraction * 100}% cut at each end of the luma order). "Before" is the camera's own colour, converted to CIELAB (D65) without correction; "after" is flat-fielded and corrected to the registered reference (paper white = L* 100). Spread across lightings = the largest CIEDE2000 between any two photos in the group: how differently the same colour reads under different lights. Smaller is better.`);
+if (!lightingSets.length) p('No lighting photos.');
 const spreadTable = (subset: Row[], label: string) => {
   p(`**${label}**`);
   p();
@@ -175,8 +190,21 @@ const spreadTable = (subset: Row[], label: string) => {
   }
   p();
 };
-spreadTable(lighting, 'All lighting photos where the card was found (including ones the app would RETAKE)');
-spreadTable(lighting.filter((r) => r.a.verdict === 'PASS'), 'Only photos the app would accept (PASS)');
+for (const { set, rows: lighting } of lightingSets) {
+  p();
+  p(`### Set: ${set}`);
+  p();
+  p(`Object in the sample zone: ${OBJECTS[set] ?? 'not recorded'}.`);
+  p();
+  p('| Phone | Lighting | Uneven light (checked) | Verdict | Clipped in reading area | CIELAB before | CIELAB after A | CIELAB after B |');
+  p('|---|---|---|---|---|---|---|---|');
+  for (const r of lighting) {
+    p(`| ${r.phone} | ${r.tag} | ${f1(r.a.unevenLight?.residual, 3)} | ${r.a.verdict}${r.a.verdict === 'RETAKE' ? ` (${r.a.reason})` : ''} | ${r.zone ? (r.zone.clip * 100).toFixed(1) + '%' : '—'} | ${lab(r.zone?.observedLab)} | ${lab(r.zone?.correctedLab.A)} | ${lab(r.zone?.correctedLab.B)} |`);
+  }
+  p();
+  spreadTable(lighting, 'All lighting photos where the card was found (including ones the app would RETAKE)');
+  spreadTable(lighting.filter((r) => r.a.verdict === 'PASS'), 'Only photos the app would accept (PASS)');
+}
 
 p('## 2. Should-fail photos');
 p();

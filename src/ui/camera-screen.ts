@@ -73,6 +73,9 @@ export function cameraScreen(root: HTMLElement, go: (route: string) => void): ()
   const phoneRow = h('div', { class: 'phone-row' }, phoneInput, phoneSave);
   const phoneLabel = h('button', { type: 'button', class: 'link' });
   const tagHint = h('div', { class: 'hint' });
+  const lockBtn = h('button', { type: 'button', class: 'small', hidden: true }, 'Lock exposure & white balance');
+  const lockState = h('span', { class: 'hint' });
+  const lockRow = h('div', { class: 'dc-row small-row', hidden: true }, lockBtn, lockState);
   const counts = h('div', { class: 'hint counts' });
   const dcControls = h(
     'div',
@@ -80,6 +83,7 @@ export function cameraScreen(root: HTMLElement, go: (route: string) => void): ()
     h('div', { class: 'dc-row' }, tagSelect, h('div', { class: 'segmented' }, ...copyButtons)),
     phoneRow,
     h('div', { class: 'dc-row small-row' }, phoneLabel, counts),
+    lockRow,
     tagHint,
   );
 
@@ -117,8 +121,27 @@ export function cameraScreen(root: HTMLElement, go: (route: string) => void): ()
     phoneLabel.hidden = needPhone;
     phoneLabel.textContent = `Phone: ${settings.phoneModel} (change)`;
     tagHint.textContent = TAG_INFO[settings.tag].hint;
+    renderLock();
     renderCounts();
     renderShutter();
+  }
+
+  // Optional exposure / white-balance lock for registration shots only.
+  function renderLock(): void {
+    const support = camera.stream ? camera.lockSupport() : { exposure: false, whiteBalance: false };
+    const show = settings.dataCollection && settings.tag === 'registration' && camera.stream !== null;
+    lockRow.hidden = !show;
+    if (!show) return;
+    const any = support.exposure || support.whiteBalance;
+    lockBtn.hidden = !any;
+    const l = camera.lock;
+    lockBtn.textContent = l ? 'Unlock' : 'Lock exposure & white balance';
+    lockBtn.classList.toggle('active', !!l);
+    lockState.textContent = !any
+      ? 'This phone cannot lock exposure or white balance (auto is fine).'
+      : l
+        ? `Locked: exposure ${l.exposure ? 'yes' : 'no'}, white balance ${l.whiteBalance ? 'yes' : 'no'}${l.error ? ` (${l.error})` : ''}. Take the 3 photos now.`
+        : 'Frame the card, wait a second, then lock.';
   }
 
   function renderCounts(): void {
@@ -267,6 +290,7 @@ export function cameraScreen(root: HTMLElement, go: (route: string) => void): ()
       if (stopped) return camera.stop();
       layoutOverlay();
       torchBtn.hidden = !camera.hasTorch();
+      renderLock();
       camera.track?.addEventListener('ended', () => showError(new CameraError('The camera stream ended', 'The phone stopped the camera (app switched or locked).')));
       guidance.textContent = 'Checking…';
       renderShutter();
@@ -310,6 +334,7 @@ export function cameraScreen(root: HTMLElement, go: (route: string) => void): ()
         settings: camera.settings(),
         capabilities: camera.capabilities(),
         torchOn: camera.torchOn,
+        lock: camera.lock ? { ...camera.lock } : null,
       },
       checks: {
         pass: enc.report.pass,
@@ -377,7 +402,19 @@ export function cameraScreen(root: HTMLElement, go: (route: string) => void): ()
       toast(`Torch: ${errorText(e)}`, 'error');
     }
   });
-  tagSelect.addEventListener('change', () => updateSettings({ tag: tagSelect.value as DataTag }));
+  tagSelect.addEventListener('change', async () => {
+    if (tagSelect.value !== 'registration' && camera.lock) await camera.unlock().catch(() => {});
+    updateSettings({ tag: tagSelect.value as DataTag });
+  });
+  lockBtn.addEventListener('click', async () => {
+    try {
+      if (camera.lock) await camera.unlock();
+      else await camera.lockExposureAndWhiteBalance();
+    } catch (e) {
+      toast(`Lock: ${errorText(e)}`, 'error');
+    }
+    renderLock();
+  });
   copyButtons.forEach((b) => b.addEventListener('click', () => updateSettings({ copy: b.dataset.copy as 'A' | 'B' })));
   phoneSave.addEventListener('click', () => {
     if (!phoneSlug(phoneInput.value)) return toast('Enter the phone model (letters or numbers)', 'error');
