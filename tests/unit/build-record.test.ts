@@ -47,6 +47,7 @@ describe('record from a synthetic capture', () => {
       userAgent: 'node',
       app: { version: '0.1.0', commit: 'test' },
       image: { sha256: await sha256Hex(png), pixelSha256: await sha256Hex(img.data), width: img.width, height: img.height },
+      source: 'camera',
       analysis,
       sample,
       classification,
@@ -59,6 +60,7 @@ describe('record from a synthetic capture', () => {
     expect(draft.caseRef).toBeNull();
     expect(draft.result.verdict).toBe('NEGATIVE');
     expect(draft.analysis.sample.status).toBe('none');
+    expect(draft.image.source).toBe('camera');
     const log = new MemoryLog();
     const entry = await appendRecord(log, key, { ...draft, device: { ...draft.device, keyId: key.keyId } }, png);
     expect(entry.record.seq).toBe(0);
@@ -69,5 +71,14 @@ describe('record from a synthetic capture', () => {
     expect(() => buildRecordDraft({ ...inputs, classification: { ...classification, verdict: 'RETAKE', classified: false } })).toThrow(/RETAKE/);
     expect(() => buildRecordDraft({ ...inputs, analysis: { ...analysis, verdict: 'RETAKE' } })).toThrow(/card stage/);
     expect(() => buildRecordDraft({ ...inputs, operatorId: '  ' })).toThrow(/operator/);
+    // A sample image: no in-zone tick (there is no officer test), and it is labelled in the sealed record.
+    const s = buildRecordDraft({ ...inputs, source: 'sample-photo', officerConfirmedTestInZone: false });
+    expect(s.image.source).toBe('sample-photo');
+    expect(s.officerConfirmedTestInZone).toBe(false);
+    expect(() => buildRecordDraft({ ...inputs, source: 'sample-drawn', officerConfirmedTestInZone: true })).toThrow(/sample image/);
+    const e2 = await appendRecord(log, key, { ...s, device: { ...s.device, keyId: key.keyId } }, png);
+    expect(e2.record.seq).toBe(1);
+    const r2 = await verifyLog(log.entries, { publicKey: key.publicKey, keyId: key.keyId, photo: async () => png });
+    expect(r2.ok).toBe(true);
   }, 60_000);
 });

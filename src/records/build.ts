@@ -6,7 +6,7 @@ import type { MatAnalysis } from '../pipeline/analyse.ts';
 import type { Classification, KitProfile } from '../pipeline/kit.ts';
 import type { SampleReading } from '../pipeline/samplezone.ts';
 import type { RecordDraft } from './log.ts';
-import { RECORD_NOTICE, RECORD_SCHEMA, VERDICTS, type JsonValue, type RecordLocation, type Verdict } from './record.ts';
+import { RECORD_NOTICE, RECORD_SCHEMA, VERDICTS, type ImageSource, type JsonValue, type RecordLocation, type Verdict } from './record.ts';
 
 export interface RecordInputs {
   recordId: string;
@@ -22,6 +22,8 @@ export interface RecordInputs {
   userAgent: string;
   app: { version: string; commit: string };
   image: { sha256: string; pixelSha256: string; width: number; height: number };
+  /** Camera photo, or a bundled sample image (labelled as such in the sealed record). */
+  source: ImageSource;
   analysis: MatAnalysis;
   sample: SampleReading;
   classification: Classification;
@@ -59,7 +61,9 @@ export function buildRecordDraft(i: RecordInputs): RecordDraft {
   if (a.verdict !== 'PASS' || !a.correction || !a.copy || a.version === undefined) throw new Error('Record refused: the card stage did not pass (RETAKE is never recorded)');
   if (!c.classified || !VERDICTS.includes(c.verdict as Verdict)) throw new Error(`Record refused: ${c.verdict} is not a classified result`);
   if (!i.operatorId.trim()) throw new Error('Record refused: operator ID is required');
-  if (i.kit.noColourResult === 'NEGATIVE' && !i.officerConfirmedTestInZone) throw new Error('Record refused: confirm that the test is in the sample zone');
+  // The in-zone tick is the officer's statement about a real test; a sample image has no officer test to confirm.
+  if (i.kit.noColourResult === 'NEGATIVE' && i.source === 'camera' && !i.officerConfirmedTestInZone) throw new Error('Record refused: confirm that the test is in the sample zone');
+  if (i.source !== 'camera' && i.officerConfirmedTestInZone) throw new Error('Record refused: a sample image cannot be confirmed as a test in the zone');
   const td = (d: Classification['distances'][number]): { [k: string]: JsonValue } => ({
     outcome: d.outcome,
     targetId: d.targetId,
@@ -82,7 +86,7 @@ export function buildRecordDraft(i: RecordInputs): RecordDraft {
     location: i.location,
     device: { keyId: '', userAgent: i.userAgent },
     app: i.app,
-    image: i.image,
+    image: { ...i.image, source: i.source },
     card: { version: a.version, copy: a.copy, referenceSha256: i.referenceSha256 },
     analysis: {
       cardVerdict: 'PASS',

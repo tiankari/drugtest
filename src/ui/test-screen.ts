@@ -21,6 +21,7 @@ export function testScreen(root: HTMLElement, go: (route: string) => void): () =
     h('label', { for: 'operator-id' }, h('strong', {}, 'Operator ID')),
     input,
     save,
+    h('p', { class: 'hint' }, h('a', { href: '#/samples', class: 'nav-link' }, 'No card? Try a sample instead')),
   );
   form.addEventListener('submit', (e) => {
     e.preventDefault();

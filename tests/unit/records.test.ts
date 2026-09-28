@@ -162,6 +162,19 @@ describe('hash chain', () => {
     expect(checkNotedHash(log.entries, 'abc').found).toBe(false);
   });
 
+  it('records saved before image.source existed still verify next to new ones', async () => {
+    const k = await generateDeviceKey();
+    const l = new MemoryLog();
+    await appendRecord(l, k, await draft(k, 0), fakePhoto(0)); // Session 2 shape: no image.source
+    const d = await draft(k, 1);
+    await appendRecord(l, k, { ...d, image: { ...d.image, source: 'sample-drawn' } }, fakePhoto(1));
+    expect(l.entries[0].record.image.source).toBeUndefined();
+    expect(l.entries[1].record.image.source).toBe('sample-drawn');
+    const r = await verifyLog(l.entries, { publicKey: k.publicKey, keyId: k.keyId, photo: async (e) => l.photos.get(e.record.seq) ?? null });
+    expect(r.ok).toBe(true);
+    await expect(appendRecord(l, k, { ...(await draft(k, 2)), image: { ...d.image, source: 'phone' as never } }, fakePhoto(1))).rejects.toThrow(/image.source/);
+  });
+
   it('warns (without failing) when the clock goes backwards', async () => {
     const k = await generateDeviceKey();
     const l = new MemoryLog();

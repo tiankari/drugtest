@@ -6,6 +6,7 @@ import { stopGeo } from './geo.ts';
 import { logScreen } from './log-screen.ts';
 import { recordScreen } from './record-screen.ts';
 import { resultScreen } from './result-screen.ts';
+import { samplesScreen } from './samples-screen.ts';
 import { COLLECTION_BANNER, MIGRATION_NOTE } from './plain.ts';
 import { loadSettings, onSettings, updateSettings } from './settings.ts';
 import { settingsScreen } from './settings-screen.ts';
@@ -39,6 +40,7 @@ const ROUTES: Record<string, Route> = {
   '#/settings': { title: 'Settings', screen: settingsScreen, nav: 'always', icon: NAV_ICONS.settings },
   '#/about': { title: 'About', screen: aboutScreen, nav: false },
   '#/result': { title: 'Result', screen: resultScreen, nav: false },
+  '#/samples': { title: 'Samples', screen: samplesScreen, nav: false },
   '#/record': { title: 'Record', screen: recordScreen, nav: false },
 };
 /** Session 1 links. */
@@ -84,7 +86,7 @@ function render(): void {
   main.className = r.full ? 'full' : '';
   // Location is only needed while testing.
   if (route !== '#/test' && route !== '#/result') stopGeo();
-  const active = route === '#/result' ? '#/test' : route === '#/record' ? '#/log' : route;
+  const active = route === '#/result' || route === '#/samples' ? '#/test' : route === '#/record' ? '#/log' : route;
   for (const a of nav.querySelectorAll('a')) a.classList.toggle('active', a.dataset.route === active);
   cleanup = r.screen(main, go, param);
 }

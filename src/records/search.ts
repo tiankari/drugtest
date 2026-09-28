@@ -15,6 +15,13 @@ export interface LogQuery {
   /** Inclusive local dates, YYYY-MM-DD. */
   from?: string;
   to?: string;
+  /** Records made from bundled sample images: include (default), only, or hide. */
+  samples?: 'all' | 'only' | 'hide';
+}
+
+export function isSampleRecord(e: LogEntry): boolean {
+  const s = e.record.image?.source;
+  return s === 'sample-photo' || s === 'sample-drawn';
 }
 
 const DATE = /^\d{4}-\d{2}-\d{2}$/;
@@ -28,6 +35,8 @@ export function matches(e: LogEntry, q: LogQuery): boolean {
   }
   if (q.verdict && r.result.verdict !== q.verdict) return false;
   if (q.kitId && r.kit.id !== q.kitId) return false;
+  if (q.samples === 'only' && !isSampleRecord(e)) return false;
+  if (q.samples === 'hide' && isSampleRecord(e)) return false;
   const day = r.createdAt.slice(0, 10);
   if (q.from && DATE.test(q.from) && day < q.from) return false;
   if (q.to && DATE.test(q.to) && day > q.to) return false;

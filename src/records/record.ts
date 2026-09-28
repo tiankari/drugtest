@@ -24,6 +24,10 @@ export const GENESIS_HASH = '0'.repeat(64);
 export type Verdict = 'POSITIVE' | 'NEGATIVE' | 'INCONCLUSIVE';
 export const VERDICTS: readonly Verdict[] = ['POSITIVE', 'NEGATIVE', 'INCONCLUSIVE'];
 
+/** Where the photo came from (added in Session 3; absent in older records = the camera). */
+export type ImageSource = 'camera' | 'sample-photo' | 'sample-drawn';
+export const IMAGE_SOURCES: readonly ImageSource[] = ['camera', 'sample-photo', 'sample-drawn'];
+
 export type JsonValue = string | number | boolean | null | JsonValue[] | { [k: string]: JsonValue };
 
 export type RecordLocation =
@@ -50,7 +54,7 @@ export interface FieldRecord {
   location: RecordLocation;
   device: { keyId: string; userAgent: string };
   app: { version: string; commit: string };
-  image: { sha256: string; pixelSha256: string; width: number; height: number };
+  image: { sha256: string; pixelSha256: string; width: number; height: number; source?: ImageSource };
   card: { version: number; copy: string; referenceSha256: string };
   analysis: { cardVerdict: 'PASS'; method: string; looMean: number; looP90: number; unevenLight: number; sample: { [k: string]: JsonValue } };
   kit: { id: string; version: number; name: string; profileSha256: string; validation: string };
@@ -82,6 +86,7 @@ export function assertSaveable(r: FieldRecord): void {
   if (r.analysis?.cardVerdict !== 'PASS') bad('the card stage did not pass (RETAKE is never recorded)');
   if (!VERDICTS.includes(r.result?.verdict)) bad(`verdict must be one of ${VERDICTS.join(', ')} (got ${String(r.result?.verdict)})`);
   if (!HEX64.test(r.image?.sha256 ?? '') || !HEX64.test(r.image?.pixelSha256 ?? '')) bad('image hashes are missing');
+  if (r.image.source !== undefined && !IMAGE_SOURCES.includes(r.image.source)) bad(`image.source must be one of ${IMAGE_SOURCES.join(', ')}`);
   if (!HEX64.test(r.device?.keyId ?? '')) bad('device key ID is missing');
   if (r.notice !== RECORD_NOTICE) bad('the presumptive-result notice is missing');
   if (Number.isNaN(Date.parse(r.createdAt)) || Number.isNaN(Date.parse(r.capturedAt))) bad('timestamps must be ISO 8601');

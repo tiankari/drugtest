@@ -7,5 +7,5 @@
     "lib": ["ES2022"],
     "types": []
   },
-  "include": ["src/pipeline/**/*.ts", "src/records/**/*.ts", "src/io/png.ts", "src/io/crc32.ts", "src/io/dataset.ts"]
+  "include": ["src/pipeline/**/*.ts", "src/records/**/*.ts", "src/io/png.ts", "src/io/crc32.ts", "src/io/dataset.ts", "src/io/samples.ts"]
 }

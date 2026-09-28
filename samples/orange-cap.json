@@ -1,0 +1,25 @@
+{
+  "schema": "fdtc.sample.v1",
+  "id": "orange-cap",
+  "file": "orange-cap.png",
+  "sha256": "24f87a11cdbdaa95dc5e63bc867563b240936582bfa4be72ab8c8ee7b90bd705",
+  "pixelSha256": "38ccc627be7538810f6dff0c539cadfe209633b8a615f0c87ba9d8a1557b764d",
+  "width": 800,
+  "height": 1116,
+  "title": "Orange cap, not a drug-test colour",
+  "kind": "sample-photo",
+  "expected": "INCONCLUSIVE",
+  "capturedAt": "2026-09-28T11:54:23.275Z",
+  "note": "Real photo (Nothing phone 3a), cropped to the reference colour card plus 2 mm.",
+  "derivedFrom": {
+    "file": "daylight_nothing-phone-3a_A_20260928T115423275Z.png",
+    "sha256": "a115804dd6a6bf977f857dc2325d57c6366036f679c0a16e6e7fdc8608514651",
+    "pixelSha256": "de7c4af20559b04cab29e90566d320cba45db43943bd52b90f45a29b63bc02e4",
+    "crop": {
+      "x": 166,
+      "y": 405,
+      "w": 800,
+      "h": 1116
+    }
+  }
+}

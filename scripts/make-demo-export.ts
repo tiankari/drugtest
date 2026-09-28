@@ -66,6 +66,7 @@ for (const path of listPngs('data/real/mat')) {
     userAgent: `node ${process.version}`,
     app: { version: 'script', commit: 'make-demo-export' },
     image: { sha256: c.fileSha256, pixelSha256: c.pixelSha256, width: c.image.width, height: c.image.height },
+    source: 'camera',
     analysis: a,
     sample: s,
     classification: cls,
