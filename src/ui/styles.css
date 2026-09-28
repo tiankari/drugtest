@@ -316,3 +316,16 @@ details.dev-tools summary { padding: 0.9em; cursor: pointer; font-weight: 700; m
 @media (pointer: fine) and (min-width: 720px) {
   .laptop-note { display: block; }
 }
+
+/* Welcome and How it works */
+.welcome { text-align: center; align-items: stretch; padding-top: 2em; gap: 1em; }
+.welcome-icon { align-self: center; border-radius: 16px; }
+.welcome h1 { font-size: 1.8rem; }
+.welcome .lead { font-size: 1.15rem; margin: 0 0 0.6em; }
+.center { justify-content: center; text-align: center; }
+.how-steps { list-style: none; counter-reset: step; margin: 0; padding: 0; display: flex; flex-direction: column; gap: 0.7em; }
+.how-steps li { counter-increment: step; display: grid; grid-template-columns: auto 1fr; gap: 0.8em; align-items: start; background: var(--panel); border: 1px solid var(--line-soft); border-radius: 12px; padding: 0.8em; }
+.how-steps .step-icon { position: relative; width: 44px; height: 44px; border-radius: 50%; background: var(--panel-2); color: var(--accent); display: grid; place-items: center; }
+.how-steps .step-icon .icon { width: 24px; height: 24px; }
+.how-steps .step-icon::after { content: counter(step); position: absolute; top: -6px; left: -6px; width: 22px; height: 22px; border-radius: 50%; background: var(--accent); color: var(--on-accent); font-size: 0.8rem; font-weight: 700; display: grid; place-items: center; }
+.how-steps .step-text { display: flex; flex-direction: column; gap: 0.2em; }

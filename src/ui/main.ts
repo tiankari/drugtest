@@ -11,6 +11,7 @@ import { COLLECTION_BANNER, MIGRATION_NOTE } from './plain.ts';
 import { loadSettings, onSettings, updateSettings } from './settings.ts';
 import { settingsScreen } from './settings-screen.ts';
 import { testScreen } from './test-screen.ts';
+import { welcomeScreen } from './welcome-screen.ts';
 import { icon } from './verdict.ts';
 
 type Screen = (root: HTMLElement, go: (route: string) => void, param?: string) => () => void;
@@ -38,7 +39,8 @@ const ROUTES: Record<string, Route> = {
   '#/log': { title: 'Log', screen: logScreen, nav: 'always', icon: NAV_ICONS.log },
   '#/captures': { title: 'Captures', screen: capturesScreen, nav: 'dc', icon: NAV_ICONS.captures },
   '#/settings': { title: 'Settings', screen: settingsScreen, nav: 'always', icon: NAV_ICONS.settings },
-  '#/about': { title: 'About', screen: aboutScreen, nav: false },
+  '#/about': { title: 'How it works', screen: aboutScreen, nav: false },
+  '#/welcome': { title: 'Welcome', screen: welcomeScreen, nav: false },
   '#/result': { title: 'Result', screen: resultScreen, nav: false },
   '#/samples': { title: 'Samples', screen: samplesScreen, nav: false },
   '#/record': { title: 'Record', screen: recordScreen, nav: false },
@@ -68,6 +70,8 @@ let cleanup: (() => void) | null = null;
 
 function parse(hash: string): { route: string; param?: string } {
   if (hash.startsWith('#/record/')) return { route: '#/record', param: hash.slice('#/record/'.length) };
+  // First launch (no deep link): the welcome screen.
+  if ((hash === '' || hash === '#' || hash === '#/') && !loadSettings().welcomed) return { route: '#/welcome' };
   const route = ALIASES[hash] ?? hash;
   return ROUTES[route] ? { route } : { route: '#/test' };
 }
