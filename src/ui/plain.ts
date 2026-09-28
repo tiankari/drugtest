@@ -90,7 +90,7 @@ export function plural(n: number, one: string, many = `${one}s`): string {
 /** One line for the whole log. */
 export function plainLogSummary(r: LogReport): string {
   if (r.count === 0) return 'No saved tests yet.';
-  if (r.ok) return `✓ All ${plural(r.count, 'saved test')}: not changed, nothing removed or inserted, photos original.`;
+  if (r.ok) return r.count === 1 ? '✓ 1 saved test: not changed, nothing removed or inserted, photo original.' : `✓ All ${r.count} saved tests: not changed, nothing removed or inserted, photos original.`;
   return `✗ ${r.failures} of ${plural(r.count, 'saved test')} fail a check:`;
 }
 

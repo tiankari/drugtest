@@ -42,7 +42,7 @@ One JSON object:
 | `location` | `{ lat, lon, accuracyM, fixAt, source: "browser geolocation" }` or `{ unavailable: "<reason>" }` |
 | `device` | `keyId` (hex SHA-256 of the public key's SPKI), `userAgent` |
 | `app` | version and commit of the build |
-| `image` | `sha256` of the PNG file, `pixelSha256` of the RGBA pixels, width, height |
+| `image` | `sha256` of the PNG file, `pixelSha256` of the RGBA pixels, width, height, and (since Session 3) `source`: `camera`, `sample-photo` or `sample-drawn`. Records saved before `source` existed have no such field; they are camera photos and still verify. |
 | `card` | MAT version, copy letter, SHA-256 of the canonical JSON of the bundled reference |
 | `analysis` | card verdict (always PASS), correction method, leave-one-out mean and 90th percentile, uneven-light figure, sample-zone summary |
 | `kit` | profile id, version, name, SHA-256 of its canonical JSON, validation status |
@@ -50,7 +50,10 @@ One JSON object:
 | `notice` | `"Presumptive field result. Not a laboratory confirmation."` |
 
 A RETAKE (card or sample stage) is never classified and can never become a
-record (`assertSaveable` refuses it).
+record (`assertSaveable` refuses it). A record made from a bundled sample
+image carries `image.source` = `sample-photo` / `sample-drawn`, has no
+location ("sample image, not taken with this phone") and never the officer's
+in-zone tick; the app shows it with a Sample badge.
 
 ## Stored entry, hash and signature
 
