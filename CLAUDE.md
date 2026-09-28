@@ -16,7 +16,8 @@ the sample-image review STOP stays (public repo).
 | 3 Samples | done: `samples/` (empty card, orange cap, blurred: real photos cropped to the card + 2 mm, reviewed by the user; opiate colour: computer-drawn with copy A's registered colours + heroin's published colour), `scripts/make-samples.ts` → `samples-review/` (ignored), `src/ui/samples.ts` + `samples-screen.ts` (same worker/pipeline), `image.source` in records (older records still verify), Sample badge + filter, laptop phone-width column; +3.0 MB precache — merged (see git log) |
 | 4 Welcome / How it works | done: `welcome-screen.ts` (first launch without a deep link; from Settings), `about-screen.ts` = How it works (5 steps with SVG icons, kit status, card + PDF, privacy, build) — merged (see git log) |
 | 5 Log anyone can read | done: log intro lines, empty state, Check log (plain summary), See tamper detection (`src/records/tamper.ts`: changes a COPY, real `verifyLog` on it, real log re-checked), Advanced → Log code to write down + Compare (messages right for every state), Download log (for the lab); record detail: plain checks, codes under Technical details; `tests/e2e/evaluator.e2e.ts` — merged (see git log) |
-| 6 Plain words | next |
+| 6 Plain words | done: camera steps (1-2-3), plain live guidance (`plainRetake`), plain location/officer wording, plain verdict sentences (`plain.ts`; the sealed reason is unchanged, shown in Technical details), thresholds with plain names in Developer tools; jargon scan (`tests/e2e/jargon.ts`) in the evaluator and test-flow e2e, with a scanner self-check — merged (see git log) |
+| 7 Evaluator check | next |
 
 ## STATUS: Session 2 CLOSED (2026-09-28); submission 2026-09-29
 

@@ -340,3 +340,7 @@ details.dev-tools summary { padding: 0.9em; cursor: pointer; font-weight: 700; m
 details.advanced { background: var(--panel); border: 1px solid var(--line-soft); border-radius: 12px; }
 details.advanced summary { padding: 0.9em; cursor: pointer; font-weight: 700; min-height: 48px; }
 .record-page .meaning { margin: 0; font-size: 0.95rem; }
+
+/* Camera steps */
+.camera-steps { margin: 0 0 0.2em; padding-left: 1.3em; display: flex; gap: 0.2em 1.2em; flex-wrap: wrap; font-size: 0.86rem; color: var(--cam-text); }
+.camera-steps li { padding-left: 0.1em; }

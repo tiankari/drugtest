@@ -14,6 +14,7 @@ import { setCurrentCapture } from './current.ts';
 import { errorText, h, toast } from './dom.ts';
 import { geoState, geoText, onGeo, startGeo } from './geo.ts';
 import { KITS, selectedKit } from './kits.ts';
+import { plainRetake } from './plain.ts';
 import { loadSettings, onSettings, updateSettings } from './settings.ts';
 import { listCaptures, putCapture, requestPersistence } from './store.ts';
 import type { PreviewGuidance, PreviewRequest, PreviewResponse } from './workers/preview.worker.ts';
@@ -69,9 +70,17 @@ export function cameraScreen(root: HTMLElement, go: (route: string) => void): ()
   const geoLine = h('span', { class: 'geo-line' });
   const tryLink = h('a', { href: '#/samples', class: 'try-sample', id: 'try-sample' }, 'No card? Try a sample');
   const laptopNote = h('p', { class: 'laptop-note' }, 'Testing needs a phone camera and the printed reference colour card. On a laptop, try a sample instead.');
+  const steps = h(
+    'ol',
+    { class: 'camera-steps' },
+    h('li', {}, 'Put the test in the white square.'),
+    h('li', {}, 'Fit the card in the frame.'),
+    h('li', {}, 'Hold still and tap Capture.'),
+  );
   const testBar = h(
     'div',
     { class: 'test-bar' },
+    steps,
     h('div', { class: 'kit-line' }, KITS.length > 1 ? kitSelect : kitName, kitStatus),
     h('div', { class: 'test-meta' }, operatorLine, geoLine),
     h('div', { class: 'test-meta' }, laptopNote, tryLink),
@@ -130,7 +139,7 @@ export function cameraScreen(root: HTMLElement, go: (route: string) => void): ()
     kitSelect.value = kit.id;
     kitName.textContent = `Kit: ${kit.name}`;
     kitStatus.textContent = kit.validationLine;
-    operatorLine.textContent = `Operator: ${settings.operatorId || '—'} (change)`;
+    operatorLine.textContent = `Officer: ${settings.operatorId || '—'} (change)`;
     const g = geoState();
     geoLine.textContent = geoText(g);
     geoLine.className = `geo-line ${g.kind}`;
@@ -206,7 +215,7 @@ export function cameraScreen(root: HTMLElement, go: (route: string) => void): ()
   function renderReport(): void {
     if (!report) return;
     const dc = settings.dataCollection;
-    guidance.textContent = report.pass ? (dc ? 'Checks pass' : 'Ready — tap to capture') : dc ? `${report.message} (capture still allowed)` : report.message;
+    guidance.textContent = report.pass ? (dc ? 'Checks pass' : 'Ready — tap to capture') : dc ? `${plainRetake(report.message)} (capture still allowed)` : plainRetake(report.message);
     guidance.classList.toggle('ok', report.pass);
     guidance.classList.toggle('bad', !report.pass);
     renderCardOverlay(report);

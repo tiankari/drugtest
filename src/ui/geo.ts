@@ -65,8 +65,14 @@ export function recordLocation(s: GeoState): RecordLocation {
 }
 
 export function geoText(s: GeoState): string {
-  if (s.kind === 'fix') return `Location ±${Math.round(s.accuracyM)} m`;
-  if (s.kind === 'waiting') return 'Location: waiting for a fix…';
-  if (s.kind === 'unavailable') return `Location unavailable: ${s.reason}`;
-  return 'Location: not started';
+  if (s.kind === 'fix') return `Location found (within ${Math.round(s.accuracyM)} m)`;
+  if (s.kind === 'waiting') return 'Finding location…';
+  if (s.kind === 'unavailable') return `Location off (${s.reason}); saved tests will say so`;
+  return 'Location not started';
+}
+
+/** For "Will be saved with …". */
+export function geoSaveText(s: GeoState): string {
+  if (s.kind === 'fix') return `the location (within ${Math.round(s.accuracyM)} m)`;
+  return 'no location (the record says why)';
 }

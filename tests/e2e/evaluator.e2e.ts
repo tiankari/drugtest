@@ -14,6 +14,7 @@ import { join } from 'node:path';
 import { chromium, devices, type Page } from 'playwright';
 import { build, preview } from 'vite';
 import { browserChannel } from '../../scripts/lib/fake-camera.ts';
+import { JARGON } from './jargon.ts';
 
 const OUT = 'dist-eval';
 const failures: string[] = [];
@@ -22,8 +23,6 @@ const check = (ok: boolean, what: string) => {
   if (!ok) failures.push(what);
 };
 
-/** Words that must not appear outside Technical details, Advanced and Developer tools. */
-export const JARGON = [/ΔE/, /CIELAB/i, /\bLab\b/, /\bhash/i, /SHA-?256/i, /ECDSA/i, /signature/i, /\bchain/i, /Laplacian/i, /\bluma\b/i, /\bclip/i, /flat-field/i, /leave-one-out/i, /homography/i, /threshold/i, /registration/i];
 
 async function visibleText(page: Page): Promise<string> {
   // innerText leaves out closed <details> (Technical details, Advanced, Developer tools) and hidden elements.
@@ -100,6 +99,12 @@ try {
         check(((await page.textContent('.why')) ?? '').includes('Hold steady'), 'Retake says why (blur)');
       }
       await jargonCheck(page, `result ${id} (${vp})`);
+      if (id === 'drawn-opiate') {
+        // The scanner is not vacuous: open Technical details and the numbers appear.
+        await page.click('details.tech summary');
+        check(/ΔE00/.test(await visibleText(page)), 'jargon scanner self-check: it finds ΔE00 once Technical details is open');
+        await page.click('details.tech summary');
+      }
       await page.screenshot({ path: join(shots, `${vp}-result-${id}.png`), fullPage: true });
     }
 
