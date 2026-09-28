@@ -101,3 +101,19 @@ delete function for records.
 A `createdAt` earlier than the previous record's is reported as a warning,
 not a failure. `checkNotedHash` compares the log with a hash noted earlier
 (at least 12 hex digits) and reports whether records after it were deleted.
+
+## Checking an exported log independently
+
+In the app: **Log → Verify whole log** (every hash, signature, chain link and
+photo) and **Check** against a noted hash. Outside the app:
+
+```
+node scripts/verify-log.ts <export.zip | unzipped folder> [--noted <latest hash>] [--reanalyse]
+```
+
+It runs the same `verifyLog` the app uses and prints PASS, or the exact record
+and reason for each failure (exit code 1). `--reanalyse` re-runs the whole
+analysis on each photo with the profiles in `profiles/` and reports whether
+each verdict matches and the largest numeric difference (browser vs Node:
+1.7 × 10⁻¹³ in the end-to-end test). The export contains `VERIFY.md` with the
+same explanation. The tamper demo is in `docs/demo.md`.
