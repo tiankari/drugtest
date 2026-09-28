@@ -16,3 +16,6 @@ data/real/**/*.json
 data/real/*.zip
 # Throwaway build used by tests/e2e/result.e2e.ts (bundles a synthetic reference)
 dist-e2e/
+# Local-only inputs (fonts to review before use) and the Python cross-check venv
+incoming/
+tools/.venv/

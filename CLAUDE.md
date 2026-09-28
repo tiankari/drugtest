@@ -1,5 +1,24 @@
 # CLAUDE.md — Field drug-test companion (SIH26231)
 
+## Session 2 progress (update at every merge)
+
+Plan: the Session 2 prompt (steps 0-7 + CLOSE). Kit colours come from NIJ
+Standard-0604.01 Table 1 (no haldi photos tonight); POSITIVE is tested on
+synthetic images only.
+
+| Step | State | Merge commit |
+|---|---|---|
+| 0 Baseline | done: HEAD 672c213, 112 unit + 3 browser green; `incoming/`, `tools/.venv/` ignored; fonts in `incoming/fonts/` (Google Sans, not Flex; OFL.txt present); Python 3.12 via `py` | (this merge) |
+| 1 Signed records + chain | next | |
+| 2 Sample zone reading | | |
+| 3 Marquis kit profile (NIJ) | | |
+| 4 Test flow | | |
+| 5 Log screen | | |
+| 6 UI refresh | | |
+| 7 Verifier | | |
+
+Open decisions: none yet.
+
 ## STATUS: Session 1 CLOSED as a hackathon prototype (2026-09-28)
 
 Submission deadline 2026-09-29. **Read `docs/session1_handoff.md` first**: it is
