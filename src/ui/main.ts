@@ -86,6 +86,7 @@ function render(): void {
   cleanup?.();
   cleanup = null;
   clear(main);
+  document.getElementById('toast')?.classList.remove('show');
   const r = ROUTES[route];
   main.className = r.full ? 'full' : '';
   // Location is only needed while testing.

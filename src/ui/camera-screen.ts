@@ -82,8 +82,8 @@ export function cameraScreen(root: HTMLElement, go: (route: string) => void): ()
     { class: 'test-bar' },
     steps,
     h('div', { class: 'kit-line' }, KITS.length > 1 ? kitSelect : kitName, kitStatus),
-    h('div', { class: 'test-meta' }, operatorLine, geoLine),
-    h('div', { class: 'test-meta' }, laptopNote, tryLink),
+    h('div', { class: 'test-meta' }, operatorLine, geoLine, tryLink),
+    laptopNote,
   );
   const flash = h('div', { class: 'flash' });
   const errorBox = h('div', { class: 'camera-error', hidden: true });

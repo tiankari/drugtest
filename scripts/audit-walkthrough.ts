@@ -6,6 +6,10 @@
 //
 //   node scripts/audit-walkthrough.ts before|after
 //
+// The "before" set in docs/audit/before/ was made by this script at commit
+// cd9d661 against the Session 2 app; the script now drives the Session 3 app
+// (welcome, samples, tamper detection, Advanced, Developer tools).
+//
 // Output: docs/audit/<phase>/NN-<viewport>-<state>.jpg (JPEG to keep the repo small) and inventory.json
 
 import { mkdirSync, rmSync, writeFileSync } from 'node:fs';
@@ -121,8 +125,15 @@ async function capture(page: Page): Promise<void> {
 async function mainPath(ctx: BrowserContext, vp: string): Promise<void> {
   const page = await ctx.newPage();
   await page.goto(`${url}`);
-  await shot(page, vp, 'first-launch');
+  await page.waitForSelector('.welcome');
+  await shot(page, vp, 'first-launch-welcome');
+  await page.click('text=How it works');
+  await page.waitForSelector('ol.how-steps');
+  await shot(page, vp, 'how-it-works');
+  await page.goto(`${url}#/welcome`);
+  await page.click('#welcome-start');
   await page.waitForSelector('#operator-id');
+  await shot(page, vp, 'officer-id');
   await page.fill('#operator-id', 'AUDIT-01');
   await page.click('form.operator-form button[type="submit"]');
   await page.waitForSelector('.test-bar');
@@ -149,32 +160,52 @@ async function mainPath(ctx: BrowserContext, vp: string): Promise<void> {
   await page.waitForSelector('.log-list li');
   await shot(page, vp, 'log-with-records');
   await page.click('#verify-log');
-  await page.waitForFunction(() => /checked/.test(document.getElementById('verify-out')?.textContent ?? ''));
+  await page.waitForFunction(() => /saved test/.test(document.getElementById('verify-out')?.textContent ?? ''));
+  await page.click('#tamper-demo');
+  await page.waitForSelector('#tamper-out .tamper-copy');
+  await shot(page, vp, 'log-checked-and-tamper-detection');
+  await page.click('#log-advanced summary');
   await page.fill('#noted-hash', '0123456789abcdef');
-  await page.click('button:has-text("Check")');
-  await shot(page, vp, 'log-verified-and-wrong-code');
+  await page.click('#noted-check');
+  await shot(page, vp, 'log-advanced-wrong-code');
   await page.goto(`${url}#/settings`);
   await shot(page, vp, 'settings');
-  await page.goto(`${url}#/about`);
-  await shot(page, vp, 'about');
+  await page.click('#dev-tools summary');
+  await shot(page, vp, 'settings-developer-tools');
   if (vp === 'phone') {
-    await page.goto(`${url}#/settings`);
     await page.check('#dc-toggle');
     await page.fill('#phone', 'Audit Phone');
     await page.locator('#phone').dispatchEvent('change');
-    await shot(page, vp, 'settings-data-collection-on');
+    await shot(page, vp, 'settings-photo-collection-on');
     await page.goto(`${url}#/test`);
     await waitReady(page);
-    await shot(page, vp, 'camera-data-collection');
+    await shot(page, vp, 'camera-photo-collection');
     await page.click('button.shutter');
     await page.waitForFunction(() => (document.getElementById('toast')?.textContent ?? '').startsWith('Saved'), null, { timeout: 60000 });
-    await shot(page, vp, 'data-collection-saved-toast');
+    await shot(page, vp, 'photo-collection-saved-toast');
     await page.goto(`${url}#/log`);
     await page.waitForSelector('.log-list li');
-    await shot(page, vp, 'log-while-data-collection-on');
+    await shot(page, vp, 'log-while-photo-collection-on');
     await page.goto(`${url}#/captures`);
     await page.waitForSelector('.capture-list li');
     await shot(page, vp, 'captures');
+    await page.click('#collection-off');
+  }
+  await page.close();
+}
+
+/** Without a card: the samples, each run through the real pipeline. */
+async function samplesPath(ctx: BrowserContext, vp: string, ids: string[]): Promise<void> {
+  const page = await ctx.newPage();
+  await page.goto(`${url}#/samples`);
+  await page.waitForSelector('.sample-card');
+  await shot(page, vp, 'samples');
+  for (const id of ids) {
+    await page.goto(`${url}#/samples`);
+    await page.click(`.sample-card[data-sample="${id}"]`);
+    await page.waitForURL(/#\/result/, { timeout: 60000 });
+    await page.waitForSelector('.result-verdict');
+    await shot(page, vp, `sample-result-${id}`);
   }
   await page.close();
 }
@@ -185,16 +216,13 @@ try {
     const b = await launch(CLIPS.positive);
     const ctx = await b.newContext(ctxOpts);
     await mainPath(ctx, vp);
-    // Fresh storage: the empty log and its code check.
+    await samplesPath(ctx, vp, vp === 'phone' ? ['empty-card', 'orange-cap', 'drawn-opiate', 'blurred'] : ['drawn-opiate']);
+    // Fresh storage: the empty log (no code, no code check).
     const fresh = await b.newContext(ctxOpts);
     const p = await fresh.newPage();
     await p.goto(`${url}#/log`);
-    await p.waitForSelector('#log-count');
-    await p.waitForFunction(() => !/Loading/.test(document.getElementById('log-count')?.textContent ?? ''));
+    await p.waitForSelector('.empty-log:not([hidden])');
     await shot(p, vp, 'log-empty');
-    await p.fill('#noted-hash', '0123456789abcdef');
-    await p.click('button:has-text("Check")');
-    await shot(p, vp, 'log-empty-code-check');
     await b.close();
   }
   // Phone only: other camera and result states.

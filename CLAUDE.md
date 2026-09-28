@@ -17,7 +17,8 @@ the sample-image review STOP stays (public repo).
 | 4 Welcome / How it works | done: `welcome-screen.ts` (first launch without a deep link; from Settings), `about-screen.ts` = How it works (5 steps with SVG icons, kit status, card + PDF, privacy, build) — merged (see git log) |
 | 5 Log anyone can read | done: log intro lines, empty state, Check log (plain summary), See tamper detection (`src/records/tamper.ts`: changes a COPY, real `verifyLog` on it, real log re-checked), Advanced → Log code to write down + Compare (messages right for every state), Download log (for the lab); record detail: plain checks, codes under Technical details; `tests/e2e/evaluator.e2e.ts` — merged (see git log) |
 | 6 Plain words | done: camera steps (1-2-3), plain live guidance (`plainRetake`), plain location/officer wording, plain verdict sentences (`plain.ts`; the sealed reason is unchanged, shown in Technical details), thresholds with plain names in Developer tools; jargon scan (`tests/e2e/jargon.ts`) in the evaluator and test-flow e2e, with a scanner self-check — merged (see git log) |
-| 7 Evaluator check | next |
+| 7 Evaluator check | done: `docs/audit/after/` (43 JPEG), `docs/ux_audit.md` before/after column, evaluator e2e 87 checks at phone + laptop, offline check runs a sample with the network cut (precache 3.40 MB, samples 3.05 MB) — merged (see git log) |
+| CLOSE | next: demo.md walkthroughs, session3_handoff.md, CLAUDE.md, push with tag, live offline check, phone checklist |
 
 ## STATUS: Session 2 CLOSED (2026-09-28); submission 2026-09-29
 

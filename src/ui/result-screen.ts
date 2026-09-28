@@ -55,7 +55,8 @@ function maskedCard(rectified: ImageData, sample: SampleReading | null): HTMLCan
     for (let y = 0; y < m.h; y++)
       for (let x = 0; x < m.w; x++) {
         const v = m.cells[y * m.w + x];
-        if (!v) continue;
+        // A checker pattern, so the test's own colour stays visible through the marking.
+        if (!v || (x + y) % 2) continue;
         ctx.fillStyle = token(v === 1 ? '--mask-sampled' : '--mask-dropped');
         ctx.fillRect((m.x0Mm + x / m.pxPerMm) * k, (m.y0Mm + y / m.pxPerMm) * k, Math.ceil(cell), Math.ceil(cell));
       }
