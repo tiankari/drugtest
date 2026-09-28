@@ -15,7 +15,28 @@ import { MAT_V1 } from '../../src/pipeline/mat.ts';
 
 const PX_PER_MM = 10;
 
-function rasterCard(copy: string): { w: number; h: number; lin: Float32Array } {
+/** Something lying in the sample zone, drawn in card millimetres (synthetic test objects). */
+export interface SampleMark {
+  shape: 'circle' | 'rect';
+  /** Centre, mm. */
+  cx: number;
+  cy: number;
+  /** Circle radius, or rectangle size, mm. */
+  r?: number;
+  w?: number;
+  h?: number;
+  /** Matte colour, 8-bit sRGB, "printed" like the card (linear reflectance x 0.9). */
+  colour?: Vec3;
+  /** Instead of a colour: linear reflectance on all channels (e.g. 3 = a specular highlight that clips). */
+  glare?: number;
+}
+
+function inMark(m: SampleMark, u: number, v: number): boolean {
+  if (m.shape === 'circle') return (u - m.cx) ** 2 + (v - m.cy) ** 2 <= (m.r ?? 0) ** 2;
+  return Math.abs(u - m.cx) <= (m.w ?? 0) / 2 && Math.abs(v - m.cy) <= (m.h ?? 0) / 2;
+}
+
+function rasterCard(copy: string, marks: readonly SampleMark[] = []): { w: number; h: number; lin: Float32Array } {
   const w = Math.round(MAT_V1.widthMm * PX_PER_MM);
   const h = Math.round(MAT_V1.heightMm * PX_PER_MM);
   const srgb = new Uint8Array(w * h * 3).fill(255);
@@ -51,6 +72,19 @@ function rasterCard(copy: string): { w: number; h: number; lin: Float32Array } {
   // Linear reflectance; printed black is not perfectly black.
   const lin = new Float32Array(w * h * 3);
   for (let i = 0; i < srgb.length; i++) lin[i] = Math.max(0.02, srgbToLinear(srgb[i] / 255)) * 0.9;
+  // Colour marks first, glare on top.
+  for (const m of [...marks.filter((k) => !k.glare), ...marks.filter((k) => k.glare)]) {
+    const val = m.glare ? [m.glare, m.glare, m.glare] : (m.colour ?? [255, 255, 255]).map((c) => Math.max(0.02, srgbToLinear(c / 255)) * 0.9);
+    const ext = Math.max(m.r ?? 0, (m.w ?? 0) / 2, (m.h ?? 0) / 2);
+    for (let y = Math.max(0, Math.floor((m.cy - ext) * PX_PER_MM)); y < Math.min(h, Math.ceil((m.cy + ext) * PX_PER_MM)); y++)
+      for (let x = Math.max(0, Math.floor((m.cx - ext) * PX_PER_MM)); x < Math.min(w, Math.ceil((m.cx + ext) * PX_PER_MM)); x++) {
+        if (!inMark(m, (x + 0.5) / PX_PER_MM, (y + 0.5) / PX_PER_MM)) continue;
+        const i = (y * w + x) * 3;
+        lin[i] = val[0];
+        lin[i + 1] = val[1];
+        lin[i + 2] = val[2];
+      }
+  }
   return { w, h, lin };
 }
 
@@ -105,12 +139,17 @@ export interface SynthOptions {
   extra?: [string, Placement][];
   /** Mirror the final image left-right. */
   mirror?: boolean;
+  /** Test objects in the sample zone of the (first) card. */
+  marks?: readonly SampleMark[];
 }
 
 export function renderPhoto(place: Placement, opts: SynthOptions = {}): { width: number; height: number; data: Uint8Array } {
   const { width, height } = place;
   const cards: [string, Placement][] = [[opts.copy ?? 'A', place], ...(opts.extra ?? [])];
-  const maps = cards.map(([copy, p]) => {
+  const maps = cards.map(([copy, p], ci) => {
+    const marks = ci === 0 ? (opts.marks ?? []) : [];
+    // Only plain cards are cached (a raster is ~19 MB).
+    if (marks.length) return { r: rasterCard(copy, marks), Hinv: invertH(cardHomography(p))! };
     if (!cache.has(copy)) cache.set(copy, rasterCard(copy));
     return { r: cache.get(copy)!, Hinv: invertH(cardHomography(p))! };
   });

@@ -98,6 +98,61 @@ export const THRESHOLDS = {
       'PROTOTYPE STANDARD (hackathon, 2026-09-28, user decision): raised from 3 to accept the only registration shots available (copy A 5.23, copy B 5.50; hand-held at dusk). References are correspondingly less precise; a flat-on-table daylight retake should bring this back to 3.',
   },
 
+  // --- Sample zone (Session 2, step 2). All provisional: no real reaction photos exist yet. ---
+  sampleWhiteNoiseFactor: {
+    value: 3,
+    unit: 'multiple of the white-paper noise (95th percentile of per-pixel ΔE76 from paper white over the six white patches, after flat-field) above which a sample-zone pixel counts as coloured',
+    status: 'provisional',
+    reason: 'Three times the spread of plain paper on the same photo is clearly not paper; derived per photo, so it follows the noise and residual unevenness of that photo.',
+  },
+  sampleMinDeltaE: {
+    value: 3,
+    unit: 'ΔE76 floor for the coloured-pixel threshold',
+    status: 'provisional',
+    reason: 'On a very clean frame the white noise can be near zero; differences of about 2-3 ΔE are at the limit of what the eye sees, so nothing below 3 counts as colour.',
+  },
+  sampleEdgeErodeMm: {
+    value: 0.5,
+    unit: 'mm trimmed off the edge of the coloured region (square erosion) before sampling',
+    status: 'provisional',
+    reason: 'Edge pixels mix the test with the paper (lens blur, 1-2 px); half a millimetre is 3-4 camera pixels at the 6-7 px/mm of real photos.',
+  },
+  sampleNoiseFloorMm2: {
+    value: 2,
+    unit: 'mm² (after erosion): a largest coloured region smaller than this counts as no coloured region',
+    status: 'provisional',
+    reason: 'Specks of dust, fibres and sensor noise stay well under 2 mm² after erosion; a real spot test is several mm across.',
+  },
+  sampleMinAreaMm2: {
+    value: 10,
+    unit: 'mm² (after erosion) the coloured region must cover to be read ("Coloured area too small" below it)',
+    status: 'provisional',
+    reason: 'About 3.6 mm across: several hundred camera pixels at real-photo scale, enough for a stable median (the card patches need 400).',
+  },
+  sampleSecondRegionMm2: {
+    value: 10,
+    unit: 'mm² (after erosion): a second separate coloured region at least this big means two tests ("Two separate coloured areas")',
+    status: 'provisional',
+    reason: 'Same size as the smallest readable region: if the second area could be read on its own, the app cannot know which one is the test.',
+  },
+  maxSampleClipFraction: {
+    value: 0.02,
+    unit: 'fraction of the coloured region (holes filled) with any channel at or above highlightClipLevel',
+    status: 'provisional',
+    reason: 'Same rule as the card patches: a clipped channel is not a measurement; 2% allows stray specks but not a glare spot.',
+  },
+  sampleDarkLevel: {
+    value: 10,
+    unit: '8-bit max channel at or below which a sample pixel is dropped as too dark to carry colour',
+    status: 'provisional',
+    reason: 'Near black the 8-bit steps dominate the colour; deep shadow under a rim reads this low.',
+  },
+  maxSampleSpreadDeltaE: {
+    value: 15,
+    unit: '90th percentile ΔE76 of the sampled pixels from their median colour (flat-fielded, white-normalised, before correction)',
+    status: 'provisional',
+    reason: 'Pixel noise on dark colours is a few ΔE; a region whose colours spread by more than about the gap between neighbouring reaction colour families is not one colour ("Test colour is patchy").',
+  },
 } as const satisfies Record<string, Threshold>;
 
 /** Fixed parameters (not pass/fail thresholds). */

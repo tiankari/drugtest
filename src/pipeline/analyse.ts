@@ -7,7 +7,7 @@ import { linearToSrgb, type Vec3 } from './colour.ts';
 import { DEFAULT_CORRECTION_METHOD, PARAMS, THRESHOLDS, type CorrectionMethod } from './config.ts';
 import { applyCorrection, fitCorrection, fitError, labOfLinear, leaveOneOut, type CorrectionModel, type ErrorStats } from './correct.ts';
 import { detectCard, inset, readIdStrip, type Detection, type IdRead } from './detect.ts';
-import { fieldRange, fitLightField, flatten, patchCentre, whiteRatio } from './flatfield.ts';
+import { fieldRange, fitLightField, flatten, patchCentre, whiteRatio, type LightField } from './flatfield.ts';
 import { applyH, areaScale } from './homography.ts';
 import { clampRect, type RgbaImage } from './image.ts';
 import { MAT_V1, rectCentre, type RectMm } from './mat.ts';
@@ -56,6 +56,8 @@ export interface MatAnalysis {
   sampleZone?: RegionSample;
   /** Central square of the sample zone (the test's reading area); `flat` is after the light field. */
   zoneCentre?: RegionSample & { flat: Vec3 };
+  /** The smooth light field fitted to the white patches (divided out of every reading). */
+  lightField?: LightField;
   unevenLight?: {
     /** Brightest / dimmest white patch, as photographed. */
     ratio: number;
@@ -206,6 +208,7 @@ export function analyseMat(img: RgbaImage, opts: AnalyseOptions = {}): MatAnalys
     minPatchPixels: pixels,
     sampleZone,
     zoneCentre: zoneFlat,
+    lightField: field,
     unevenLight: { ratio: raw.ratio, residual, gradient, whites: raw.whites },
   };
   if (opts.guidanceOnly) return finish(base);
