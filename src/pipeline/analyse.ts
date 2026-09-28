@@ -3,10 +3,11 @@
 // leave-one-out error, and a PASS / RETAKE verdict with the reason in plain
 // words. Anything uncertain is RETAKE, never a guess.
 
-import { linearLuminance, linearToSrgb, type Vec3 } from './colour.ts';
+import { linearToSrgb, type Vec3 } from './colour.ts';
 import { DEFAULT_CORRECTION_METHOD, PARAMS, THRESHOLDS, type CorrectionMethod } from './config.ts';
 import { applyCorrection, fitCorrection, fitError, labOfLinear, leaveOneOut, type CorrectionModel, type ErrorStats } from './correct.ts';
 import { detectCard, inset, readIdStrip, type Detection, type IdRead } from './detect.ts';
+import { fieldRange, fitLightField, flatten, patchCentre, whiteRatio } from './flatfield.ts';
 import { applyH, areaScale } from './homography.ts';
 import { clampRect, type RgbaImage } from './image.ts';
 import { MAT_V1, rectCentre, type RectMm } from './mat.ts';
@@ -28,6 +29,8 @@ export interface AnalysisCheck {
 
 export interface PatchObservation extends RegionSample {
   id: string;
+  /** Linear value after dividing out the fitted light gradient (what correction uses). */
+  flat: Vec3;
 }
 
 export interface MethodResult {
@@ -51,9 +54,17 @@ export interface MatAnalysis {
   patches?: PatchObservation[];
   minPatchPixels?: number;
   sampleZone?: RegionSample;
-  /** Central square of the sample zone (the test's reading area). */
-  zoneCentre?: RegionSample;
-  unevenLight?: { ratio: number; whites: { id: string; Y: number }[] };
+  /** Central square of the sample zone (the test's reading area); `flat` is after the light field. */
+  zoneCentre?: RegionSample & { flat: Vec3 };
+  unevenLight?: {
+    /** Brightest / dimmest white patch, as photographed. */
+    ratio: number;
+    /** The same after dividing out the fitted gradient: the checked figure. */
+    residual: number;
+    /** Relative change of the fitted light across the card corners. */
+    gradient: number;
+    whites: { id: string; Y: number }[];
+  };
   correction?: {
     used: MethodResult;
     other: MethodResult | null;
@@ -89,7 +100,6 @@ export interface AnalyseOptions {
   zoneCentreMm?: number;
 }
 
-const WHITE_IDS = [...MAT_V1.patches.filter((p) => p.role === 'white').map((p) => p.id), 'N1'];
 const NEUTRAL = MAT_V1.patches.map((p) => p.role === 'neutral');
 
 function finish(a: Omit<MatAnalysis, 'verdict' | 'reason'>): MatAnalysis {
@@ -140,7 +150,7 @@ export function analyseMat(img: RgbaImage, opts: AnalyseOptions = {}): MatAnalys
   checks.push({ id: 'card', pass: true, message: 'Card found', detail: `copy ${id.copy}, rotated ${Math.round(detection.rotationDeg)} deg` });
 
   const scale = opts.pixelScale ?? 1;
-  const patches: PatchObservation[] = MAT_V1.patches.map((p) => ({ id: p.id, ...sampleRegion(img, H, Hinv, inset(p.rect, PARAMS.patchInsetMm)) }));
+  const patches: (RegionSample & { id: string })[] = MAT_V1.patches.map((p) => ({ id: p.id, ...sampleRegion(img, H, Hinv, inset(p.rect, PARAMS.patchInsetMm)) }));
   const minPatchPixels = Math.min(...patches.map((p) => p.n)) * scale;
   // Area scale gives the same figure without sampling; use the smaller (edges of the frame can clip a patch).
   const predicted = Math.min(...MAT_V1.patches.map((p) => areaScale(H, rectCentre(p.rect)) * (p.rect.w - 2 * PARAMS.patchInsetMm) ** 2)) * scale;
@@ -164,10 +174,26 @@ export function analyseMat(img: RgbaImage, opts: AnalyseOptions = {}): MatAnalys
     detail: `most clipped: ${where}`,
   });
 
-  const whites = WHITE_IDS.map((wid) => ({ id: wid, Y: linearLuminance(patches.find((p) => p.id === wid)!.linear) }));
-  const ys = whites.map((w) => w.Y);
-  const ratio = Math.max(...ys) / Math.min(...ys);
-  checks.push({ id: 'uneven', pass: ratio <= T.maxWhiteLuminanceRatio.value, message: CARD_MESSAGES.uneven, value: ratio, threshold: T.maxWhiteLuminanceRatio.value });
+  // Light: fit the smooth gradient to the whites, divide it out, and judge what is left.
+  const rawById = Object.fromEntries(patches.map((p) => [p.id, p.linear])) as Record<string, Vec3>;
+  const raw = whiteRatio(rawById);
+  const field = fitLightField(rawById);
+  if (!field) {
+    checks.push({ id: 'uneven', pass: false, message: CARD_MESSAGES.uneven, detail: 'light field could not be fitted to the white patches' });
+    return finish({ checks, frame, detection, copy: id.copy, version: id.version, idRead: id });
+  }
+  const flatPatches: PatchObservation[] = patches.map((p) => ({ ...p, flat: flatten(field, p.linear, patchCentre(p.id)) }));
+  const residual = whiteRatio(Object.fromEntries(flatPatches.map((p) => [p.id, p.flat])) as Record<string, Vec3>).ratio;
+  const gradient = fieldRange(field);
+  checks.push({
+    id: 'uneven',
+    pass: residual <= T.maxResidualWhiteRatio.value,
+    message: CARD_MESSAGES.uneven,
+    value: residual,
+    threshold: T.maxResidualWhiteRatio.value,
+    detail: `whites ${raw.ratio.toFixed(3)} as photographed; smooth gradient ${gradient.toFixed(2)} removed`,
+  });
+  const zoneFlat = { ...zoneCentre, flat: flatten(field, zoneCentre.linear, zc) };
 
   const base = {
     checks,
@@ -176,11 +202,11 @@ export function analyseMat(img: RgbaImage, opts: AnalyseOptions = {}): MatAnalys
     copy: id.copy,
     version: id.version,
     idRead: id,
-    patches,
+    patches: flatPatches,
     minPatchPixels: pixels,
     sampleZone,
-    zoneCentre,
-    unevenLight: { ratio, whites },
+    zoneCentre: zoneFlat,
+    unevenLight: { ratio: raw.ratio, residual, gradient, whites: raw.whites },
   };
   if (opts.guidanceOnly) return finish(base);
 
@@ -192,7 +218,7 @@ export function analyseMat(img: RgbaImage, opts: AnalyseOptions = {}): MatAnalys
   checks.push({ id: 'registered', pass: true, message: `Copy ${id.copy} registered`, detail: ref.createdAt });
 
   const method = opts.method ?? DEFAULT_CORRECTION_METHOD.value;
-  const obs = patches.map((p) => p.linear);
+  const obs = flatPatches.map((p) => p.flat);
   const refLin = MAT_V1.patches.map((p) => ref.patches[p.id].linear);
   const run = (m: CorrectionMethod): MethodResult | null => {
     const model = fitCorrection(obs, refLin, NEUTRAL, m);

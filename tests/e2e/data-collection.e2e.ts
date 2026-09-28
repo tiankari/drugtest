@@ -51,6 +51,14 @@ try {
   async function captureAs(tag: string, copy: 'A' | 'B'): Promise<string> {
     await page.selectOption('select[aria-label="Photo tag"]', tag);
     await page.click(`button[data-copy="${copy}"]`);
+    if (tag === 'registration') {
+      const lock = page.locator('button', { hasText: 'Lock exposure & white balance' });
+      if (await lock.isVisible()) {
+        await lock.click();
+        await page.waitForFunction(() => /Locked:|cannot lock/.test(document.body.innerText), null, { timeout: 10000 });
+        console.log(`      lock: ${await page.locator('.dc-controls .small-row .hint').last().textContent()}`);
+      } else console.log('      lock: not offered by this camera');
+    }
     await page.waitForFunction(() => !(document.querySelector('button.shutter') as HTMLButtonElement).disabled);
     await page.click('button.shutter');
     await page.waitForFunction((t) => (document.getElementById('toast')?.textContent ?? '').includes(`Saved ${t}_`), tag, { timeout: 30000 });
@@ -87,6 +95,8 @@ try {
     check(c.image.width === 1920 && c.image.height === 1080, `${n}: full resolution ${c.image.width}x${c.image.height}`);
     check(sc.dataCollection?.phone === 'E2E Fake Camera' && typeof sc.camera.settings.width === 'number', `${n}: sidecar has phone and camera settings`);
     check(Array.isArray(sc.checks.results) && sc.checks.results.length === 3, `${n}: sidecar records each check`);
+    check(!!sc.analysis && Array.isArray(sc.analysis.checks), `${n}: sidecar records the card analysis (${sc.analysis?.reason || 'pass'})`);
+    if (sc.dataCollection?.tag === 'registration') check('lock' in sc.camera, `${n}: sidecar records the lock state ${JSON.stringify(sc.camera.lock)}`);
     console.log(`      timings ${JSON.stringify(sc.timingsMs)} png ${(entries[n].length / 1e6).toFixed(2)} MB, checks pass=${sc.checks.pass} (${sc.checks.results.map((r) => `${r.id}:${r.pass ? 'ok' : 'fail'}`).join(' ')})`);
   }
   check(pageErrors.length === 0, `no page errors${pageErrors.length ? ': ' + pageErrors.join(' | ') : ''}`);

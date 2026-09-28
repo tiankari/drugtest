@@ -5,10 +5,12 @@
 // Reads data/real/mat/registration/<copy>/*.png (captured through the app in
 // data collection mode, tag "registration"). Every photo must verify against
 // its sidecar hashes and pass all card checks (found, right copy, no glare,
-// even light, close enough, sharp, exposed). The per-patch reference value is
-// the median over the accepted photos; the spread is the largest CIEDE2000
-// between any two of them. A registration whose spread exceeds the threshold
-// is rejected and nothing is written.
+// even light after the smooth gradient is removed, close enough, sharp,
+// exposed). Each shot is flat-fielded and normalised to its own white patches
+// (so exposure / white-balance drift between shots does not count); the
+// per-patch reference value is the median over the accepted shots and the
+// spread is the largest CIEDE2000 between any two of them. A registration
+// whose spread exceeds the threshold is rejected and nothing is written.
 //
 // This is RELATIVE calibration against our own registered print, not an
 // absolute colour measurement.
@@ -62,8 +64,8 @@ for (const copy of copies) {
       console.log(`  REJECT ${f}: ${problems.join('; ')}`);
       continue;
     }
-    console.log(`  accept ${f}  (uneven ${a.unevenLight!.ratio.toFixed(3)}, ${a.minPatchPixels!.toFixed(0)} px/patch)`);
-    perPhoto.push(Object.fromEntries(a.patches.map((p) => [p.id, p.rgb8])));
+    console.log(`  accept ${f}  (whites ${a.unevenLight!.ratio.toFixed(3)} as photographed, ${a.unevenLight!.residual.toFixed(3)} after the gradient; ${a.minPatchPixels!.toFixed(0)} px/patch)`);
+    perPhoto.push(Object.fromEntries(a.patches.map((p) => [p.id, p.flat])));
     sources.push({ file: path.replace(/\\/g, '/'), sha256: c.fileSha256, pixelSha256: c.pixelSha256, capturedAt: c.sidecar!.capturedAt, phone: c.sidecar!.dataCollection!.phone });
   }
   if (perPhoto.length < MIN_PHOTOS) {

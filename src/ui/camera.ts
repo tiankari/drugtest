@@ -99,6 +99,7 @@ export class Camera {
     this.stream = null;
     this.video.srcObject = null;
     this.torchOn = false;
+    this.lock = null;
   }
 
   settings(): Record<string, unknown> {
@@ -118,6 +119,52 @@ export class Camera {
 
   hasTorch(): boolean {
     return this.capabilities()?.torch === true;
+  }
+
+  /** Which of exposure / white balance this camera lets us hold fixed. */
+  lockSupport(): { exposure: boolean; whiteBalance: boolean } {
+    const caps = this.capabilities();
+    const has = (k: string) => Array.isArray(caps?.[k]) && (caps![k] as unknown[]).includes('manual');
+    return { exposure: has('exposureMode'), whiteBalance: has('whiteBalanceMode') };
+  }
+
+  /** Current lock state; null when not locked. Recorded in every sidecar. */
+  lock: { exposure: boolean; whiteBalance: boolean; error: string | null } | null = null;
+
+  /**
+   * Hold exposure and white balance where they are now (optional; the app
+   * never depends on it). Each is requested separately so one refusal does not
+   * block the other. Whether a phone keeps its current values when switched
+   * to manual is up to the phone: watch the preview and the checks.
+   */
+  async lockExposureAndWhiteBalance(): Promise<void> {
+    const want = this.lockSupport();
+    const errors: string[] = [];
+    const applied = { exposure: false, whiteBalance: false };
+    for (const [key, mode] of [['exposure', 'exposureMode'], ['whiteBalance', 'whiteBalanceMode']] as const) {
+      if (!want[key]) continue;
+      try {
+        await this.track?.applyConstraints({ advanced: [{ [mode]: 'manual' } as MediaTrackConstraintSet] });
+        applied[key] = this.settings()[mode] === 'manual';
+        if (!applied[key]) errors.push(`${mode} stayed ${String(this.settings()[mode])}`);
+      } catch (e) {
+        errors.push(`${mode}: ${e instanceof Error ? e.message : String(e)}`);
+      }
+    }
+    this.lock = { ...applied, error: errors.length ? errors.join('; ') : null };
+  }
+
+  async unlock(): Promise<void> {
+    if (!this.lock) return;
+    const want = this.lockSupport();
+    const set: Record<string, string> = {};
+    if (want.exposure) set.exposureMode = 'continuous';
+    if (want.whiteBalance) set.whiteBalanceMode = 'continuous';
+    try {
+      await this.track?.applyConstraints({ advanced: [set as MediaTrackConstraintSet] });
+    } finally {
+      this.lock = null;
+    }
   }
 
   async setTorch(on: boolean): Promise<void> {

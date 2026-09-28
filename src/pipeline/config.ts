@@ -71,12 +71,13 @@ export const THRESHOLDS = {
     status: 'provisional',
     reason: 'A clipped channel is not a measurement; 2% allows stray specks but not a glare spot.',
   },
-  maxWhiteLuminanceRatio: {
+  maxResidualWhiteRatio: {
     value: 1.2,
-    unit: 'brightest / dimmest linear luminance of the six white patches (W_T, W_B, W_L, W_R1, W_R2, N1)',
+    unit: 'brightest / dimmest linear luminance of the six white patches (W_T, W_B, W_L, W_R1, W_R2, N1) AFTER the fitted smooth light gradient is divided out',
     status: 'provisional',
-    reason: 'A single global correction assumes even light; a 20% gradient already moves mid-grey patches by about 4 L* units between corners.',
+    reason: 'A smooth gradient is now corrected (user decision, 2026-09-28); what remains is local shadow the plane cannot model. Real registration photos leave 1.03-1.06, the cap-shadow warm-bulb photo 2.26. To be derived from the retake set.',
   },
+
   maxLooMeanDeltaE00: {
     value: 5,
     unit: 'mean leave-one-out CIEDE2000 over the card patches after correction',

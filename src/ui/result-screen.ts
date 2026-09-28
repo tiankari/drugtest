@@ -47,7 +47,12 @@ export function resultScreen(root: HTMLElement, go: (route: string) => void): ()
     { class: 'kv' },
     row('Card copy (from ID strip)', a.copy ? `${a.copy} (MAT v${a.version})` : '—'),
     row('Orientation', d.ok ? `${d.orientation}° (${d.rotationDeg.toFixed(1)}°)` : '—'),
-    row('Uneven light', a.unevenLight ? `${a.unevenLight.ratio.toFixed(3)} (limit ${T.maxWhiteLuminanceRatio.value})` : '—'),
+    row(
+      'Uneven light',
+      a.unevenLight
+        ? `${a.unevenLight.residual.toFixed(3)} after removing a smooth gradient of ${a.unevenLight.gradient.toFixed(2)} (limit ${T.maxResidualWhiteRatio.value}); ${a.unevenLight.ratio.toFixed(3)} as photographed`
+        : '—',
+    ),
     row('Correction method', used ? `${used.method === 'A' ? 'A — 3×3 matrix' : 'B — neutral-ramp curves, then 3×3 matrix'}` : '—'),
     row(
       'Leave-one-out error (ΔE00)',
