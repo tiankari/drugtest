@@ -1,0 +1,25 @@
+{
+  "schema": "fdtc.sample.v1",
+  "id": "empty-card",
+  "file": "empty-card.png",
+  "sha256": "05adc0e59720274612d88c67031c8557922bf04316a793d410e0b29f93184fc7",
+  "pixelSha256": "ceec992336aa70b47ed4738ffe8176381122db629e64be49b58fbda14b0a3fc9",
+  "width": 732,
+  "height": 1009,
+  "title": "Empty card",
+  "kind": "sample-photo",
+  "expected": "NEGATIVE",
+  "capturedAt": "2026-09-28T12:57:48.804Z",
+  "note": "Real photo (Nothing phone 3a), cropped to the reference colour card plus 2 mm.",
+  "derivedFrom": {
+    "file": "registration_nothing-phone-3a_A_20260928T125748804Z.png",
+    "sha256": "db420198bf3969d5fe75c8846b6f1233f82a25bdc56974edceb84bcf7fdafbf9",
+    "pixelSha256": "2ac88562633d05469a93744e8bed5564c0cdd8954ab008aefa8713adebb471b0",
+    "crop": {
+      "x": 248,
+      "y": 390,
+      "w": 732,
+      "h": 1009
+    }
+  }
+}

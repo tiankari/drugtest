@@ -6,13 +6,13 @@
 
 import { captureBaseName, COPIES, DATA_TAGS, phoneSlug, SIDECAR_SCHEMA, TAG_INFO, type CaptureSidecar, type DataTag } from '../io/dataset.ts';
 import type { MatAnalysis } from '../pipeline/analyse.ts';
-import type { SampleReading } from '../pipeline/samplezone.ts';
 import { THRESHOLDS, PARAMS } from '../pipeline/config.ts';
 import { checkScaleFactor, framingOutline } from '../pipeline/quality.ts';
 import { Camera, CameraError, REQUESTED_CONSTRAINTS } from './camera.ts';
 import { FRAME_SOURCE, grabFrame, makeThumb, processFrame, type EncodedCapture } from './capture.ts';
+import { setCurrentCapture } from './current.ts';
 import { errorText, h, toast } from './dom.ts';
-import { geoState, geoText, onGeo, startGeo, type GeoState } from './geo.ts';
+import { geoState, geoText, onGeo, startGeo } from './geo.ts';
 import { KITS, selectedKit } from './kits.ts';
 import { loadSettings, onSettings, updateSettings } from './settings.ts';
 import { listCaptures, putCapture, requestPersistence } from './store.ts';
@@ -20,17 +20,6 @@ import type { PreviewGuidance, PreviewRequest, PreviewResponse } from './workers
 
 const SVG_NS = 'http://www.w3.org/2000/svg';
 
-/** Last normal-mode capture, handed to the result screen. `savedSeq` is set once it became a record. */
-export let lastNormalCapture: {
-  sidecar: CaptureSidecar;
-  png: Uint8Array;
-  analysis: MatAnalysis;
-  sample: SampleReading | null;
-  rectified: ImageData | null;
-  /** Geolocation as it stood when the photo was taken. */
-  geo: GeoState;
-  savedSeq: number | null;
-} | null = null;
 
 function summarise(a: MatAnalysis): NonNullable<CaptureSidecar['analysis']> {
   const loo: { A?: number; B?: number } = {};
@@ -78,11 +67,14 @@ export function cameraScreen(root: HTMLElement, go: (route: string) => void): ()
   const kitStatus = h('div', { class: 'kit-status' });
   const operatorLine = h('button', { type: 'button', class: 'link operator-line' });
   const geoLine = h('span', { class: 'geo-line' });
+  const tryLink = h('a', { href: '#/samples', class: 'try-sample', id: 'try-sample' }, 'No card? Try a sample');
+  const laptopNote = h('p', { class: 'laptop-note' }, 'Testing needs a phone camera and the printed reference colour card. On a laptop, try a sample instead.');
   const testBar = h(
     'div',
     { class: 'test-bar' },
     h('div', { class: 'kit-line' }, KITS.length > 1 ? kitSelect : kitName, kitStatus),
     h('div', { class: 'test-meta' }, operatorLine, geoLine),
+    h('div', { class: 'test-meta' }, laptopNote, tryLink),
   );
   const flash = h('div', { class: 'flash' });
   const errorBox = h('div', { class: 'camera-error', hidden: true });
@@ -342,8 +334,9 @@ export function cameraScreen(root: HTMLElement, go: (route: string) => void): ()
     errorBox.hidden = false;
     errorBox.replaceChildren(
       h('strong', {}, hint),
-      h('code', {}, e instanceof CameraError ? e.message : errorText(e)),
-      h('button', { type: 'button', onclick: () => { camera.stop(); void startCamera(); } }, 'Retry camera'),
+      h('p', {}, 'No camera here, or no printed card? You can still try the app with sample images.'),
+      h('div', { class: 'button-row' }, h('a', { href: '#/samples', class: 'button' }, 'Try a sample'), h('button', { type: 'button', onclick: () => { camera.stop(); void startCamera(); } }, 'Retry camera')),
+      h('details', { class: 'error-detail' }, h('summary', {}, 'Technical details'), h('code', {}, e instanceof CameraError ? e.message : errorText(e))),
     );
     guidance.textContent = 'Camera unavailable';
     guidance.classList.add('bad');
@@ -417,7 +410,7 @@ export function cameraScreen(root: HTMLElement, go: (route: string) => void): ()
         toast(`Saved ${id}.png for the team${failed.length ? ` — checks failed: ${failed.join(', ')}` : ''}`);
       } else {
         const id = `capture_${iso.replace(/[-:.]/g, '')}`;
-        lastNormalCapture = {
+        setCurrentCapture({
           sidecar: buildSidecar(iso, id, enc, width, height),
           png: enc.png,
           analysis: enc.analysis,
@@ -425,7 +418,9 @@ export function cameraScreen(root: HTMLElement, go: (route: string) => void): ()
           rectified: enc.rectified,
           geo: geoAtShutter,
           savedSeq: null,
-        };
+          source: 'camera',
+          sampleImage: null,
+        });
         go('#/result');
       }
     } catch (e) {

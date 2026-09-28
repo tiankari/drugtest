@@ -21,3 +21,5 @@ incoming/
 tools/.venv/
 # Throwaway build of the UX audit walkthrough (scripts/audit-walkthrough.ts)
 dist-audit/
+# Sample images waiting for a person to look at them (scripts/make-samples.ts)
+samples-review/

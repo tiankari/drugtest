@@ -1,13 +1,14 @@
-// Result screen for a normal-mode capture, top to bottom:
-//   1. the verdict (word + icon + colour, never colour alone) and why;
-//   2. the corrected sample colour next to the target colours, and what was
-//      sampled drawn on the straightened card;
-//   3. the kit's validation line; 4. the presumptive-result notice;
-//   5. optional case reference and location note;
-//   6. for kits where no colour means NEGATIVE, the required "test is in the
-//      sample zone" tick;
-//   7. "Save signed record" (never for RETAKE);
-//   8. Session 1's card details, unchanged, under "Technical details".
+// Result screen for a camera photo or a bundled sample image, top to bottom:
+//   1. sample label (samples only); the verdict (word + icon + colour, never
+//      colour alone) and one plain sentence of why;
+//   2. RETAKE: what to do next, and nothing else. Otherwise: the test colour
+//      next to the kit's colours, and what was read drawn on the card;
+//   3. the kit's status; 4. the presumptive-result notice;
+//   5. optional case reference and location note; 6. for camera photos with
+//      kits where no colour means NEGATIVE, the required "test is in the
+//      white square" tick; 7. "Save sealed record";
+//   8. "Technical details" (collapsed): the numbers behind the result, then
+//      Session 1's card details, unchanged.
 
 import { ciede2000 } from '../pipeline/ciede2000.ts';
 import { linearToDisplay8 } from '../pipeline/analyse.ts';
@@ -18,13 +19,15 @@ import { MAT_V1 } from '../pipeline/mat.ts';
 import type { SampleReading } from '../pipeline/samplezone.ts';
 import { buildRecordDraft } from '../records/build.ts';
 import { isoWithOffset } from '../records/record.ts';
-import { lastNormalCapture } from './camera-screen.ts';
-import { errorText, formatBytes, h } from './dom.ts';
-import { recordLocation, geoText } from './geo.ts';
+import { currentCapture, type CurrentCapture } from './current.ts';
+import { errorText, formatBytes, h, toast } from './dom.ts';
+import { geoText, recordLocation } from './geo.ts';
 import { canonicalSha256, selectedKit } from './kits.ts';
 import { saveRecord } from './log-store.ts';
+import { plainVerdictSentence, targetName } from './plain.ts';
 import { REFERENCES } from './references.ts';
-import { loadSettings } from './settings.ts';
+import { sampleKindText } from './samples.ts';
+import { loadSettings, updateSettings } from './settings.ts';
 import { verdictBadge } from './verdict.ts';
 
 const css = (c: Vec3) => `rgb(${c.map((v) => Math.round(Math.min(255, Math.max(0, v)))).join(',')})`;
@@ -38,9 +41,9 @@ function classifyCapture(kit: KitProfile, cardVerdict: string, cardReason: strin
   return classify(kit, sample);
 }
 
-/** The straightened card with the sampled region drawn on it. */
+/** The straightened card with the area that was read drawn on it. */
 function maskedCard(rectified: ImageData, sample: SampleReading | null): HTMLCanvasElement {
-  const c = h('canvas', { class: 'review-img rectified masked', width: rectified.width, height: rectified.height, 'aria-label': 'Straightened card with the sampled area marked' });
+  const c = h('canvas', { class: 'review-img rectified masked', width: rectified.width, height: rectified.height, 'aria-label': 'Straightened card with the area the app read marked' });
   const ctx = c.getContext('2d');
   if (!ctx) return c;
   ctx.putImageData(rectified, 0, 0);
@@ -64,13 +67,30 @@ function maskedCard(rectified: ImageData, sample: SampleReading | null): HTMLCan
   return c;
 }
 
+/** The numbers behind the verdict (Technical details). */
+function numbers(cls: Classification, s: SampleReading | null): HTMLElement {
+  const row = (k: string, v: string) => h('tr', {}, h('th', {}, k), h('td', {}, v));
+  const rows: HTMLElement[] = [row('Reason (as sealed in the record)', cls.reason)];
+  if (s) {
+    rows.push(row('Sample zone reading', `${s.status}${s.status === 'retake' ? ` (${s.reason})` : ''}`));
+    rows.push(row('Coloured-pixel threshold', `${s.threshold.deltaE.toFixed(1)} ΔE76 (= ${s.threshold.factor} × white-paper noise ${s.threshold.whiteNoise.toFixed(2)})`));
+    if (s.status === 'found') {
+      rows.push(row('Area read', `${s.areaMm2.toFixed(0)} mm², ${s.pixels} camera pixels; spread ${s.spread.toFixed(1)} ΔE76; clipped ${(s.clipFraction * 100).toFixed(1)}%${s.touchesEdge ? '; reaches the zone edge' : ''}`));
+      if (s.observedLab) rows.push(row('CIELAB before correction', s.observedLab.map((v) => v.toFixed(1)).join(', ')));
+      if (s.correctedLab) rows.push(row('CIELAB after correction', s.correctedLab.map((v) => v.toFixed(1)).join(', ')));
+    }
+  }
+  for (const d of cls.distances) rows.push(row(`ΔE00 to ${d.label} (${d.notation})`, `${d.deltaE00.toFixed(2)}, radius ${d.radius.toFixed(2)} → ${d.inside ? 'inside' : 'outside'}`));
+  return h('div', {}, h('h2', {}, 'Numbers behind the result'), h('table', { class: 'kv' }, ...rows));
+}
+
 export function resultScreen(root: HTMLElement, go: (route: string) => void): () => void {
-  const cap = lastNormalCapture;
+  const cap = currentCapture();
   if (!cap) {
     go('#/test');
     return () => {};
   }
-  const settings = loadSettings();
+  let settings = loadSettings();
   const { analysis: a, sidecar: sc } = cap;
   const urls: string[] = [];
   let kit: KitProfile;
@@ -80,151 +100,185 @@ export function resultScreen(root: HTMLElement, go: (route: string) => void): ()
     root.append(h('section', { class: 'page' }, h('h1', {}, 'Result'), h('div', { class: 'error-box' }, errorText(e))));
     return () => {};
   }
+  const isSample = cap.source !== 'camera';
   const cls = classifyCapture(kit, a.verdict, a.reason, cap.sample);
   const isRetake = cls.verdict === 'RETAKE';
+  const again = isSample
+    ? h('button', { type: 'button', class: isRetake ? 'primary big' : '', onclick: () => go('#/samples') }, 'Try another sample')
+    : h('button', { type: 'button', class: isRetake ? 'primary big' : '', onclick: () => go('#/test') }, isRetake ? 'Take the photo again' : 'Take another photo');
 
-  // 1. Verdict
-  const verdict = h('div', { class: `result-verdict v-${cls.verdict.toLowerCase()}`, role: 'status' }, verdictBadge(cls.verdict, 'large'), h('p', { class: 'why' }, cls.reason));
-
-  // 2. Sample and targets
-  const s = cap.sample;
-  const swatches = h('div', { class: 'swatches' });
-  if (s?.correctedLab) {
-    swatches.append(h('div', { class: 'swatch sample' }, h('div', { class: 'chip', style: `background:${labCss(s.correctedLab)}` }), h('div', { class: 'cap' }, h('strong', {}, 'Sample (corrected)'), h('span', {}, `L ${s.correctedLab.map((v) => v.toFixed(1)).join(', ')}`))));
-  } else if (s?.status === 'none') {
-    swatches.append(h('div', { class: 'swatch sample' }, h('div', { class: 'chip empty' }, 'none'), h('div', { class: 'cap' }, h('strong', {}, 'Sample'), h('span', {}, 'No coloured region'))));
-  }
-  for (const o of kit.outcomes)
-    for (const t of o.targets) {
-      const d = cls.distances.find((x) => x.targetId === t.id);
-      swatches.append(
-        h(
-          'div',
-          { class: `swatch target${d?.inside ? ' inside' : ''}` },
-          h('div', { class: 'chip', style: `background:${labCss(t.lab)}` }),
-          h('div', { class: 'cap' }, h('strong', {}, `${o.verdict === 'POSITIVE' ? '' : `${o.verdict}: `}${t.label}`), h('span', {}, `${t.notation}${d ? ` · ΔE00 ${d.deltaE00.toFixed(1)} (radius ${t.radius.toFixed(1)})` : ` · radius ${t.radius.toFixed(1)}`}`)),
-        ),
-      );
-    }
-  const sampleFacts = s
+  // 1. Sample label and verdict
+  const sampleLabel = cap.sampleImage
     ? h(
-        'p',
-        { class: 'hint' },
-        s.status === 'found' || (s.status === 'retake' && s.areaMm2 > 0)
-          ? `Sampled ${s.areaMm2.toFixed(0)} mm² (${s.pixels} camera pixels), spread ${s.spread.toFixed(1)} ΔE76, clipped ${(s.clipFraction * 100).toFixed(1)}%${s.touchesEdge ? '; the coloured area reaches the edge of the zone' : ''}. Blue = sampled, pink = coloured but left out (edge, glare, dark, trimmed).`
-          : s.status === 'none'
-            ? `No pixel in the zone differs from the card's white by more than ${s.threshold.deltaE.toFixed(1)} ΔE76 (3 × this photo's paper noise). The app cannot tell a colourless test from an empty zone.`
-            : s.reason,
+        'div',
+        { class: `sample-banner ${cap.sampleImage.kind}` },
+        h('strong', {}, `Sample image · ${sampleKindText(cap.sampleImage.kind)}: ${cap.sampleImage.title}`),
+        h('span', {}, cap.sampleImage.kind === 'sample-drawn' ? 'No real reaction was photographed. The result below is what the app computed from this image just now.' : 'The result below is what the app computed from this photo just now.'),
       )
     : null;
-  const picture = cap.rectified
-    ? h('figure', { class: 'figure' }, maskedCard(cap.rectified, s), h('figcaption', { class: 'hint' }, 'The reference colour card, straightened by the app, with the sample zone outlined.'))
+  const verdict = h('div', { class: `result-verdict v-${cls.verdict.toLowerCase()}`, role: 'status' }, verdictBadge(cls.verdict, 'large'), h('p', { class: 'why' }, plainVerdictSentence(cls)));
+
+  // 2. The test colour next to the kit's colours (not for RETAKE: nothing was compared)
+  const s = cap.sample;
+  let colours: HTMLElement | null = null;
+  if (!isRetake) {
+    const swatches = h('div', { class: 'swatches' });
+    if (s?.correctedLab) {
+      swatches.append(h('div', { class: 'swatch sample' }, h('div', { class: 'chip', style: `background:${labCss(s.correctedLab)}` }), h('div', { class: 'cap' }, h('strong', {}, 'Your test'), h('span', {}, 'after the light correction'))));
+    } else if (s?.status === 'none') {
+      swatches.append(h('div', { class: 'swatch sample' }, h('div', { class: 'chip empty' }, 'none'), h('div', { class: 'cap' }, h('strong', {}, 'Your test'), h('span', {}, 'no colour in the white square'))));
+    }
+    for (const o of kit.outcomes)
+      for (const t of o.targets) {
+        const d = cls.distances.find((x) => x.targetId === t.id);
+        swatches.append(
+          h(
+            'div',
+            { class: `swatch target${d?.inside ? ' inside' : ''}` },
+            h('div', { class: 'chip', style: `background:${labCss(t.lab)}` }),
+            h('div', { class: 'cap' }, h('strong', {}, `${o.verdict === 'POSITIVE' ? '' : `${o.verdict}: `}${targetName(t.label)}`), h('span', {}, d ? (d.inside ? 'close match' : 'not a match') : 'reference colour')),
+          ),
+        );
+      }
+    const hint =
+      s?.status === 'found'
+        ? 'Blue: the area the app read. Pink: coloured edges it left out.'
+        : 'Nothing in the white square differs from the card’s white paper. The app cannot tell a colourless test from an empty square.';
+    colours = h('div', { class: 'card' }, h('h2', {}, 'Your test and the kit’s colours'), swatches, h('p', { class: 'hint' }, hint));
+  }
+  const picture = cap.rectified && !isRetake
+    ? h('figure', { class: 'figure' }, maskedCard(cap.rectified, s), h('figcaption', { class: 'hint' }, 'The reference colour card, straightened by the app, with the white square outlined.'))
     : null;
 
-  // 5-7. Inputs and saving
-  const caseRef = h('input', { type: 'text', id: 'case-ref', placeholder: 'Case reference (optional)', autocomplete: 'off', maxlength: 120 });
-  const locNote = h('input', { type: 'text', id: 'location-note', placeholder: 'Location note (optional), e.g. checkpoint name', autocomplete: 'off', maxlength: 200 });
-  const needsTick = kit.noColourResult === 'NEGATIVE';
-  const tick = h('input', { type: 'checkbox', id: 'in-zone' });
-  const tickRow = needsTick ? h('label', { class: 'toggle tick', for: 'in-zone' }, tick, h('span', {}, h('strong', {}, 'The test is in the sample zone'), h('br'), h('span', { class: 'hint' }, 'Required: the app cannot tell a colourless test from an empty zone.'))) : null;
-  const saveBtn = h('button', { type: 'button', class: 'primary big', id: 'save-record' }, 'Save signed record');
-  const saveState = h('p', { class: 'hint' });
-  const errorBox = h('div', { class: 'error-box', role: 'alert', hidden: true });
-  const recordFacts = h('p', { class: 'hint' }, `Operator ${settings.operatorId || '— (set it in Settings)'} · ${geoText(cap.geo)} · signed with this phone's key.`);
-
-  let saving = false;
-  const renderSave = () => {
-    const done = cap.savedSeq !== null;
-    saveBtn.disabled = isRetake || saving || done || (needsTick && !tick.checked) || !settings.operatorId.trim();
-    saveBtn.textContent = done ? `Saved as record ${cap.savedSeq}` : saving ? 'Signing and saving…' : 'Save signed record';
-    saveState.textContent = isRetake
-      ? 'A RETAKE is never recorded. Fix the problem above and take the photo again.'
-      : !settings.operatorId.trim()
-        ? 'Set your operator ID in Settings first.'
-        : needsTick && !tick.checked && !done
-          ? 'Tick the box above to confirm the test is in the sample zone.'
-          : '';
-  };
-  tick.addEventListener('change', renderSave);
-
-  saveBtn.addEventListener('click', async () => {
-    if (saveBtn.disabled) return;
-    saving = true;
-    errorBox.hidden = true;
-    renderSave();
-    try {
-      const ref = a.copy ? REFERENCES[a.copy] : undefined;
-      if (!ref) throw new Error(`No registered reference for card copy ${a.copy ?? '?'}`);
-      if (!s) throw new Error('The sample zone was not read');
-      const [kitSha256, referenceSha256] = await Promise.all([canonicalSha256(kit), canonicalSha256(ref)]);
-      const draft = buildRecordDraft({
-        recordId: crypto.randomUUID(),
-        createdAt: isoWithOffset(new Date()),
-        capturedAt: isoWithOffset(new Date(sc.capturedAt)),
-        timezoneOffsetMinutes: sc.timezoneOffsetMinutes,
-        operatorId: settings.operatorId,
-        caseRef: caseRef.value,
-        locationNote: locNote.value,
-        officerConfirmedTestInZone: needsTick ? tick.checked : false,
-        location: recordLocation(cap.geo),
-        userAgent: navigator.userAgent,
-        app: { version: __APP_VERSION__, commit: __GIT_COMMIT__ },
-        image: { sha256: sc.sha256, pixelSha256: sc.pixelSha256, width: sc.image.width, height: sc.image.height },
-        analysis: a,
-        sample: s,
-        classification: cls,
-        kit,
-        kitSha256,
-        referenceSha256,
-      });
-      const entry = await saveRecord(draft, cap.png);
-      cap.savedSeq = entry.record.seq;
-      go(`#/record/${entry.record.seq}`);
-    } catch (e) {
-      errorBox.hidden = false;
-      errorBox.textContent = `Not saved: ${errorText(e)}`;
-    } finally {
-      saving = false;
+  // 5-7. Saving (never for RETAKE)
+  let saveCard: HTMLElement | null = null;
+  if (!isRetake) {
+    const caseRef = h('input', { type: 'text', id: 'case-ref', placeholder: 'Case reference (optional)', autocomplete: 'off', maxlength: 120 });
+    const locNote = h('input', { type: 'text', id: 'location-note', placeholder: 'Place note (optional), e.g. checkpoint name', autocomplete: 'off', maxlength: 200 });
+    const officer = h('input', { type: 'text', id: 'save-officer', placeholder: 'Your officer ID (needed to save)', autocomplete: 'off', maxlength: 80 });
+    const officerRow = h('div', { class: 'officer-row' }, h('label', { for: 'save-officer' }, h('strong', {}, 'Officer ID')), officer);
+    officerRow.hidden = !!settings.operatorId.trim();
+    const needsTick = kit.noColourResult === 'NEGATIVE' && !isSample;
+    const tick = h('input', { type: 'checkbox', id: 'in-zone' });
+    const tickRow = needsTick ? h('label', { class: 'toggle tick', for: 'in-zone' }, tick, h('span', {}, h('strong', {}, 'The test is in the white square'), h('br'), h('span', { class: 'hint' }, 'Needed because the app cannot tell a colourless test from an empty square.'))) : null;
+    const saveBtn = h('button', { type: 'button', class: 'primary big', id: 'save-record' }, 'Save sealed record');
+    const saveState = h('p', { class: 'hint' });
+    const errorBox = h('div', { class: 'error-box', role: 'alert', hidden: true });
+    const recordFacts = h('p', { class: 'hint' });
+    const renderFacts = () =>
+      (recordFacts.textContent = isSample
+        ? `Will be saved as a SAMPLE (${sampleKindText(cap.sampleImage!.kind).toLowerCase()}), with officer ${settings.operatorId || '—'} and the time, sealed on this phone. No place: the photo was not taken here.`
+        : `Will be saved with officer ${settings.operatorId || '—'}, the time and ${geoText(cap.geo).replace(/^Location/, 'the location').replace('±', 'within ')}, sealed on this phone.`);
+    renderFacts();
+    officer.addEventListener('change', () => {
+      if (!officer.value.trim()) return;
+      settings = updateSettings({ operatorId: officer.value.trim() });
+      toast('Officer ID saved');
+      renderFacts();
       renderSave();
-    }
-  });
-  renderSave();
+    });
 
-  // 8. Session 1 content, unchanged, collapsed.
-  const tech = technicalDetails(cap, urls);
+    let saving = false;
+    const renderSave = () => {
+      const done = cap.savedSeq !== null;
+      saveBtn.disabled = saving || done || (needsTick && !tick.checked) || !settings.operatorId.trim();
+      saveBtn.textContent = done ? `Saved as record ${cap.savedSeq}` : saving ? 'Sealing and saving…' : 'Save sealed record';
+      saveState.textContent = !settings.operatorId.trim()
+        ? 'Enter your officer ID above to save.'
+        : needsTick && !tick.checked && !done
+          ? 'Tick the box above to confirm the test is in the white square.'
+          : '';
+    };
+    tick.addEventListener('change', renderSave);
+
+    saveBtn.addEventListener('click', async () => {
+      if (saveBtn.disabled) return;
+      saving = true;
+      errorBox.hidden = true;
+      renderSave();
+      try {
+        const ref = a.copy ? REFERENCES[a.copy] : undefined;
+        if (!ref) throw new Error(`No registered reference for card copy ${a.copy ?? '?'}`);
+        if (!s) throw new Error('The sample zone was not read');
+        const [kitSha256, referenceSha256] = await Promise.all([canonicalSha256(kit), canonicalSha256(ref)]);
+        const draft = buildRecordDraft({
+          recordId: crypto.randomUUID(),
+          createdAt: isoWithOffset(new Date()),
+          capturedAt: isoWithOffset(new Date(sc.capturedAt)),
+          timezoneOffsetMinutes: sc.timezoneOffsetMinutes,
+          operatorId: settings.operatorId,
+          caseRef: caseRef.value,
+          locationNote: locNote.value,
+          officerConfirmedTestInZone: needsTick ? tick.checked : false,
+          location: recordLocation(cap.geo),
+          userAgent: navigator.userAgent,
+          app: { version: __APP_VERSION__, commit: __GIT_COMMIT__ },
+          image: { sha256: sc.sha256, pixelSha256: sc.pixelSha256, width: sc.image.width, height: sc.image.height },
+          source: cap.source,
+          analysis: a,
+          sample: s,
+          classification: cls,
+          kit,
+          kitSha256,
+          referenceSha256,
+        });
+        const entry = await saveRecord(draft, cap.png);
+        cap.savedSeq = entry.record.seq;
+        go(`#/record/${entry.record.seq}`);
+      } catch (e) {
+        errorBox.hidden = false;
+        errorBox.textContent = `Not saved: ${errorText(e)}`;
+      } finally {
+        saving = false;
+        renderSave();
+      }
+    });
+    renderSave();
+    saveCard = h(
+      'div',
+      { class: 'card' },
+      h('label', { for: 'case-ref' }, h('strong', {}, 'Case reference')),
+      caseRef,
+      h('label', { for: 'location-note' }, h('strong', {}, 'Place note')),
+      locNote,
+      officerRow,
+      tickRow,
+      recordFacts,
+      saveBtn,
+      saveState,
+      errorBox,
+    );
+  }
+
+  const retakeHelp = isRetake
+    ? h('div', { class: 'card' }, h('p', {}, isSample ? 'This sample is meant to show a photo the app refuses. Nothing is saved for a Retake.' : 'Nothing is saved for a Retake. Fix the problem above and take the photo again.'), again)
+    : null;
+
+  // 8. Technical details
+  const tech = technicalDetails(cap, urls, numbers(cls, s));
 
   root.append(
     h(
       'section',
       { class: 'page result-page' },
       h('h1', {}, 'Result'),
+      sampleLabel,
       verdict,
-      s || !isRetake ? h('div', { class: 'card' }, h('h2', {}, 'Sample colour and target colours'), swatches, sampleFacts) : null,
+      retakeHelp,
+      colours,
       picture,
-      h('p', { class: 'kit-validation' }, h('strong', {}, `${kit.name}: `), kit.validationLine),
+      h('p', { class: 'kit-validation' }, h('strong', {}, `Kit: ${kit.name}. `), kit.validationLine),
       h('div', { class: 'notice strong' }, PRESUMPTIVE),
-      h(
-        'div',
-        { class: 'card' },
-        h('label', { for: 'case-ref' }, h('strong', {}, 'Case reference')),
-        caseRef,
-        h('label', { for: 'location-note' }, h('strong', {}, 'Location note')),
-        locNote,
-        tickRow,
-        recordFacts,
-        saveBtn,
-        saveState,
-        errorBox,
-      ),
+      saveCard,
       tech,
-      h('div', { class: 'button-row' }, h('button', { type: 'button', onclick: () => go('#/test') }, 'Back to camera')),
+      isRetake ? null : h('div', { class: 'button-row' }, again),
     ),
   );
   return () => urls.forEach((u) => URL.revokeObjectURL(u));
 }
 
 /** Session 1's result content (card checks, straightened card, light, correction, 30 patches), unchanged. */
-function technicalDetails(cap: NonNullable<typeof lastNormalCapture>, urls: string[]): HTMLElement {
+function technicalDetails(cap: CurrentCapture, urls: string[], behind: HTMLElement): HTMLElement {
   const { analysis: a, sidecar: sc } = cap;
   const verdict =
     a.verdict === 'PASS'
@@ -312,6 +366,8 @@ function technicalDetails(cap: NonNullable<typeof lastNormalCapture>, urls: stri
     { class: 'tech' },
     h('summary', {}, 'Technical details'),
     h('div', { class: 'tech-body' },
+      behind,
+      h('h2', {}, 'Card checks'),
       verdict,
       picture,
       h('h2', {}, 'Checks'),

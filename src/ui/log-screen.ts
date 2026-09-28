@@ -4,7 +4,7 @@
 
 import { checkNotedHash, type LogReport } from '../records/log.ts';
 import type { LogEntry, Verdict } from '../records/record.ts';
-import { kitsInLog, searchLog, type LogQuery } from '../records/search.ts';
+import { isSampleRecord, kitsInLog, searchLog, type LogQuery } from '../records/search.ts';
 import { errorText, h, toast } from './dom.ts';
 import { canShareFiles, downloadBlob, shareBlob } from './export.ts';
 import { buildLogZip } from './log-export.ts';
@@ -26,7 +26,7 @@ export function logRow(e: LogEntry, go: (route: string) => void): HTMLElement {
       h(
         'span',
         { class: 'log-meta' },
-        h('span', { class: 'log-when' }, `#${r.seq} · ${when(r.createdAt)}`),
+        h('span', { class: 'log-when' }, `#${r.seq} · ${when(r.createdAt)}`, isSampleRecord(e) ? h('span', { class: 'sample-badge small' }, 'Sample') : null),
         h('span', {}, `Operator ${r.operator.id} · ${r.kit.name}`),
         h('span', { class: 'hint' }, `${r.caseRef ? `Case ${r.caseRef} · ` : ''}${placeText(r)}`),
       ),
@@ -94,6 +94,7 @@ export function logScreen(root: HTMLElement, go: (route: string) => void): () =>
   const search = h('input', { type: 'search', id: 'log-search', placeholder: 'Search operator, case ref, location note, record ID', autocomplete: 'off' });
   const fVerdict = h('select', { id: 'filter-result', 'aria-label': 'Result' }, h('option', { value: '' }, 'Any result'), ...(['POSITIVE', 'NEGATIVE', 'INCONCLUSIVE'] as Verdict[]).map((v) => h('option', { value: v }, v)));
   const fKit = h('select', { id: 'filter-kit', 'aria-label': 'Kit' }, h('option', { value: '' }, 'Any kit'));
+  const fSamples = h('select', { id: 'filter-samples', 'aria-label': 'Samples' }, h('option', { value: 'all' }, 'Camera and samples'), h('option', { value: 'hide' }, 'Camera photos only'), h('option', { value: 'only' }, 'Samples only'));
   const fFrom = h('input', { type: 'date', id: 'filter-from', 'aria-label': 'From date' });
   const fTo = h('input', { type: 'date', id: 'filter-to', 'aria-label': 'To date' });
   const count = h('p', { class: 'hint', id: 'log-count' }, 'Loading…');
@@ -110,7 +111,7 @@ export function logScreen(root: HTMLElement, go: (route: string) => void): () =>
         'div',
         { class: 'card filters' },
         search,
-        h('div', { class: 'filter-row' }, fVerdict, fKit),
+        h('div', { class: 'filter-row' }, fVerdict, fKit, fSamples),
         h('div', { class: 'filter-row' }, h('label', {}, 'From', fFrom), h('label', {}, 'To', fTo)),
       ),
       count,
@@ -119,13 +120,13 @@ export function logScreen(root: HTMLElement, go: (route: string) => void): () =>
     ),
   );
 
-  const query = (): LogQuery => ({ text: search.value, verdict: fVerdict.value as Verdict | '', kitId: fKit.value, from: fFrom.value, to: fTo.value });
+  const query = (): LogQuery => ({ text: search.value, verdict: fVerdict.value as Verdict | '', kitId: fKit.value, from: fFrom.value, to: fTo.value, samples: fSamples.value as LogQuery['samples'] });
   function renderList(): void {
     const shown = searchLog(entries, query());
     count.textContent = entries.length ? `${shown.length} of ${entries.length} signed record${entries.length === 1 ? '' : 's'}` : 'No records yet. Save a result from the Test screen.';
     list.replaceChildren(...shown.map((e) => logRow(e, go)));
   }
-  for (const el of [search, fVerdict, fKit, fFrom, fTo]) el.addEventListener('input', renderList);
+  for (const el of [search, fVerdict, fKit, fSamples, fFrom, fTo]) el.addEventListener('input', renderList);
 
   const full = () => (entries.length ? entries[entries.length - 1].hash : '');
   latest.addEventListener('click', async () => {

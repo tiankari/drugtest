@@ -1,0 +1,20 @@
+{
+  "schema": "fdtc.sample.v1",
+  "id": "drawn-opiate",
+  "file": "drawn-opiate.png",
+  "sha256": "c22cf6b4e55b343a2d2cfcc6e6591b121187ad34898a2c4d1830e28cdd5b2c4b",
+  "pixelSha256": "2bb43c97e033384a53666d86e5b8eba70127f370ad9c83da60897636ee54ecf7",
+  "width": 763,
+  "height": 1064,
+  "title": "Opiate-type colour",
+  "kind": "sample-drawn",
+  "expected": "POSITIVE",
+  "capturedAt": "2026-09-28T19:07:48.469Z",
+  "note": "Computer-drawn image: the reference colour card drawn with copy A's registered colours and, in the white square, the published colour of the Marquis reaction with heroin (7.5RP 3/10). No real reaction was photographed.",
+  "derivedFrom": {
+    "file": "tests/helpers/synth-card.ts",
+    "sha256": "",
+    "pixelSha256": "",
+    "crop": null
+  }
+}

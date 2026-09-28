@@ -118,8 +118,14 @@ export function recordScreen(root: HTMLElement, go: (route: string) => void, par
         exportBtn.after(h('div', { class: 'error-box' }, `Export failed: ${errorText(err)}`));
       }
     });
+    const src = r.image.source;
+    const sampleNote =
+      src === 'sample-photo' || src === 'sample-drawn'
+        ? h('div', { class: `sample-banner ${src}` }, h('strong', {}, `Sample · ${src === 'sample-drawn' ? 'Computer-drawn image' : 'Real photo'}`), h('span', {}, 'Made from a sample image bundled with the app, not from this phone’s camera.'))
+        : null;
     const parts: (Node | null)[] = [
       h('h1', {}, `Record ${r.seq}`),
+      sampleNote,
       h('div', { class: `result-verdict v-${r.result.verdict.toLowerCase()}` }, verdictBadge(r.result.verdict, 'large'), h('p', { class: 'why' }, r.result.reason)),
       h('div', { class: 'notice strong' }, r.notice),
       checks,

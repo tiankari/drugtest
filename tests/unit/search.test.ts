@@ -55,6 +55,13 @@ describe('log search and filters', () => {
     expect(searchLog(log, q).map((e) => e.record.seq)).toEqual([3]);
     expect(searchLog(log, q)).toEqual(searchLog([...log].reverse(), q));
   });
+  it('filters sample records (older records without image.source count as camera)', () => {
+    const withSamples = [...log, entry(4, { image: { sha256: '', pixelSha256: '', width: 1, height: 1, source: 'sample-drawn' } }), entry(5, { image: { sha256: '', pixelSha256: '', width: 1, height: 1, source: 'camera' } })];
+    expect(searchLog(withSamples, { samples: 'only' }).map((e) => e.record.seq)).toEqual([4]);
+    expect(searchLog(withSamples, { samples: 'hide' }).map((e) => e.record.seq)).toEqual([5, 3, 2, 1, 0]);
+    expect(searchLog(withSamples, { samples: 'all' })).toHaveLength(6);
+  });
+
   it('lists the kits present', () => {
     expect(kitsInLog(log)).toEqual([
       { id: 'haldi', name: 'Other kit' },

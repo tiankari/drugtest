@@ -1,0 +1,25 @@
+{
+  "schema": "fdtc.sample.v1",
+  "id": "blurred",
+  "file": "blurred.png",
+  "sha256": "8dc5ffa71d6a01e2083117879685533ae97f090cde630c7acfacd92fe624f2f5",
+  "pixelSha256": "f6652857af402ccaa41772d6f2e8aa25a041388774f633e8aba3c7f7227fd9cc",
+  "width": 804,
+  "height": 1075,
+  "title": "Blurred photo",
+  "kind": "sample-photo",
+  "expected": "RETAKE",
+  "capturedAt": "2026-09-28T12:07:54.449Z",
+  "note": "Real photo (Nothing phone 3a), cropped to the reference colour card plus 2 mm.",
+  "derivedFrom": {
+    "file": "fail-blur_nothing-phone-3a_A_20260928T120754449Z.png",
+    "sha256": "2acee11c533c877948ef0ffba3199fed8d859acaa737ea8c4d234ab63854e5da",
+    "pixelSha256": "774196b93cdbca0432d2aed5929b227f98f46850147d59de0359b2c12fca2ac6",
+    "crop": {
+      "x": 154,
+      "y": 437,
+      "w": 804,
+      "h": 1075
+    }
+  }
+}
