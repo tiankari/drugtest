@@ -52,7 +52,7 @@ describe('independent verifier', () => {
     const lines = strFromU8(files['records.jsonl']).split('\n');
     lines[1] = lines[1].slice(0, 20);
     const photo = Object.keys(files).find((k) => k.startsWith('photos/'))!;
-    const rest = { ...files, 'records.jsonl': strToU8(lines.join('\n')) };
+    const rest: Record<string, Uint8Array> = { ...files, 'records.jsonl': strToU8(lines.join('\n')) };
     delete rest[photo];
     const v = await verifyExport(readExport(write(rest)));
     expect(v.ok).toBe(false);
