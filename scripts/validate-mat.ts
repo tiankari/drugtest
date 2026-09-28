@@ -30,8 +30,7 @@ const ZONE_CENTRE_MM = 24;
  */
 const ARCHIVE = 'data/real/archive';
 const OBJECTS: Record<string, string> = {
-  current: process.env.TEST_OBJECT ?? 'a dried haldi (turmeric) stain on plain paper, matte, taped flat',
-  '2026-09-28-first-set': 'an orange-red plastic cap, about 5 cm across and slightly glossy (no orange card strip was available)',
+  current: process.env.TEST_OBJECT ?? 'an orange-red plastic cap, about 5 cm across and slightly glossy (no orange card strip was available)',
 };
 const SETS = [
   { name: 'current', dir: 'data/real/mat' },
@@ -252,7 +251,14 @@ if (!hasCorrection) {
     const v = both.map((r) => (r.a.correction!.used.method === m ? r.a.correction!.used : r.a.correction!.other!).loo.mean);
     return v.reduce((s, x) => s + x, 0) / v.length;
   };
-  p(`Mean leave-one-out CIEDE2000 over ${both.length} photos: A ${meanOf('A').toFixed(2)}, B ${meanOf('B').toFixed(2)}. See the cap spreads above for the other half of the decision.`);
+  const lit = both.filter((r) => r.folder === 'lighting');
+  const meanIn = (set: Row[], m: CorrectionMethod) => {
+    const v = set.map((r) => (r.a.correction!.used.method === m ? r.a.correction!.used : r.a.correction!.other!).loo.mean);
+    return v.reduce((x, y) => x + y, 0) / v.length;
+  };
+  p(`Mean leave-one-out CIEDE2000 over all ${both.length} corrected photos: A ${meanOf('A').toFixed(2)}, B ${meanOf('B').toFixed(2)}; over the ${lit.length} lighting photos only: A ${meanIn(lit, 'A').toFixed(2)}, B ${meanIn(lit, 'B').toFixed(2)}. (Registration photos score low because they are the reference.)`);
+  p();
+  p(`**Decision: method ${DEFAULT_CORRECTION_METHOD.value} (${DEFAULT_CORRECTION_METHOD.status}).** ${DEFAULT_CORRECTION_METHOD.reason}`);
 }
 p();
 
