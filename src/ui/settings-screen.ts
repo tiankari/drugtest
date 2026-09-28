@@ -1,6 +1,7 @@
 import { phoneSlug } from '../io/dataset.ts';
 import { PARAMS, THRESHOLDS } from '../pipeline/config.ts';
 import { h, toast } from './dom.ts';
+import { exportCard } from './log-screen.ts';
 import { loadSettings, updateSettings } from './settings.ts';
 
 export function settingsScreen(root: HTMLElement): () => void {
@@ -63,6 +64,8 @@ export function settingsScreen(root: HTMLElement): () => void {
         h('p', { class: 'hint' }, 'Provisional = a reasoned starting value not yet checked against real photos.'),
         h('table', { class: 'kv small' }, ...thresholdRows),
       ),
+      h('h2', {}, 'Signed log'),
+      exportCard(),
       h('div', { class: 'card' }, h('a', { href: '#/about', class: 'nav-link' }, 'About this app, the card PDF and the build')),
     ),
   );
