@@ -14,7 +14,8 @@ the sample-image review STOP stays (public repo).
 | 1 Audit | done: `scripts/audit-walkthrough.ts`, `docs/audit/before/` (32 JPEG), `docs/ux_audit.md` — merged cd9d661 |
 | 2 Two modes | done: photo collection in Settings → Developer tools (off by default), banner on every screen with Turn off, plain tag names, one-time migration note — merged (see git log) |
 | 3 Samples | done: `samples/` (empty card, orange cap, blurred: real photos cropped to the card + 2 mm, reviewed by the user; opiate colour: computer-drawn with copy A's registered colours + heroin's published colour), `scripts/make-samples.ts` → `samples-review/` (ignored), `src/ui/samples.ts` + `samples-screen.ts` (same worker/pipeline), `image.source` in records (older records still verify), Sample badge + filter, laptop phone-width column; +3.0 MB precache — merged (see git log) |
-| 4 Welcome / How it works | next |
+| 4 Welcome / How it works | done: `welcome-screen.ts` (first launch without a deep link; from Settings), `about-screen.ts` = How it works (5 steps with SVG icons, kit status, card + PDF, privacy, build) — merged (see git log) |
+| 5 Log anyone can read | next |
 
 ## STATUS: Session 2 CLOSED (2026-09-28); submission 2026-09-29
 
