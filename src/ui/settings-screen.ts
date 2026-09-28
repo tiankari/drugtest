@@ -7,6 +7,11 @@ export function settingsScreen(root: HTMLElement): () => void {
   const s = loadSettings();
   const dcToggle = h('input', { type: 'checkbox', id: 'dc-toggle', ...(s.dataCollection ? { checked: true } : {}) });
   const phone = h('input', { type: 'text', id: 'phone', value: s.phoneModel, placeholder: 'e.g. Redmi Note 12', autocomplete: 'off' });
+  const operator = h('input', { type: 'text', id: 'operator', value: s.operatorId, placeholder: 'e.g. badge or service number', autocomplete: 'off', maxlength: 80 });
+  operator.addEventListener('change', () => {
+    updateSettings({ operatorId: operator.value.trim() });
+    toast(operator.value.trim() ? 'Operator ID saved' : 'Operator ID cleared: you will be asked for it before the next test');
+  });
   const slug = h('span', { class: 'hint' });
   const renderSlug = () => (slug.textContent = phoneSlug(phone.value) ? `File names will use: ${phoneSlug(phone.value)}` : 'Required for data collection.');
   renderSlug();
@@ -27,6 +32,13 @@ export function settingsScreen(root: HTMLElement): () => void {
       'section',
       { class: 'page' },
       h('h1', {}, 'Settings'),
+      h(
+        'div',
+        { class: 'card' },
+        h('label', { for: 'operator' }, h('strong', {}, 'Operator ID')),
+        operator,
+        h('p', { class: 'hint' }, 'Written into every record you sign. The app does not verify it: a record proves it was not changed after signing on this phone, not who the officer was.'),
+      ),
       h(
         'div',
         { class: 'card' },
@@ -51,6 +63,7 @@ export function settingsScreen(root: HTMLElement): () => void {
         h('p', { class: 'hint' }, 'Provisional = a reasoned starting value not yet checked against real photos.'),
         h('table', { class: 'kv small' }, ...thresholdRows),
       ),
+      h('div', { class: 'card' }, h('a', { href: '#/about', class: 'nav-link' }, 'About this app, the card PDF and the build')),
     ),
   );
   return () => {};

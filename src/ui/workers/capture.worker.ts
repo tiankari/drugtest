@@ -6,6 +6,7 @@ import { sha256Hex } from '../../io/hash.ts';
 import { encodePng, type EncodeInfo } from '../../io/png.ts';
 import { analyseMat, type MatAnalysis } from '../../pipeline/analyse.ts';
 import { rectifyCard } from '../../pipeline/rectify.ts';
+import { readSampleZone, type SampleReading } from '../../pipeline/samplezone.ts';
 import { REFERENCES } from '../references.ts';
 
 export interface CaptureRequest {
@@ -22,6 +23,8 @@ export type CaptureResponse =
       sha256: string;
       pixelSha256: string;
       analysis: MatAnalysis;
+      /** Sample-zone reading; only for a card that PASSed. */
+      sample: SampleReading | null;
       rectified: { width: number; height: number; buffer: ArrayBuffer } | null;
       timingsMs: { checks: number; encode: number; hash: number };
     }
@@ -34,6 +37,7 @@ self.onmessage = async (e: MessageEvent<CaptureRequest>) => {
     const img = { width, height, data: pixels };
     const t0 = performance.now();
     const analysis = analyseMat(img, { references: REFERENCES, bothMethods: true });
+    const sample = analysis.verdict === 'PASS' ? readSampleZone(img, analysis) : null;
     const rect = analysis.detection.ok ? rectifyCard(img, analysis.detection.H, 4) : null;
     const t1 = performance.now();
     const { png, info } = encodePng(img);
@@ -49,6 +53,7 @@ self.onmessage = async (e: MessageEvent<CaptureRequest>) => {
       sha256,
       pixelSha256,
       analysis,
+      sample,
       rectified,
       timingsMs: { checks: t1 - t0, encode: t2 - t1, hash: t3 - t2 },
     };

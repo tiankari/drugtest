@@ -74,13 +74,13 @@ export async function photoBytes(seq: number): Promise<Uint8Array | null> {
   return b ? new Uint8Array(await b.arrayBuffer()) : null;
 }
 
-/** Verify the given entries (default: the whole log) with this device's public key, re-hashing each stored photo. */
-export async function verifyStoredLog(entries?: LogEntry[]): Promise<LogReport> {
+/** Verify the given entries (default: the whole log) with this device's public key; re-hashes each stored photo unless photos is false. */
+export async function verifyStoredLog(entries?: LogEntry[], opts: { photos?: boolean } = {}): Promise<LogReport> {
   const all = entries ?? (await listEntries());
   const k = await transact([STORES.keys], 'readonly', (t) => req(t.objectStore(STORES.keys).get('device') as IDBRequest<DeviceKey | undefined>));
   if (!k) {
     if (all.length) throw new Error('The log has records but this device has no key: the key was deleted');
     return { count: 0, ok: true, entries: [], latestHash: null, failures: 0, clockWarnings: 0, photosChecked: 0 };
   }
-  return verifyLog(all, { publicKey: k.publicKey, keyId: k.keyId, photo: (e) => photoBytes(e.record.seq) });
+  return verifyLog(all, { publicKey: k.publicKey, keyId: k.keyId, photo: opts.photos === false ? undefined : (e) => photoBytes(e.record.seq) });
 }

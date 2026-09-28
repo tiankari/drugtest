@@ -6,19 +6,31 @@
 
 import { captureBaseName, COPIES, DATA_TAGS, phoneSlug, SIDECAR_SCHEMA, TAG_INFO, type CaptureSidecar, type DataTag } from '../io/dataset.ts';
 import type { MatAnalysis } from '../pipeline/analyse.ts';
+import type { SampleReading } from '../pipeline/samplezone.ts';
 import { THRESHOLDS, PARAMS } from '../pipeline/config.ts';
 import { checkScaleFactor, framingOutline } from '../pipeline/quality.ts';
 import { Camera, CameraError, REQUESTED_CONSTRAINTS } from './camera.ts';
 import { FRAME_SOURCE, grabFrame, makeThumb, processFrame, type EncodedCapture } from './capture.ts';
 import { errorText, h, toast } from './dom.ts';
+import { geoState, geoText, onGeo, startGeo, type GeoState } from './geo.ts';
+import { KITS, selectedKit } from './kits.ts';
 import { loadSettings, onSettings, updateSettings } from './settings.ts';
 import { listCaptures, putCapture, requestPersistence } from './store.ts';
 import type { PreviewGuidance, PreviewRequest, PreviewResponse } from './workers/preview.worker.ts';
 
 const SVG_NS = 'http://www.w3.org/2000/svg';
 
-/** Last normal-mode capture, handed to the result screen. */
-export let lastNormalCapture: { sidecar: CaptureSidecar; png: Uint8Array; analysis: MatAnalysis; rectified: ImageData | null } | null = null;
+/** Last normal-mode capture, handed to the result screen. `savedSeq` is set once it became a record. */
+export let lastNormalCapture: {
+  sidecar: CaptureSidecar;
+  png: Uint8Array;
+  analysis: MatAnalysis;
+  sample: SampleReading | null;
+  rectified: ImageData | null;
+  /** Geolocation as it stood when the photo was taken. */
+  geo: GeoState;
+  savedSeq: number | null;
+} | null = null;
 
 function summarise(a: MatAnalysis): NonNullable<CaptureSidecar['analysis']> {
   const loo: { A?: number; B?: number } = {};
@@ -60,6 +72,19 @@ export function cameraScreen(root: HTMLElement, go: (route: string) => void): ()
   const guidance = h('div', { class: 'guidance', role: 'status', 'aria-live': 'polite' }, 'Starting camera…');
   const metrics = h('div', { class: 'metrics' });
   const dcBanner = h('div', { class: 'dc-banner' }, 'DATA COLLECTION MODE — captures are saved for the test set; no result is ever shown');
+  // Normal mode: the kit (fixed line, or a picker when more than one is bundled), operator and location.
+  const kitSelect = h('select', { 'aria-label': 'Kit', class: 'kit-select' });
+  for (const k of KITS) kitSelect.append(h('option', { value: k.id }, `${k.name} (v${k.version})`));
+  const kitName = h('strong', { class: 'kit-name' });
+  const kitStatus = h('div', { class: 'kit-status' });
+  const operatorLine = h('button', { type: 'button', class: 'link operator-line' });
+  const geoLine = h('span', { class: 'geo-line' });
+  const testBar = h(
+    'div',
+    { class: 'test-bar' },
+    h('div', { class: 'kit-line' }, KITS.length > 1 ? kitSelect : kitName, kitStatus),
+    h('div', { class: 'test-meta' }, operatorLine, geoLine),
+  );
   const flash = h('div', { class: 'flash' });
   const errorBox = h('div', { class: 'camera-error', hidden: true });
   const viewport = h('div', { class: 'viewport' }, video, svg, guidance, metrics, flash, errorBox);
@@ -92,7 +117,7 @@ export function cameraScreen(root: HTMLElement, go: (route: string) => void): ()
   const resInfo = h('div', { class: 'res-info' });
   const controls = h('div', { class: 'controls' }, dcControls, h('div', { class: 'shutter-row' }, torchBtn, shutter, resInfo));
 
-  const section = h('section', { class: 'camera-screen' }, dcBanner, viewport, controls);
+  const section = h('section', { class: 'camera-screen' }, dcBanner, testBar, viewport, controls);
   root.append(section);
 
   const camera = new Camera(video);
@@ -109,10 +134,23 @@ export function cameraScreen(root: HTMLElement, go: (route: string) => void): ()
   const pvCanvas = document.createElement('canvas');
   const pvCtx = pvCanvas.getContext('2d', { willReadFrequently: true, colorSpace: 'srgb' });
 
+  function renderTestBar(): void {
+    const kit = selectedKit(settings.kitId);
+    kitSelect.value = kit.id;
+    kitName.textContent = `Kit: ${kit.name}`;
+    kitStatus.textContent = kit.validationLine;
+    operatorLine.textContent = `Operator: ${settings.operatorId || '—'} (change)`;
+    const g = geoState();
+    geoLine.textContent = geoText(g);
+    geoLine.className = `geo-line ${g.kind}`;
+  }
+
   function renderSettings(): void {
     const dc = settings.dataCollection;
     section.classList.toggle('dc', dc);
     dcBanner.hidden = !dc;
+    testBar.hidden = dc;
+    renderTestBar();
     dcControls.hidden = !dc;
     tagSelect.value = settings.tag;
     copyButtons.forEach((b) => b.classList.toggle('active', b.dataset.copy === settings.copy));
@@ -361,6 +399,7 @@ export function cameraScreen(root: HTMLElement, go: (route: string) => void): ()
     guidance.textContent = settings.dataCollection ? 'Saving…' : 'Analysing…';
     try {
       const iso = new Date().toISOString();
+      const geoAtShutter = geoState();
       const { frame, canvas } = grabFrame(video);
       flash.classList.remove('go');
       void flash.offsetWidth;
@@ -379,7 +418,15 @@ export function cameraScreen(root: HTMLElement, go: (route: string) => void): ()
         toast(`Saved ${id}.png${failed.length ? ` — checks failed: ${failed.join(', ')}` : ''}`);
       } else {
         const id = `capture_${iso.replace(/[-:.]/g, '')}`;
-        lastNormalCapture = { sidecar: buildSidecar(iso, id, enc, width, height), png: enc.png, analysis: enc.analysis, rectified: enc.rectified };
+        lastNormalCapture = {
+          sidecar: buildSidecar(iso, id, enc, width, height),
+          png: enc.png,
+          analysis: enc.analysis,
+          sample: enc.sample,
+          rectified: enc.rectified,
+          geo: geoAtShutter,
+          savedSeq: null,
+        };
         go('#/result');
       }
     } catch (e) {
@@ -421,6 +468,10 @@ export function cameraScreen(root: HTMLElement, go: (route: string) => void): ()
     updateSettings({ phoneModel: phoneInput.value.trim() });
   });
   phoneLabel.addEventListener('click', () => go('#/settings'));
+  operatorLine.addEventListener('click', () => go('#/settings'));
+  kitSelect.addEventListener('change', () => updateSettings({ kitId: kitSelect.value }));
+  const offGeo = onGeo(renderTestBar);
+  if (!settings.dataCollection) startGeo();
   video.addEventListener('resize', layoutOverlay);
   video.addEventListener('loadedmetadata', layoutOverlay);
   const offSettings = onSettings((s) => {
@@ -446,6 +497,7 @@ export function cameraScreen(root: HTMLElement, go: (route: string) => void): ()
     previewWorker.terminate();
     camera.stop();
     offSettings();
+    offGeo();
     document.removeEventListener('visibilitychange', onVisible);
   };
 }
