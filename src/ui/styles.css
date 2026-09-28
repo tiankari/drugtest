@@ -228,3 +228,19 @@ details.tech summary { padding: 0.9em; cursor: pointer; font-weight: 700; min-he
 .log-meta { display: flex; flex-direction: column; min-width: 0; font-size: 0.88rem; }
 .log-when { font-weight: 700; }
 .nav-link { color: var(--accent); min-height: 48px; display: flex; align-items: center; }
+
+/* Log screen */
+.latest-hash { font: 1.05rem ui-monospace, monospace; text-align: left; letter-spacing: 0.03em; min-height: 48px; }
+.verify-out { font-size: 0.92rem; }
+.verify-out.ok .strong { color: var(--ok); }
+.verify-out.bad .strong { color: var(--bad); }
+.verify-out p { margin: 0.2em 0; }
+.filters { gap: 0.6em; }
+.filter-row { display: flex; gap: 0.6em; flex-wrap: wrap; }
+.filter-row > * { flex: 1; min-width: 9em; }
+.filter-row label { display: flex; flex-direction: column; gap: 0.2em; font-size: 0.85rem; color: var(--muted); }
+input[type='search'], input[type='date'] {
+  background: var(--panel-2); color: var(--text); border: 1px solid var(--line);
+  border-radius: 10px; padding: 0.55em 0.7em; min-height: 48px; width: 100%; font: inherit;
+}
+.warn-text { color: var(--warn); font-size: 0.88rem; margin: 0; }

@@ -13,15 +13,20 @@
 //
 // Run: npm run test:e2e:result
 
-import { existsSync, mkdtempSync, rmSync, writeFileSync } from 'node:fs';
+import { existsSync, mkdtempSync, readFileSync, rmSync, writeFileSync } from 'node:fs';
 import { tmpdir } from 'node:os';
 import { join } from 'node:path';
+import { strFromU8, unzipSync } from 'fflate';
 import { chromium, devices } from 'playwright';
 import { build, preview } from 'vite';
 import { analyseMat } from '../../src/pipeline/analyse.ts';
 import { srgb8ToLab, type Vec3 } from '../../src/pipeline/colour.ts';
 import { KIT_SCHEMA, parseKitProfile, type KitProfile } from '../../src/pipeline/kit.ts';
 import { combineRegistration, REFERENCE_SCHEMA, type MatReference } from '../../src/pipeline/reference.ts';
+import { sha256Hex } from '../../src/io/hash.ts';
+import { importPublicKey } from '../../src/records/keys.ts';
+import { verifyLog } from '../../src/records/log.ts';
+import type { LogEntry } from '../../src/records/record.ts';
 import { browserChannel, writeY4mClip } from '../../scripts/lib/fake-camera.ts';
 import { placement, renderPhoto } from '../helpers/synth-card.ts';
 
@@ -193,11 +198,66 @@ try {
   check((await page.locator('.log-list li').count()) === 1 && row.includes('POSITIVE') && row.includes('E2E-OFFICER-7') && row.includes('CASE-E2E-1'), `record appears in the log: "${row}"`);
   await page.click('.log-list li button');
   await page.waitForURL(/#\/record\/0$/);
+  await page.waitForSelector('.record-checks');
+
+  // Single-record export: its JSON and photo.
+  const [recDl] = await Promise.all([page.waitForEvent('download'), page.click('text=Export this record (JSON + photo)')]);
+  const recZip = unzipSync(new Uint8Array(readFileSync(await recDl.path())));
+  const recNames = Object.keys(recZip);
+  check(recNames.includes('record_0.json') && recNames.some((n) => /^photos\/[0-9a-f]{64}\.png$/.test(n)), `single-record export holds its JSON and photo (${recNames.join(', ')})`);
+
+  // A second record of the same scene.
+  await page.goto(`${url}#/test`);
+  await page.waitForFunction(() => document.querySelector('.guidance')?.textContent?.startsWith('Ready'), null, { timeout: 30000 });
+  await page.click('button.shutter');
+  await page.waitForURL(/#\/result/, { timeout: 60000 });
+  await page.fill('#case-ref', 'CASE-E2E-2');
+  await page.check('#in-zone');
+  await page.click('#save-record');
+  await page.waitForURL(/#\/record\/1$/, { timeout: 30000 });
+
+  // Log screen: latest hash, verify whole log, search, filters, export.
+  await page.goto(`${url}#/log`);
+  await page.waitForFunction(() => document.querySelectorAll('.log-list li').length === 2);
+  const latestFull = (await page.getAttribute('#latest-hash', 'data-full')) ?? '';
+  check(/^[0-9a-f]{64}$/.test(latestFull) && ((await page.textContent('#latest-hash')) ?? '').startsWith(latestFull.slice(0, 12)), `latest record hash shown in short form (${await page.textContent('#latest-hash')})`);
+  const order = await page.$$eval('.log-list .log-when', (els) => els.map((e) => e.textContent ?? ''));
+  check(order[0].startsWith('#1') && order[1].startsWith('#0'), 'log is newest first');
+  await page.click('#verify-log');
+  await page.waitForFunction(() => /checked/.test(document.getElementById('verify-out')?.textContent ?? ''), null, { timeout: 30000 });
+  const summary = (await page.textContent('#verify-out')) ?? '';
+  check(summary.startsWith('✓ All checks passed') && summary.includes('2 records checked') && summary.includes('photos match: 2/2'), `verify whole log: ${summary}`);
+  await page.fill('#log-search', 'case-e2e-2');
+  check((await page.locator('.log-list li').count()) === 1, 'search by case reference narrows the list');
+  await page.fill('#log-search', '');
+  await page.selectOption('#filter-result', 'NEGATIVE');
+  check((await page.locator('.log-list li').count()) === 0, 'result filter');
+  await page.selectOption('#filter-result', '');
+  await page.fill('#noted-hash', latestFull.slice(0, 16));
+  await page.click('button:has-text("Check")');
+  check(((await page.innerText('main')) ?? '').includes('The noted hash is the latest record'), 'a noted latest hash is recognised');
+
+  const [logDl] = await Promise.all([page.waitForEvent('download'), page.click('#export-log')]);
+  const zip = unzipSync(new Uint8Array(readFileSync(await logDl.path())));
+  const names = Object.keys(zip).sort();
+  const lines = strFromU8(zip['records.jsonl']).trim().split('\n').map((l) => JSON.parse(l) as LogEntry);
+  check(lines.length === 2 && names.includes('public_key.json') && names.includes('VERIFY.md') && names.includes('export.json'), `export holds records.jsonl, public_key.json, export.json, VERIFY.md (${names.join(', ')})`);
+  let photosOk = true;
+  for (const e of lines) {
+    const png = zip[`photos/${e.record.image.sha256}.png`];
+    photosOk = photosOk && !!png && (await sha256Hex(png)) === e.record.image.sha256;
+  }
+  check(photosOk, 'export photos are named by, and hash to, image.sha256');
+  const pk = JSON.parse(strFromU8(zip['public_key.json'])) as { publicSpki: string; keyId: string };
+  const imported = await importPublicKey(pk.publicSpki);
+  const report = await verifyLog(lines, { publicKey: imported.key, keyId: imported.keyId, photo: async (e) => zip[`photos/${e.record.image.sha256}.png`] ?? null });
+  check(report.ok && imported.keyId === pk.keyId && report.latestHash === latestFull, `exported log verifies in Node with the exported public key (${report.count} records)`);
+  check(strFromU8(zip['VERIFY.md']).includes('r || s'), 'VERIFY.md explains the signature format');
 
   // The same capture cannot be saved twice.
   await page.goto(`${url}#/result`);
   await page.waitForSelector('#save-record');
-  check((await page.isDisabled('#save-record')) && ((await page.textContent('#save-record')) ?? '').includes('Saved as record 0'), 'a saved result cannot be saved again');
+  check((await page.isDisabled('#save-record')) && ((await page.textContent('#save-record')) ?? '').includes('Saved as record 1'), 'a saved result cannot be saved again');
 
   // Data collection mode never shows a result.
   await page.goto(`${url}#/settings`);
@@ -205,6 +265,7 @@ try {
   await page.fill('#phone', 'Result Test');
   await page.locator('#phone').dispatchEvent('change');
   check(await page.isVisible('nav.tabs a[data-route="#/captures"]'), 'Captures appears in the navigation in data collection mode');
+  check((await page.innerText('main')).includes('deletes the signing key and the whole log together'), 'Settings says plainly, next to Export, that clearing site data deletes the key and the log');
   await page.goto(`${url}#/camera`);
   await page.waitForFunction(() => /Checks pass|capture still allowed/.test(document.querySelector('.guidance')?.textContent ?? ''), null, { timeout: 30000 });
   await page.click('button.shutter');
