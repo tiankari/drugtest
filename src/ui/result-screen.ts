@@ -45,6 +45,7 @@ function maskedCard(rectified: ImageData, sample: SampleReading | null): HTMLCan
   if (!ctx) return c;
   ctx.putImageData(rectified, 0, 0);
   const k = rectified.width / MAT_V1.widthMm;
+  const token = (name: string) => getComputedStyle(document.documentElement).getPropertyValue(name).trim();
   const m = sample?.mask;
   if (m) {
     const cell = k / m.pxPerMm;
@@ -52,12 +53,12 @@ function maskedCard(rectified: ImageData, sample: SampleReading | null): HTMLCan
       for (let x = 0; x < m.w; x++) {
         const v = m.cells[y * m.w + x];
         if (!v) continue;
-        ctx.fillStyle = v === 1 ? 'rgba(0, 200, 255, 0.55)' : 'rgba(255, 0, 200, 0.35)';
+        ctx.fillStyle = token(v === 1 ? '--mask-sampled' : '--mask-dropped');
         ctx.fillRect((m.x0Mm + x / m.pxPerMm) * k, (m.y0Mm + y / m.pxPerMm) * k, Math.ceil(cell), Math.ceil(cell));
       }
   }
   const z = MAT_V1.sampleZone;
-  ctx.strokeStyle = '#0a6cff';
+  ctx.strokeStyle = token('--zone-outline');
   ctx.lineWidth = Math.max(2, k / 2);
   ctx.strokeRect(z.x * k, z.y * k, z.w * k, z.h * k);
   return c;

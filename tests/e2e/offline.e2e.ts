@@ -55,6 +55,16 @@ try {
   await page.reload();
   await page.waitForSelector('nav.tabs a', { timeout: 10000 });
   check((await page.innerText('main')).includes('presumptive field result'), 'app shell reloads offline');
+  // The self-hosted font comes from the service worker cache (never a CDN).
+  const font = await page.evaluate(async () => {
+    await document.fonts.load('700 16px "Google Sans"');
+    await document.fonts.ready;
+    const faces = [...document.fonts].filter((f) => f.family.replace(/"/g, '') === 'Google Sans');
+    return { loaded: faces.some((f) => f.status === 'loaded'), bodyFont: getComputedStyle(document.body).fontFamily };
+  });
+  check(font.loaded && font.bodyFont.includes('Google Sans'), `self-hosted font loads offline (${font.bodyFont.slice(0, 40)})`);
+  const theme = await page.evaluate(() => ({ bg: getComputedStyle(document.body).backgroundColor, meta: document.querySelector('meta[name="theme-color"]')?.getAttribute('content') }));
+  check(theme.bg === 'rgb(244, 246, 248)' && theme.meta === '#f4f6f8', `light theme and theme-color (${theme.bg}, ${theme.meta})`);
 
   // 4. Data collection capture offline.
   await page.goto(`${url}#/settings`);
