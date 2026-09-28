@@ -8,10 +8,14 @@ export interface Settings {
   phoneModel: string;
   tag: DataTag;
   copy: 'A' | 'B';
+  /** Typed by the officer; required before a test. Not verified. */
+  operatorId: string;
+  /** Selected kit profile id (only matters when more than one kit is bundled). */
+  kitId: string;
 }
 
 const KEY = 'fdtc.settings.v1';
-const DEFAULTS: Settings = { dataCollection: false, phoneModel: '', tag: 'registration', copy: 'A' };
+const DEFAULTS: Settings = { dataCollection: false, phoneModel: '', tag: 'registration', copy: 'A', operatorId: '', kitId: '' };
 
 type Listener = (s: Settings) => void;
 const listeners = new Set<Listener>();

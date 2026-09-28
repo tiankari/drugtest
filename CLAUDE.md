@@ -11,9 +11,9 @@ synthetic images only.
 | 0 Baseline | done: HEAD 672c213, 112 unit + 3 browser green; `incoming/`, `tools/.venv/` ignored; fonts in `incoming/fonts/` (Google Sans, not Flex; OFL.txt present); Python 3.12 via `py` | 12677e0 |
 | 1 Signed records + chain | done: `src/records/` (canonical JSON, ECDSA P-256 non-extractable key, chain, `verifyLog`, `checkNotedHash`), `src/ui/db.ts` (fdtc v2), `src/ui/log-store.ts`; docs/records.md; 45 unit + 5 browser tests | 715b5ce |
 | 2 Sample zone reading | done (538fcd6): `src/pipeline/samplezone.ts`, 9 provisional `sample*` thresholds, synth marks in `tests/helpers/synth-card.ts`, `scripts/validate-sample.ts` → `docs/validation/sample_zone_v1.md` (real: 6/6 empty registration zones → none; 3/3 accepted cap photos → found; cap spread 3.3 before vs 4.0 after), docs/sample_zone.md | 538fcd6 |
-| 3 Marquis kit profile (NIJ) | done: `profiles/kit_marquis_opiates_v1.json` (heroin 7.91, morphine 8.23, codeine 9.81 ΔE00), `src/pipeline/kit.ts` (format, loader, `classify`), `src/ui/kits.ts` (bundling), `scripts/build-kit-profile.ts`, `scripts/validate-kit.ts` → `docs/validation/kit_marquis_v1.md`; sources in `docs/references/` (NIJ excerpt, RIT real.dat, Bradford); colour-science cross-check max 0.005 ΔE00 | (see git log) |
-| 4 Test flow | next | |
-| 5 Log screen | | |
+| 3 Marquis kit profile (NIJ) | done: `profiles/kit_marquis_opiates_v1.json` (heroin 7.91, morphine 8.23, codeine 9.81 ΔE00), `src/pipeline/kit.ts` (format, loader, `classify`), `src/ui/kits.ts` (bundling), `scripts/build-kit-profile.ts`, `scripts/validate-kit.ts` → `docs/validation/kit_marquis_v1.md`; sources in `docs/references/` (NIJ excerpt, RIT real.dat, Bradford); colour-science cross-check max 0.005 ΔE00 | 10a089b |
+| 4 Test flow | done: nav Test/Log/Settings (SVG icons; Captures only in data collection; About via Settings), `test-screen.ts` (operator ID first), test bar (kit line, operator, geolocation `geo.ts`), capture worker reads the sample zone, new `result-screen.ts` (verdict word+icon+colour, swatches, mask on card, tick, Save; Session 1 content under Technical details), `src/records/build.ts`, `record-screen.ts` (3 checks), basic `log-screen.ts`, `log-export.ts`; e2e `tests/e2e/result.e2e.ts` = full flow with TEST-ONLY kit (33 checks) | (see git log) |
+| 5 Log screen | next: search/filters (pure), verify whole log, latest hash, whole-log export + e2e export check, Settings note next to Export | |
 | 6 UI refresh | | |
 | 7 Verifier | | |
 

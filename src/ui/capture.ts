@@ -6,6 +6,7 @@
 
 import type { EncodeInfo } from '../io/png.ts';
 import type { MatAnalysis } from '../pipeline/analyse.ts';
+import type { SampleReading } from '../pipeline/samplezone.ts';
 import type { FrameCheckReport } from '../pipeline/quality.ts';
 import type { CaptureRequest, CaptureResponse } from './workers/capture.worker.ts';
 
@@ -33,6 +34,7 @@ export interface EncodedCapture {
   /** Frame (blur/exposure) checks, part of the analysis. */
   report: FrameCheckReport;
   analysis: MatAnalysis;
+  sample: SampleReading | null;
   rectified: ImageData | null;
   timingsMs: { checks: number; encode: number; hash: number };
 }
@@ -54,6 +56,7 @@ export function processFrame(frame: ImageData): Promise<EncodedCapture> {
           pixelSha256: r.pixelSha256,
           report: r.analysis.frame,
           analysis: r.analysis,
+          sample: r.sample,
           rectified: r.rectified ? new ImageData(new Uint8ClampedArray(r.rectified.buffer), r.rectified.width, r.rectified.height) : null,
           timingsMs: r.timingsMs,
         });
