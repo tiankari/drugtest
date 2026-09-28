@@ -39,3 +39,41 @@ export function fakeCameraArgs(W?: number, H?: number): string[] {
 
 /** Local runs drive the installed Edge on Windows (no browser download); CI uses Playwright's Chromium. */
 export const browserChannel = process.env.PW_CHANNEL ?? (process.env.CI ? undefined : process.platform === 'win32' ? 'msedge' : undefined);
+
+/** Write RGBA frames as a Y4M clip (4:2:0, BT.601 limited range) for the fake camera. Returns the absolute path. */
+export function writeY4mClip(name: string, frames: { width: number; height: number; data: Uint8Array | Uint8ClampedArray }[]): string {
+  const { width: W, height: H } = frames[0];
+  const dir = join('node_modules', '.cache', 'fdtc');
+  mkdirSync(dir, { recursive: true });
+  const file = resolve(dir, `${name}.y4m`);
+  const parts: Buffer[] = [Buffer.from(`YUV4MPEG2 W${W} H${H} F10:1 Ip A1:1 C420jpeg\n`)];
+  const clamp = (v: number) => Math.min(255, Math.max(0, Math.round(v)));
+  for (const f of frames) {
+    const y = Buffer.alloc(W * H);
+    const u = Buffer.alloc((W / 2) * (H / 2));
+    const v = Buffer.alloc((W / 2) * (H / 2));
+    const d = f.data;
+    for (let i = 0; i < W * H; i++) y[i] = clamp(16 + 0.257 * d[i * 4] + 0.504 * d[i * 4 + 1] + 0.098 * d[i * 4 + 2]);
+    for (let r = 0; r < H; r += 2)
+      for (let c = 0; c < W; c += 2) {
+        let R = 0;
+        let G = 0;
+        let B = 0;
+        for (const [dy, dx] of [[0, 0], [0, 1], [1, 0], [1, 1]]) {
+          const p = ((r + dy) * W + c + dx) * 4;
+          R += d[p];
+          G += d[p + 1];
+          B += d[p + 2];
+        }
+        R /= 4;
+        G /= 4;
+        B /= 4;
+        const j = (r / 2) * (W / 2) + c / 2;
+        u[j] = clamp(128 - 0.148 * R - 0.291 * G + 0.439 * B);
+        v[j] = clamp(128 + 0.439 * R - 0.368 * G - 0.071 * B);
+      }
+    parts.push(Buffer.from('FRAME\n'), y, u, v);
+  }
+  writeFileSync(file, Buffer.concat(parts));
+  return file;
+}

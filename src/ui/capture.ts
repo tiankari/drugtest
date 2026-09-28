@@ -5,6 +5,7 @@
 // profiles) are never used.
 
 import type { EncodeInfo } from '../io/png.ts';
+import type { MatAnalysis } from '../pipeline/analyse.ts';
 import type { FrameCheckReport } from '../pipeline/quality.ts';
 import type { CaptureRequest, CaptureResponse } from './workers/capture.worker.ts';
 
@@ -29,7 +30,10 @@ export interface EncodedCapture {
   info: EncodeInfo;
   sha256: string;
   pixelSha256: string;
+  /** Frame (blur/exposure) checks, part of the analysis. */
   report: FrameCheckReport;
+  analysis: MatAnalysis;
+  rectified: ImageData | null;
   timingsMs: { checks: number; encode: number; hash: number };
 }
 
@@ -42,7 +46,17 @@ export function processFrame(frame: ImageData): Promise<EncodedCapture> {
   return new Promise((resolve, reject) => {
     w.onmessage = (e: MessageEvent<CaptureResponse>) => {
       const r = e.data;
-      if (r.ok) resolve({ png: new Uint8Array(r.png), info: r.info, sha256: r.sha256, pixelSha256: r.pixelSha256, report: r.report, timingsMs: r.timingsMs });
+      if (r.ok)
+        resolve({
+          png: new Uint8Array(r.png),
+          info: r.info,
+          sha256: r.sha256,
+          pixelSha256: r.pixelSha256,
+          report: r.analysis.frame,
+          analysis: r.analysis,
+          rectified: r.rectified ? new ImageData(new Uint8ClampedArray(r.rectified.buffer), r.rectified.width, r.rectified.height) : null,
+          timingsMs: r.timingsMs,
+        });
       else reject(new Error(r.error));
     };
     w.onerror = (e) => reject(new Error(`Capture worker failed: ${e.message}`));

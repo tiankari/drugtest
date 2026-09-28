@@ -22,7 +22,10 @@ npm run test:browser   # pixel-contract tests in real Chromium (installed Edge o
 npm run test:e2e       # built app + fake camera: data collection, export, hash checks
 npm run test:offline   # deployed site with the network cut: reload, capture, export, card PDF
                        # (add -- --mobile for Pixel 7 emulation with a portrait camera)
+npm run test:e2e:result  # built app + fake camera showing a rendered card: live guidance, result screen
 npm run typecheck      # app, no-DOM pipeline, Node scripts
+node scripts/register-mat.ts   # registration photos -> profiles/mat_reference_1_<copy>.json
+node scripts/validate-mat.ts   # every real photo -> docs/validation/mat_v1.md
 npm run mat            # regenerate the printable reference colour card into print/
 npm run build          # production build into dist/
 ```

@@ -17,10 +17,11 @@ export interface Threshold {
 
 export const THRESHOLDS = {
   blurMinLaplacianVariance: {
-    value: 50,
-    unit: 'variance of the 4-neighbour Laplacian of 8-bit luma, at check scale, inside the framing outline',
-    status: 'provisional',
-    reason: 'Below the common ~100 rule of thumb for 640 px frames because the card is mostly flat white; to be derived from fail-blur vs registration photos.',
+    value: 680,
+    unit: 'variance of the 4-neighbour Laplacian of 8-bit luma at check scale, on the detected card (framing outline if no card)',
+    status: 'derived',
+    reason:
+      'Geometric mean of the only motion-blurred real photo (fail-blur_nothing-phone-3a_A_20260928T120754449Z: 488) and the least sharp non-blurred one (fail-shadow_nothing-phone-3a_A_20260928T120640832Z: 960). One blurred example only: re-derive when more exist. (Was 50 provisional, which let the blurred photo pass.)',
   },
   highlightClipLevel: {
     value: 254,
@@ -52,6 +53,48 @@ export const THRESHOLDS = {
     status: 'provisional',
     reason: 'The card is mostly white; a median this low means the scene is far too dark for colour work.',
   },
+  idCellMargin: {
+    value: 0.15,
+    unit: 'fraction of the (white - black) luma range either side of the midpoint where an ID cell counts as unreadable',
+    status: 'provisional',
+    reason: 'Printed cells read near marker black or paper white; one within 15% of the midpoint is not clearly either, so the ID is refused rather than guessed.',
+  },
+  minPatchSourcePixels: {
+    value: 400,
+    unit: "camera pixels inside each patch's central 5 x 5 mm sampling square (minimum over all patches)",
+    status: 'provisional',
+    reason: 'About 4 px/mm: below that, lens blur and a 1 mm placement error eat into the 5 mm square and the median mixes in the neighbouring colours.',
+  },
+  maxClipFraction: {
+    value: 0.02,
+    unit: 'fraction of pixels in any patch sampling square, or in the sample zone, with any channel at or above highlightClipLevel',
+    status: 'provisional',
+    reason: 'A clipped channel is not a measurement; 2% allows stray specks but not a glare spot.',
+  },
+  maxWhiteLuminanceRatio: {
+    value: 1.2,
+    unit: 'brightest / dimmest linear luminance of the six white patches (W_T, W_B, W_L, W_R1, W_R2, N1)',
+    status: 'provisional',
+    reason: 'A single global correction assumes even light; a 20% gradient already moves mid-grey patches by about 4 L* units between corners.',
+  },
+  maxLooMeanDeltaE00: {
+    value: 5,
+    unit: 'mean leave-one-out CIEDE2000 over the card patches after correction',
+    status: 'provisional',
+    reason: 'Neighbouring reaction colour families differ by roughly 10 or more; a correction that cannot predict its own card within 5 on average cannot separate them.',
+  },
+  maxLooP90DeltaE00: {
+    value: 10,
+    unit: '90th percentile leave-one-out CIEDE2000 over the card patches after correction',
+    status: 'provisional',
+    reason: 'Guards against a few badly predicted colours hidden behind a good mean.',
+  },
+  maxRegistrationSpreadDeltaE00: {
+    value: 3,
+    unit: 'largest CIEDE2000 between any two registration photos, for any patch',
+    status: 'provisional',
+    reason: 'Back-to-back photos of the same print in the same light should agree closely; more than 3 means the light or the phone changed between shots.',
+  },
 } as const satisfies Record<string, Threshold>;
 
 /** Fixed parameters (not pass/fail thresholds). */
@@ -63,4 +106,29 @@ export const PARAMS = {
   /** Requested capture resolution (the phone may deliver something else; we record what it delivers). */
   requestWidth: 1920,
   requestHeight: 1080,
+  /** Card detection runs on a copy box-downscaled to about this long side (full resolution as fallback). */
+  detectLongSide: 960,
+  /** Adaptive threshold: local window radius = short side / this; dark if luma < local mean x ratio. */
+  thresholdWindowDivisor: 12,
+  thresholdRatio: 0.75,
+  /** Smallest marker bounding box considered, in detection-scale pixels. */
+  markerMinBoxPx: 64,
+  /** Patches are sampled in their central square, this far in from each edge (10 mm patch -> 5 mm square). */
+  patchInsetMm: 2.5,
+  /** Sample zone clip check covers the zone interior this far in from the outline. */
+  sampleZoneInsetMm: 3,
+  /** Trimmed median: drop this fraction of pixels at each end of the luma order, then per-channel median. */
+  trimFraction: 0.1,
 } as const;
+
+export type CorrectionMethod = 'A' | 'B';
+
+/**
+ * Default correction method. PROVISIONAL until Step 6 compares A and B on real
+ * photos: A = 3x3 matrix in linear RGB; B = per-channel neutral-ramp curves, then 3x3.
+ */
+export const DEFAULT_CORRECTION_METHOD: { value: CorrectionMethod; status: ThresholdStatus; reason: string } = {
+  value: 'B',
+  status: 'provisional',
+  reason: 'Phones apply a tone curve a single matrix cannot undo; to be decided from the real-photo comparison in docs/validation/mat_v1.md.',
+};

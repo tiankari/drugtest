@@ -107,6 +107,16 @@ export interface CaptureSidecar {
     stats: FrameCheckReport['stats'];
     thresholds: Record<string, { value: number; status: string }>;
   };
+  /** Summary of the full card analysis at capture (thresholds as they were then; validation re-runs it). */
+  analysis: {
+    verdict: 'PASS' | 'RETAKE';
+    reason: string;
+    copy: string | null;
+    checks: { id: string; pass: boolean; value?: number; threshold?: number; detail?: string }[];
+    unevenLight: number | null;
+    method: string | null;
+    looMean: { A?: number; B?: number };
+  } | null;
   device: {
     userAgent: string;
     devicePixelRatio: number;

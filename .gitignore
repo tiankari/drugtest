@@ -9,3 +9,10 @@ Thumbs.db
 __screenshots__/
 # Local Claude Code settings (per machine)
 .claude/settings.local.json
+# Real photos stay on this machine (they show the user's surroundings; the repo
+# is public). Only the README and the folder skeleton are tracked.
+data/real/**/*.png
+data/real/**/*.json
+data/real/*.zip
+# Throwaway build used by tests/e2e/result.e2e.ts (bundles a synthetic reference)
+dist-e2e/

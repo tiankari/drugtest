@@ -15,7 +15,8 @@
     "mat": "node scripts/generate-mat.ts",
     "icons": "node scripts/generate-icons.ts",
     "test:e2e": "npm run build && node tests/e2e/data-collection.e2e.ts",
-    "test:offline": "node tests/e2e/offline.e2e.ts"
+    "test:offline": "node tests/e2e/offline.e2e.ts",
+    "test:e2e:result": "node tests/e2e/result.e2e.ts"
   },
   "dependencies": {
     "fflate": "^0.8.3"
