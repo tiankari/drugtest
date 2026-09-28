@@ -1,30 +1,47 @@
 # CLAUDE.md — Field drug-test companion (SIH26231)
 
-## Session 3 progress (evaluator UX; update at every merge)
+## STATUS: Session 3 CLOSED (2026-09-29) — the app is understandable to an evaluator
 
-Plan: the Session 3 prompt. Pipeline, thresholds, kit, classification and
-signing/verification do not change; the only record change is `image.source`.
-Tag `session2-good` = ad78869 (local; push with the first approved push).
-User (2026-09-29): "do whatever you think is best" after the audit STOP;
-the sample-image review STOP stays (public repo).
+**Read `docs/session3_handoff.md` first** (what changed for evaluators, the
+screenshot list, known issues), then `docs/session2_handoff.md` (records,
+kit, evidence) and `docs/session1_handoff.md` (card pipeline).
 
-| Step | State |
+Session 3 changed only the experience: the colour pipeline, thresholds, kit
+profile, classification rule and signing/verification are exactly Session 2's.
+The only record change is the optional `image.source` ("camera" |
+"sample-photo" | "sample-drawn"; absent in older records = camera; older
+records still verify).
+
+What an evaluator with no card now gets: Welcome → How it works → **Try with
+sample images** (4 labelled samples, each run through the real pipeline) →
+save one → Log → **Check log** → **See tamper detection** (real verifier on an
+in-memory copy; the real log still passes). Officer mode is the app; photo
+collection for the team lives in Settings → Developer tools (off by default,
+banner on every screen while on). Plain words on every main screen, checked
+by a jargon scan in the e2e tests; every number is under a collapsed
+Technical details / Advanced / Developer tools.
+
+| Session 3 step | Merge |
 |---|---|
-| 0 Baseline | done (ad78869, all green, tag created) |
-| 1 Audit | done: `scripts/audit-walkthrough.ts`, `docs/audit/before/` (32 JPEG), `docs/ux_audit.md` — merged cd9d661 |
-| 2 Two modes | done: photo collection in Settings → Developer tools (off by default), banner on every screen with Turn off, plain tag names, one-time migration note — merged (see git log) |
-| 3 Samples | done: `samples/` (empty card, orange cap, blurred: real photos cropped to the card + 2 mm, reviewed by the user; opiate colour: computer-drawn with copy A's registered colours + heroin's published colour), `scripts/make-samples.ts` → `samples-review/` (ignored), `src/ui/samples.ts` + `samples-screen.ts` (same worker/pipeline), `image.source` in records (older records still verify), Sample badge + filter, laptop phone-width column; +3.0 MB precache — merged (see git log) |
-| 4 Welcome / How it works | done: `welcome-screen.ts` (first launch without a deep link; from Settings), `about-screen.ts` = How it works (5 steps with SVG icons, kit status, card + PDF, privacy, build) — merged (see git log) |
-| 5 Log anyone can read | done: log intro lines, empty state, Check log (plain summary), See tamper detection (`src/records/tamper.ts`: changes a COPY, real `verifyLog` on it, real log re-checked), Advanced → Log code to write down + Compare (messages right for every state), Download log (for the lab); record detail: plain checks, codes under Technical details; `tests/e2e/evaluator.e2e.ts` — merged (see git log) |
-| 6 Plain words | done: camera steps (1-2-3), plain live guidance (`plainRetake`), plain location/officer wording, plain verdict sentences (`plain.ts`; the sealed reason is unchanged, shown in Technical details), thresholds with plain names in Developer tools; jargon scan (`tests/e2e/jargon.ts`) in the evaluator and test-flow e2e, with a scanner self-check — merged (see git log) |
-| 7 Evaluator check | done: `docs/audit/after/` (43 JPEG), `docs/ux_audit.md` before/after column, evaluator e2e 87 checks at phone + laptop, offline check runs a sample with the network cut (precache 3.40 MB, samples 3.05 MB) — merged (see git log) |
-| CLOSE | next: demo.md walkthroughs, session3_handoff.md, CLAUDE.md, push with tag, live offline check, phone checklist |
+| 0 Baseline; tag `session2-good` = ad78869 (roll back: `git checkout session2-good`) | — |
+| 1 UX audit (`docs/ux_audit.md`, `docs/audit/before/`) | cd9d661 |
+| 2 Two modes (Developer tools, banner, migration note) | f4dcaa9 |
+| 3 Sample images (`samples/`, `image.source`, Sample badge/filter, laptop column) | bf2cbb4 |
+| 4 Welcome and How it works | 52e19dc |
+| 5 Readable log, tamper demonstration, evaluator e2e | b0d0ae6 |
+| 6 Plain words + jargon scan | b47cf57 |
+| 7 Evaluator check (`docs/audit/after/`, before/after audit, offline samples) | 3d209ba |
+| CLOSE (docs, this file) | see git log |
 
-## STATUS: Session 2 CLOSED (2026-09-28); submission 2026-09-29
+**User decisions (2026-09-29):** after the audit STOP: "do whatever you
+think is best that would make the evaluators pass the prototype and it
+impress them"; the four sample images were looked at and approved for the
+public repo ("Yes, commit all 4").
 
-**Read `docs/session2_handoff.md` first** (what exists, real vs synthetic
-evidence, decisions, known issues, numbers for the slides), then
-`docs/session1_handoff.md` for the card pipeline.
+## Session 2 (CLOSED 2026-09-28): records, kit, evidence
+
+`docs/session2_handoff.md`: what exists, real vs synthetic evidence,
+decisions, known issues, numbers for the slides.
 
 The deliverable now works end to end: capture on the reference colour card →
 card checks and colour correction → sample-zone reading → POSITIVE /
@@ -116,13 +133,24 @@ field result only; never replaces lab confirmation.** Official text:
   user before ever switching.
 - Anything uncertain returns RETAKE (card or sample stage) or INCONCLUSIVE
   (classification). Never a guess. A RETAKE can never become a record.
-- No demo mode, no mock results, no fallback that hides a failure. Show real errors on screen.
+- **What "no demo mode" means:** every result shown is computed by the real
+  pipeline from real pixels at that moment. Bundled sample images are allowed
+  because they go through the same code; each one is labelled as a sample
+  (real photo, or computer-drawn) on every screen and in its record. No result
+  is ever hard-coded. No mock results, no fallback that hides a failure; show
+  real errors on screen (the raw error may sit under "Technical details").
 - Never type reference data or thresholds from memory: take them from a saved
   source (`docs/references/`), derive them from our photos, or mark them
   provisional with a reason in `src/pipeline/config.ts`.
 - Never loosen a threshold to make more real photos pass. Report it as a finding.
 - Report separately what was verified on real photos vs only on synthetic
-  tests. Synthetic kit profiles and references are test-only: never in
+  tests.
+- Plain words on the main screens (no ΔE00, CIELAB, hash, SHA-256, ECDSA,
+  signature, chain, Laplacian, luma, clip, flat-field, leave-one-out,
+  homography, threshold, registration outside Technical details, Advanced and
+  Developer tools); `tests/e2e/jargon.ts` holds the list the e2e scan uses.
+  Plain wording lives in `src/ui/plain.ts`; the sealed record keeps the
+  technical reason. Synthetic kit profiles and references are test-only: never in
   `profiles/`, never in the real build (the e2e writes them for a throwaway
   `dist-e2e/` build and deletes them).
 - Keep dependencies few: no UI framework, no IndexedDB wrapper, no crypto
@@ -192,7 +220,11 @@ or GPS were honest; clearing site data deletes key and log together.
 | `src/records/record.ts`, `keys.ts`, `log.ts`, `memory-backend.ts` | Record schema `fdtc.record.v1`, sign/verify, device key, `appendRecord`, `verifyLog`, `checkNotedHash`, in-memory backend. |
 | `src/records/build.ts`, `search.ts` | Record draft from a capture; pure log search/filters. |
 | `src/io/png.ts`, `crc32.ts`, `hash.ts`, `dataset.ts` | Strict PNG codec, SHA-256, data-collection tags and sidecar schema. |
-| `src/ui/main.ts` | Router (Test / Log / Settings; Captures in data collection; `#/record/<seq>`, `#/result`, `#/about`), SVG nav, service-worker registration. |
+| `src/ui/main.ts` | Router (Test / Log / Settings; Captures only during photo collection; `#/welcome` on first launch, `#/about` = How it works, `#/samples`, `#/result`, `#/record/<seq>`), SVG nav, photo-collection banner, one-time migration note, service-worker registration. |
+| `src/ui/welcome-screen.ts`, `about-screen.ts` | Welcome (first launch) and How it works (5 steps, kit, card, privacy, build). |
+| `src/ui/samples.ts`, `samples-screen.ts`, `current.ts` | Bundled samples (`samples/*.png` + sidecars, schema `fdtc.sample.v1` in `src/io/samples.ts`), run through the same capture worker; the capture shown on the result screen (camera or sample). |
+| `src/ui/plain.ts` | Every plain-word text: verdict sentences, Retake reasons, check names, log summaries, code-compare messages, threshold names. |
+| `src/records/tamper.ts` | In-memory changed copy of the log for "See tamper detection" (the real verifier runs on it). |
 | `src/ui/test-screen.ts`, `camera-screen.ts`, `camera.ts`, `capture.ts`, `geo.ts` | Operator gate, camera + live card guidance + test bar (kit, operator, location), capture, geolocation. |
 | `src/ui/result-screen.ts`, `verdict.ts` | Verdict, swatches, mask, tick, Save; Session 1 details under "Technical details"; verdict badge + icons. |
 | `src/ui/record-screen.ts`, `log-screen.ts`, `log-export.ts`, `log-store.ts`, `db.ts` | Record detail (3 checks), log (search, filters, verify, latest hash), export zip + VERIFY.md, IndexedDB (v2). |
@@ -205,7 +237,9 @@ or GPS were honest; clearing site data deletes key and log together.
 | `docs/references/` | Saved sources: W3C colour excerpt, NIJ 0604.01 excerpt, RIT Munsell `real.dat` + README, Bradford excerpt. |
 | `scripts/` | `generate-mat.ts`, `register-mat.ts`, `validate-mat.ts`, `validate-sample.ts`, `build-kit-profile.ts`, `validate-kit.ts`, `verify-log.ts`, `make-demo-export.ts`; `lib/` (capture-files, references, verify-export, fake-camera, pdf, card). |
 | `tools/munsell_crosscheck.py` | colour-science cross-check (needs the local `tools/.venv`, not a dependency). |
-| `tests/unit`, `tests/browser`, `tests/e2e`, `tests/helpers` | Node unit tests; real-Chromium tests (pixel contract, IndexedDB log); built-app e2e (data collection, full test flow, offline); synthetic card renderer with sample marks, record fixtures. |
+| `tests/unit`, `tests/browser`, `tests/e2e`, `tests/helpers` | Node unit tests (216); real-Chromium tests (pixel contract, IndexedDB log); built-app e2e: data collection (35 checks), full test flow (51), **evaluator path** (87, phone + laptop, no card, jargon scan), offline; synthetic card renderer with sample marks and patch-colour override, record fixtures. |
+| `samples/` | The 4 bundled sample images (3 real photos cropped to the card, reviewed by the user; 1 computer-drawn). Built by `scripts/make-samples.ts` into `samples-review/` (git-ignored) first. |
+| `scripts/audit-walkthrough.ts` | UX walkthrough screenshots (`docs/audit/<phase>/`, computer-drawn cards only). |
 
 ## What is verified, and on what
 
@@ -290,7 +324,8 @@ OpenCV.js.
 ## Commands and conventions
 
 - `npm run typecheck && npm test && npm run test:browser` before committing;
-  `npm run test:e2e` and `npm run test:e2e:result` after UI/capture changes;
+  `npm run test:e2e`, `npm run test:e2e:result` and `npm run test:e2e:evaluator`
+  after UI/capture changes;
   `npm run test:offline -- [url] [--mobile]` after a deploy (or against a local
   `preview` from `.claude/launch.json`: `http://localhost:4173/drugtest/`).
 - `node scripts/validate-mat.ts`, `validate-sample.ts`, `validate-kit.ts`
@@ -298,6 +333,7 @@ OpenCV.js.
 - `node scripts/build-kit-profile.ts` (analysis) / `--write --radius=hue-chroma
   --loo=non-registration --opium=exclude` (the chosen profile).
 - `node scripts/verify-log.ts <export> [--noted <hash>] [--reanalyse]`.
+- `node scripts/make-samples.ts` (→ `samples-review/`, a person looks before copying to `samples/`); `node scripts/audit-walkthrough.ts after` (screenshots).
 - Imports use `.ts` extensions; erasable TS only (no enums, parameter
   properties, namespaces). On Windows, write edit scripts to files (inline
   heredocs with quotes break, repeatedly) and keep LF line endings.
@@ -307,6 +343,11 @@ OpenCV.js.
   and reload (the browser pane showed Session 1's UI until then).
 
 ## Known debt
+
+- Session 3: no Session 3 screen has run on a real phone yet (only Pixel 7
+  emulation and laptop size in Chromium/Edge); the samples add 3.05 MB to the
+  offline cache (3.40 MB total); the NEGATIVE sample is a registration photo
+  of copy A (the same photos built the reference, so it is an easy case).
 
 - **No real reaction photographed**: the Marquis profile is published-reference
   only; POSITIVE is synthetic-only. A forensic laboratory must photograph real

@@ -1,70 +1,89 @@
 # Demo guide
 
 Live app: https://tiankari.github.io/drugtest/ (open it once online; it then
-works offline). Everything below is a **presumptive field result**, never a
-laboratory confirmation.
+works offline, samples included). Everything it shows is a **presumptive
+field result**, never a laboratory confirmation.
 
-## Demo conditions (from the Session 1 evidence)
+## A. Two-minute walkthrough for an evaluator (no card needed)
+
+Works on a phone or a laptop (on a laptop the app shows as a phone-width
+column). Every result below is computed by the real pipeline from the image's
+pixels at that moment; nothing is hard-coded.
+
+1. **Open the link.** The Welcome screen says what the app does in one line
+   and offers **Start a test (needs the printed card)** and **Try with sample
+   images**. Tap **How it works** for the five steps (30 seconds).
+2. **Try with sample images.** Four samples, each labelled *Real photo* or
+   *Computer-drawn image*, with what we expect:
+   - **Empty card** (real photo) → **NEGATIVE**: no colour developed.
+   - **Orange cap, not a drug-test colour** (real photo) → **INCONCLUSIVE**:
+     the colour matches none of the kit's reaction colours.
+   - **Opiate-type colour** (computer-drawn; no real reaction was
+     photographed) → **POSITIVE**: matches the published colour of the
+     Marquis reaction with heroin.
+   - **Blurred photo** (real photo) → **RETAKE**, "Hold steady": the app
+     refuses a bad photo instead of guessing.
+   Each result shows the test colour next to the kit's colours and the area
+   the app read on the straightened card. **Technical details** (collapsed)
+   holds every number.
+3. **Save one.** On the POSITIVE sample, type any officer ID (e.g.
+   `EVALUATOR-1`), optionally a case reference, and tap **Save sealed
+   record**. The saved test opens with three checks: ✓ Not changed since it
+   was saved, ✓ Nothing removed or inserted before it, ✓ Photo is the
+   original. It is marked **Sample**.
+4. **Log.** The saved test is listed with a Sample badge. Tap **Check log**:
+   "✓ 1 saved test: not changed, nothing removed or inserted, photo
+   original."
+5. **See tamper detection.** The app copies the log in memory, changes one
+   record's result in the copy, and runs the same check on the copy: it shows
+   ✗ Not changed since it was saved at record 0 (and ✗ Nothing removed or
+   inserted before it at record 1, if there are two), next to the real log,
+   which still passes — "Your real log was not changed."
+
+## B. Walkthrough for an officer (with the printed card)
 
 Only these conditions produced accepted photos on real phones
-(`docs/validation/mat_v1.md`):
+(`docs/validation/mat_v1.md`): **Nothing Phone (3a)**; **daylight near a
+window or a tube light** (not a warm bulb, not the phone torch); the
+registered card **A or B flat on a plain table**, no hand or phone shadow,
+filling the on-screen outline.
 
-- **Phone:** Nothing Phone (3a). OnePlus Nord 5 photos were mostly refused
-  (colour correction error 6-8 ΔE00, over the limit of 5).
-- **Light:** daylight near a window, or a tube light. Not a warm bulb, not the
-  phone torch (glare, uneven light).
-- **Card:** registered copy A or B, **flat on a plain table**, no hand or phone
-  shadow across it, filling the on-screen outline (the camera needs about
-  6-7 px/mm; "Move closer" below 4).
-- Hold steady until the guidance says **Ready — tap to capture**.
+1. **Start a test** → type your officer ID once (saved; change it in
+   Settings). Allow location when asked; if refused, saved tests say so.
+2. The camera screen shows three steps: **1. Put the test in the white
+   square. 2. Fit the card in the frame. 3. Hold still and tap Capture.** It
+   also shows the kit ("Marquis reagent — opiate screen", colours from NIJ
+   Standard-0604.01, not yet checked against a real reaction) and the
+   location accuracy. The guidance says **Ready — tap to capture** when the
+   card is found, sharp and evenly lit.
+3. **Empty white square → NEGATIVE.** The app cannot tell a colourless test
+   from an empty square, so the officer must tick **The test is in the white
+   square** before saving (for a demo, say out loud that the square is
+   empty).
+4. **Orange cap in the square → INCONCLUSIVE.**
+5. **Save sealed record** with a case reference; the saved test opens with
+   its three checks. The **Log** lists it; **Check log** passes.
+6. **Log → Advanced → Log code to write down**: the short code that should go
+   into the case diary. Deleting the newest saved tests is only detectable by
+   comparing with a code written down earlier (**Compare**).
+7. **Download log (for the lab)**, then run the file check below on a laptop.
 
-## Step by step on a real phone
+**POSITIVE on a real card is not possible yet**: no real Marquis reaction has
+been photographed with this app. POSITIVE is shown only from the labelled
+computer-drawn sample (and the synthetic tests). **No stand-in object may be
+used to fake a POSITIVE** in a demo.
 
-1. **Settings → Operator ID**: type an ID (e.g. `DEMO-01`). Say plainly that
-   the app does not verify it.
-2. **Test**: the screen shows the kit line *"Marquis reagent — opiate screen"*
-   and, in amber, *"Marquis opiate screen — colours from NIJ Standard-0604.01,
-   not yet checked against a real reaction with this app"*, plus the location
-   accuracy (allow location when asked; if denied, the record says so).
-3. **Empty zone → NEGATIVE.** Photograph the card with nothing in the sample
-   zone. The result is **NEGATIVE — No colour developed in the sample zone**.
-   Point out: the app cannot tell a colourless test from an empty zone, which
-   is why the officer must tick **"The test is in the sample zone"** before
-   saving, and why the signed photo is kept. (For the demo, say out loud that
-   the zone is empty; this is the honest reading of a colourless result.)
-4. **Orange-red cap → INCONCLUSIVE.** Put the orange-red plastic cap in the
-   sample zone and photograph again. The result is **INCONCLUSIVE — Colour
-   matches no opiate reaction in the NIJ table** (the cap reads about 35 ΔE00
-   from the nearest target, heroin, whose radius is 7.9). The screen shows the
-   corrected cap colour next to the three target colours and the sampled area
-   drawn on the straightened card.
-5. **Save**: add a case reference (e.g. `DEMO-CASE-1`), tick the box, tap
-   **Save signed record**. The record opens with three checks: ✓ Signature
-   valid, ✓ Chain link intact, ✓ Photo matches record, and the plain meanings
-   under them.
-6. **Log**: both records, newest first. Show the search box (type the case
-   reference) and the result filter. Tap **Verify whole log**: "✓ All checks
-   passed — 2 records checked…". Show **Latest record hash** and explain why it
-   should be noted down elsewhere (deleting the newest records is otherwise
-   undetectable).
-7. **Export whole log (.zip)**, then run the tamper demo below on a laptop.
+Photo collection for the team (Settings → Developer tools) must be **off** for
+a demo; while it is on, a banner on every screen says so, with **Turn off**.
 
-**POSITIVE is shown only from the labelled synthetic test**
-(`npm run test:e2e:result`, screenshots in its output folder, and the
-synthetic section of `docs/validation/kit_marquis_v1.md`). No real Marquis
-reaction has been photographed with this app. **No stand-in object may be used
-to fake a POSITIVE** in a demo: the target colours come from a published
-table, and showing a purple object as "heroin POSITIVE" would misrepresent what
-has been tested.
+## C. Checking a downloaded log on a computer (tamper demo)
 
-## Tamper demo
-
-1. Export the log from the app (Log → Export whole log) and copy the .zip to a
-   laptop with this repository.
+1. Download the log from the app (Log → Download log (for the lab)) and copy
+   the .zip to a laptop with this repository.
 2. Check it untouched:
 
    ```
-   node scripts/verify-log.ts fdtc_log_<time>.zip --noted <latest hash from the log screen>
+   node scripts/verify-log.ts fdtc_log_<time>.zip --noted <log code from the app>
    ```
 
    Output on an app export from the end-to-end test (2 records):
@@ -88,10 +107,10 @@ has been tested.
    Re-computing the `hash` field by hand does not help: the signature still
    fails, and it can only be made on the phone that holds the private key.
 4. Delete the **last** line of `records.jsonl` instead: the chain alone still
-   passes (a shorter chain is a valid chain), but `--noted <the hash you wrote
+   passes (a shorter chain is a valid chain), but `--noted <the code you wrote
    down>` fails with "The noted hash is not in this log: records after it were
-   deleted, or the note is wrong". This is why the latest hash must be noted
-   outside the phone.
+   deleted, or the note is wrong". This is why the log code must be written
+   down outside the phone.
 5. Optional: `--reanalyse` re-runs the full analysis on every exported photo
    with the bundled profiles and reports whether each verdict matches. On a
    demo export of the 9 accepted real photos (`node scripts/make-demo-export.ts`,

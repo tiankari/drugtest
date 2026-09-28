@@ -15,6 +15,10 @@ real reaction with this app**; POSITIVE has been tested on synthetic images
 only. See [docs/session2_handoff.md](docs/session2_handoff.md) for the evidence
 and [docs/demo.md](docs/demo.md) for the demo and the tamper demo.
 
+**Evaluators without the printed card:** open https://tiankari.github.io/drugtest/
+and tap **Try with sample images**; the two-minute walkthrough is in
+[docs/demo.md](docs/demo.md).
+
 Problem statement: [docs/problem_statement.md](docs/problem_statement.md).
 
 - Static PWA, TypeScript + Vite. No backend, no server calls, no API keys.
@@ -32,6 +36,7 @@ npm run test:browser   # pixel-contract tests in real Chromium (installed Edge o
 npm run test:e2e       # built app + fake camera: data collection, export, hash checks
 npm run test:offline   # deployed site with the network cut: reload, capture, export, card PDF
                        # (add -- --mobile for Pixel 7 emulation with a portrait camera)
+npm run test:e2e:evaluator  # real build, no card, phone + laptop: welcome, samples, save, log, tamper detection, jargon scan
 npm run test:e2e:result  # built app + fake camera, synthetic card with a coloured test and a TEST-ONLY kit:
                          # capture -> verdict -> signed record -> log -> export -> independent verification
 npm run typecheck      # app, no-DOM pipeline, Node scripts
