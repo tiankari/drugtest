@@ -23,3 +23,5 @@ tools/.venv/
 dist-audit/
 # Sample images waiting for a person to look at them (scripts/make-samples.ts)
 samples-review/
+# Throwaway build of tests/e2e/evaluator.e2e.ts
+dist-eval/

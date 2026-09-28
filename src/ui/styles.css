@@ -329,3 +329,14 @@ details.dev-tools summary { padding: 0.9em; cursor: pointer; font-weight: 700; m
 .how-steps .step-icon .icon { width: 24px; height: 24px; }
 .how-steps .step-icon::after { content: counter(step); position: absolute; top: -6px; left: -6px; width: 22px; height: 22px; border-radius: 50%; background: var(--accent); color: var(--on-accent); font-size: 0.8rem; font-weight: 700; display: grid; place-items: center; }
 .how-steps .step-text { display: flex; flex-direction: column; gap: 0.2em; }
+
+/* Log (plain) */
+.log-intro { display: flex; flex-direction: column; gap: 0.3em; }
+.log-intro p { margin: 0; }
+.verify-block { border-radius: 10px; padding: 0.6em 0.8em; margin-top: 0.5em; border-left: 5px solid var(--ok); background: var(--ok-bg); }
+.verify-block.bad { border-left-color: var(--bad); background: var(--pos-bg); }
+.verify-block p { margin: 0.2em 0; }
+.bad-check { color: var(--bad); font-weight: 700; }
+details.advanced { background: var(--panel); border: 1px solid var(--line-soft); border-radius: 12px; }
+details.advanced summary { padding: 0.9em; cursor: pointer; font-weight: 700; min-height: 48px; }
+.record-page .meaning { margin: 0; font-size: 0.95rem; }

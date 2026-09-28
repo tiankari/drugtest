@@ -185,11 +185,11 @@ try {
   await page.waitForURL(/#\/record\/0$/, { timeout: 30000 });
   await page.waitForSelector('.record-checks');
   const checksText = (await page.innerText('.record-checks')).replace(/\s+/g, ' ');
-  check(/✓ Signature valid: yes/.test(checksText) && /✓ Chain link intact: yes/.test(checksText) && /✓ Photo matches record: yes/.test(checksText), `record detail checks: ${checksText}`);
+  check(/✓ Not changed since it was saved/.test(checksText) && /✓ Nothing removed or inserted before it/.test(checksText) && /✓ Photo is the original/.test(checksText), `record detail checks: ${checksText}`);
   const detail = await page.innerText('main');
   check(detail.includes('E2E-OFFICER-7') && detail.includes('CASE-E2E-1') && detail.includes('Synthetic checkpoint'), 'record shows operator, case reference and location note');
-  check(/28\.613900, 77\.209000, accuracy ±15 m/.test(detail), 'record carries the browser geolocation fix');
-  check(detail.includes('It does not prove who the officer is'), 'plain meaning of the signature shown');
+  check(/28\.613900, 77\.209000, within 15 m/.test(detail), 'record carries the browser geolocation fix');
+  check(detail.includes('It does not prove who the officer was'), 'plain meaning of the seal shown');
   check(await page.isVisible('.record-page img.review-img'), 'record shows the photo');
   await page.screenshot({ path: join(shots, 'record.png'), fullPage: true });
 
@@ -203,7 +203,7 @@ try {
   await page.waitForSelector('.record-checks');
 
   // Single-record export: its JSON and photo.
-  const [recDl] = await Promise.all([page.waitForEvent('download'), page.click('text=Export this record (JSON + photo)')]);
+  const [recDl] = await Promise.all([page.waitForEvent('download'), page.click('#export-record')]);
   const recZip = unzipSync(new Uint8Array(readFileSync(await recDl.path())));
   const recNames = Object.keys(recZip);
   check(recNames.includes('record_0.json') && recNames.some((n) => /^photos\/[0-9a-f]{64}\.png$/.test(n)), `single-record export holds its JSON and photo (${recNames.join(', ')})`);
@@ -226,18 +226,19 @@ try {
   const order = await page.$$eval('.log-list .log-when', (els) => els.map((e) => e.textContent ?? ''));
   check(order[0].startsWith('#1') && order[1].startsWith('#0'), 'log is newest first');
   await page.click('#verify-log');
-  await page.waitForFunction(() => /checked/.test(document.getElementById('verify-out')?.textContent ?? ''), null, { timeout: 30000 });
+  await page.waitForFunction(() => /saved test/.test(document.getElementById('verify-out')?.textContent ?? ''), null, { timeout: 30000 });
   const summary = (await page.textContent('#verify-out')) ?? '';
-  check(summary.startsWith('✓ All checks passed') && summary.includes('2 records checked') && summary.includes('photos match: 2/2'), `verify whole log: ${summary}`);
+  check(summary.startsWith('✓ All 2 saved tests: not changed, nothing removed or inserted, photos original.'), `Check log: ${summary}`);
   await page.fill('#log-search', 'case-e2e-2');
   check((await page.locator('.log-list li').count()) === 1, 'search by case reference narrows the list');
   await page.fill('#log-search', '');
   await page.selectOption('#filter-result', 'NEGATIVE');
   check((await page.locator('.log-list li').count()) === 0, 'result filter');
   await page.selectOption('#filter-result', '');
+  await page.click('#log-advanced summary');
   await page.fill('#noted-hash', latestFull.slice(0, 16));
-  await page.click('button:has-text("Check")');
-  check(((await page.innerText('main')) ?? '').includes('The noted hash is the latest record'), 'a noted latest hash is recognised');
+  await page.click('#noted-check');
+  check(((await page.textContent('#noted-out')) ?? '').includes('This is the latest code'), 'a noted latest code is recognised');
 
   const [logDl] = await Promise.all([page.waitForEvent('download'), page.click('#export-log')]);
   const zip = unzipSync(new Uint8Array(readFileSync(await logDl.path())));
@@ -290,7 +291,7 @@ try {
   await page.fill('#phone', 'Result Test');
   await page.locator('#phone').dispatchEvent('change');
   check(await page.isVisible('nav.tabs a[data-route="#/captures"]'), 'Captures appears in the navigation in data collection mode');
-  check((await page.innerText('main')).includes('deletes the signing key and the whole log together'), 'Settings says plainly, next to Export, that clearing site data deletes the key and the log');
+  check((await page.innerText('main')).includes('the saved tests are deleted with it'), 'Settings says plainly, next to the download, that clearing site data deletes the log');
   await page.goto(`${url}#/camera`);
   await page.waitForFunction(() => /Checks pass|capture still allowed/.test(document.querySelector('.guidance')?.textContent ?? ''), null, { timeout: 30000 });
   await page.click('button.shutter');
