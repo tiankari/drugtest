@@ -27,6 +27,8 @@ import { sha256Hex } from '../../src/io/hash.ts';
 import { importPublicKey } from '../../src/records/keys.ts';
 import { verifyLog } from '../../src/records/log.ts';
 import type { LogEntry } from '../../src/records/record.ts';
+import { reanalyse, readExport, verifyExport } from '../../scripts/lib/verify-export.ts';
+import { strToU8, zipSync } from 'fflate';
 import { browserChannel, writeY4mClip } from '../../scripts/lib/fake-camera.ts';
 import { placement, renderPhoto } from '../helpers/synth-card.ts';
 
@@ -253,6 +255,28 @@ try {
   const report = await verifyLog(lines, { publicKey: imported.key, keyId: imported.keyId, photo: async (e) => zip[`photos/${e.record.image.sha256}.png`] ?? null });
   check(report.ok && imported.keyId === pk.keyId && report.latestHash === latestFull, `exported log verifies in Node with the exported public key (${report.count} records)`);
   check(strFromU8(zip['VERIFY.md']).includes('r || s'), 'VERIFY.md explains the signature format');
+
+  // The independent verifier (scripts/verify-log.ts core) on the app's own export, then on a tampered copy.
+  const exportPath = join(shots, 'export.zip');
+  writeFileSync(exportPath, readFileSync(await logDl.path()));
+  const good = await verifyExport(readExport(exportPath), { noted: latestFull });
+  check(good.ok && good.report?.count === 2, `verify-log: the app's export passes (${good.report?.count} records, noted hash found)`);
+  const tampered = { ...zip, 'records.jsonl': strToU8(strFromU8(zip['records.jsonl']).replace('"verdict":"POSITIVE"', '"verdict":"NEGATIVE"')) };
+  const tamperedPath = join(shots, 'export-tampered.zip');
+  writeFileSync(tamperedPath, zipSync(tampered));
+  const bad = await verifyExport(readExport(tamperedPath));
+  const r0 = bad.report?.entries[0];
+  check(!bad.ok && !!r0 && !r0.hashOk && !r0.signatureOk && !!bad.report?.entries[1] && !bad.report.entries[1].chainOk, `verify-log: one edited verdict fails record 0 (hash, signature) and the link from record 1: ${r0?.problems.join('; ')}`);
+  const truncated = { ...zip, 'records.jsonl': strToU8(strFromU8(zip['records.jsonl']).trim().split('\n')[0] + '\n') };
+  const truncPath = join(shots, 'export-truncated.zip');
+  writeFileSync(truncPath, zipSync(truncated));
+  const cut = await verifyExport(readExport(truncPath));
+  const cutNoted = await verifyExport(readExport(truncPath), { noted: latestFull });
+  check(cut.ok && !cutNoted.ok, 'verify-log: deleting the newest record passes the chain alone but fails against the noted latest hash');
+  // Same photo, same profiles: does Node reproduce what the app computed in Chromium?
+  const re = await reanalyse(readExport(exportPath), good.entries, { references: { [COPY]: ref }, kits: [testKit] });
+  const worst = Math.max(...re.map((a) => a.maxDiff ?? Infinity));
+  check(re.every((a) => a.match) && worst < 1e-6, `re-analysis in Node matches the app's verdicts (${re.map((a) => a.recomputed).join(', ')}); largest numeric difference Chromium vs Node ${worst.toExponential(2)}`);
 
   // The same capture cannot be saved twice.
   await page.goto(`${url}#/result`);
