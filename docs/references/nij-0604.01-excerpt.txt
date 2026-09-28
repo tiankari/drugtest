@@ -1,0 +1,106 @@
+NIJ Standard-0604.01 — Color Test Reagents/Kits for Preliminary Identification of Drugs of Abuse
+EXCERPT, for the Marquis (reagent A.5) kit profile.
+
+Source:   https://www.ojp.gov/pdffiles1/nij/183258.pdf
+Fetched:  2026-09-28
+PDF:      183258.pdf, 176470 bytes, SHA-256 7a0faa664ddaf69f34c28ee2ce9c6103000ccefc5fca07acc7e62c992dc9dcd3
+Licence:  work of the U.S. federal government (Department of Justice), public domain.
+Method:   text extracted with pypdf 6.19.0; lines copied unchanged except where noted.
+          In the extracted text the en dash in 'NIJ Standard–0604.01' sometimes comes out as '?'.
+          scripts/build-kit-profile.ts reads the Munsell notations from the TABLE 1 A.5 block below.
+
+=== TITLE BLOCK (page 3 of the PDF) ===
+U.S. Department of Justice
+Office of Justice Programs
+National Institute of Justice
+Color Test Reagents/Kits for Preliminary
+Identification of Drugs of Abuse
+NIJ Standard?0604.01
+Supersedes NILECJ–STD–0604.01, Chemical Spot Test Kits for
+Preliminary Identification of Drugs of Abuse, dated December
+1978, and NIJ Standard–0605.00, Color Test Reagents/Kits for
+Preliminary Identification of Drugs of Abuse, dated July 1981
+Coordination by:
+National Institute of Standards and Technology
+Office of Law Enforcement Standards
+Gaithersburg, MD 20899–8102
+Prepared for:
+National Institute of Justice
+Office of Science and Technology
+Washington, DC 20531
+July 2000
+NCJ 183258
+
+=== §3.3 FINAL COLOR (page 2 of the standard) ===
+3.3  Final Color
+The final color was defined as the color (generally formed within 1 min or 2 min) that
+remained after any intermediate colors, produced by the addition of a reagent to a drug or other
+substance, have disappeared.
+
+=== §4.6 TEST COLOR AND SENSITIVITY (page 8) ===
+4.6  Test Color and Sensitivity
+Each reagent in the kit shall produce the color or colors specified by the manufacturer in the
+form of color samples (sec. 4.5) or have the same color hue and color saturation as those colors,
+for each of five replicate tests, performed in accordance with section 5.2 at the drug detection
+limit listed in table 2 or specified by the manufacturer in accordance with section 4.7.  If a reagent
+produces the same color with more than one drug, this test should be performed from only one of
+those reagent/drug combinations.
+
+=== TABLE 1, HEADER (page 3) ===
+Table 1.  Final colors produced by reagents A.l through A.12 with various
+drugs and other substances
+Analyte Solvent ISCC-
+NIST**
+Color Munsell
+
+=== TABLE 1, ALL ROWS FOR REAGENT A.5 (Marquis), pages 4-5 ===
+Rows that the PDF text wraps over two or three lines are joined here with single spaces;
+nothing else is changed. Columns: reagent, analyte, solvent, ISCC-NIST number, colour name, Munsell notation.
+A '*' after the analyte marks the usual kit reagent for that drug (footnote below).
+'Mace5' is Mace with footnote 5 (2-chloroacetophenone), run into the word by the text extraction.
+BEGIN A.5
+A.5 Aspirin powder 13 Deep red 5R 3/10
+A.5 Benzphetamine HCl* CHCl3 41 Deep reddish brown 7.5R 2/6
+A.5 Chlorpromazine HCl CHCl3 256 Deep purplish red 2.5RP 3/8
+A.5 Codeine* CHCl3 225 Very dark purple 7.5P 2/4
+A.5 d-Amphetamine HCl* CHCl3 35 to Strong reddish orange 10R 6/12 to 44 Dark reddish brown 7.5R 2/4
+A.5 d-Methamphetamine HCl* CHCl3 36 to Deep reddish orange 10R 4/12 to 44 Dark reddish brown 7.5R 2/4
+A.5 Diacetylmorphine HCl* CHCl3 256 Deep purplish red 7.5RP 3/10
+A.5 Dimethoxy-meth HCl CHCl3 107 Moderate olive 7.5Y 5/8
+A.5 Doxepin HCl CHCl3 21 Blackish red 7.5R 2/2
+A.5 Dristan powder 20 Dark grayish red 5R 3/2
+A.5 Exedrine powder 16 Dark red 5R 3/8
+A.5 LSD CHCl3 114 Olive black 10Y 2/2
+A.5 Mace5 crystals 87 Moderate yellow 7Y 7/8
+A.5 MDA HCl* CHCl3 267 Black Black
+A.5 Meperidine HCl CHCl3 56 Deep brown 5YR 3/6
+A.5 Mescaline HCl* CHCl3 50 Strong orange 5YR 6/12
+A.5 Methadone HCl CHCl3 28 Light yellowish pink 2.5YR 8/4
+A.5 Methylphenidate HCl CHCl3 71 Moderate orange yellow 10YR 8/8
+A.5 Morphine monohydrate* CHCl3 239 Very deep reddish purple 10P 3/6
+A.5 Opium* Powder 47 Dark grayish reddish Brown 10R 3/2
+A.5 Oxycodone HCl* CHCl3 214 Pale violet 2.5P 6/4
+A.5 Propoxyphene HCl CHCl3 230 Blackish purple 2.5RP 2/2
+A.5 Sugar crystals 59 Dark brown 5YR 2/4
+END A.5
+
+=== TABLE 1, FOOTNOTES (page 5) ===
+* Usual kit reagent for that particular drug.
+** Inter-Society Color Council and the National Institute of Standards and Technology (ISCC-NIST), formerly
+     ISCC/NBS, National Bureau of  Standards (NBS).1Aqueous phase.2Aqueous phase after chloroform extraction.3Chloroform phase (marijuana extraction usually rapid compared to other materials).4Not extracted into chloroform.52-Chloroacetophenone.
+
+=== TABLE 3, SPECIFICITY OF COLOR TESTS (page 11): header, the Aspirin and Sugar rows, footnote ===
+Columns after the substance: reagents A.1 to A.12; '+' = a color reaction occurs. A.5 is the fifth column.
+Table 3.  Specificity of color tests
+(+) Indicates that a color reaction occurs1
+REAGENT
+A.1 A.2 A.3 A.4 A.5 A.6 A.7 A.8 A.9 A.10 A.11 A.12
+Aspirin - - - + + - - - + - - -
+Sugar - - - - + - - - + + - -
+1Substances that gave no colors with these reagents are:  D-galactose, glucose, mannitol, oregano, rosemary, and
+  thyme.2Tea, mace, and nutmeg may interfere with the Duquenios test but not the Duquenois-Levine modified test (A.3).
+
+=== APPENDIX A.5, THE REAGENT (page 12) ===
+A.5  Marquis Reagent
+Carefully add 100 mL of concentrated sulfuric acid to 5 mL of 40 percent
+formaldehyde (v:v, formaldehyde:water).
