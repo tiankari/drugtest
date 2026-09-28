@@ -8,9 +8,9 @@ synthetic images only.
 
 | Step | State | Merge commit |
 |---|---|---|
-| 0 Baseline | done: HEAD 672c213, 112 unit + 3 browser green; `incoming/`, `tools/.venv/` ignored; fonts in `incoming/fonts/` (Google Sans, not Flex; OFL.txt present); Python 3.12 via `py` | (this merge) |
-| 1 Signed records + chain | next | |
-| 2 Sample zone reading | | |
+| 0 Baseline | done: HEAD 672c213, 112 unit + 3 browser green; `incoming/`, `tools/.venv/` ignored; fonts in `incoming/fonts/` (Google Sans, not Flex; OFL.txt present); Python 3.12 via `py` | 12677e0 |
+| 1 Signed records + chain | done: `src/records/` (canonical JSON, ECDSA P-256 non-extractable key, chain, `verifyLog`, `checkNotedHash`), `src/ui/db.ts` (fdtc v2), `src/ui/log-store.ts`; docs/records.md; 45 unit + 5 browser tests | 715b5ce |
+| 2 Sample zone reading | next | |
 | 3 Marquis kit profile (NIJ) | | |
 | 4 Test flow | | |
 | 5 Log screen | | |
