@@ -412,7 +412,7 @@ if (args.write) {
       options: { radius: radiusOpt, correctionError: looOpt, opium: opiumOpt },
       correctionErrorPhotos: looPhotos.map((p) => ({ file: p.file, looMean: p.looMean })),
     },
-    status: `Thin evidence: target colours are published Munsell notations (NIJ, 2000) converted to CIELAB, not measurements of real reactions photographed with this app; the correction-error term comes from ${looPhotos.length} real photos of an orange-red plastic cap and an empty card. POSITIVE has been tested only on synthetic images.${falsePos.length ? ` Known non-target reactions inside a POSITIVE radius (presumptive-test false positives): ${falsePos.join(', ')}.` : ''}`,
+    status: `Thin evidence: target colours are published Munsell notations (NIJ, 2000) converted to CIELAB, not measurements of real reactions photographed with this app; the correction-error term comes from ${looPhotos.length} real photos (${looOpt === 'all-pass' ? 'the empty-zone registration shots and the card with an orange-red plastic cap' : 'the card with an orange-red plastic cap in the zone, Nothing Phone (3a)'}). POSITIVE has been tested only on synthetic images.${falsePos.length ? ` Known non-target reactions inside a POSITIVE radius (presumptive-test false positives): ${falsePos.join(', ')}.` : ''}`,
   };
   parseKitProfile(JSON.parse(JSON.stringify(profile)));
   writeFileSync(OUT, JSON.stringify(profile, null, 2) + '\n');
