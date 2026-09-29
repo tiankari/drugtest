@@ -21,7 +21,8 @@ import { analyseMat } from '../src/pipeline/analyse.ts';
 import { labToSrgb8, type Vec3 } from '../src/pipeline/colour.ts';
 import type { RgbaImage } from '../src/pipeline/image.ts';
 import { applyH } from '../src/pipeline/homography.ts';
-import { classify, parseKitProfile } from '../src/pipeline/kit.ts';
+import { classify } from '../src/pipeline/kit.ts';
+import { currentKit } from './lib/kits.ts';
 import { MAT_V1 } from '../src/pipeline/mat.ts';
 import { readSampleZone } from '../src/pipeline/samplezone.ts';
 import { placement, renderPhoto } from '../tests/helpers/synth-card.ts';
@@ -32,7 +33,7 @@ import { SAMPLE_SCHEMA, type SampleSidecar } from '../src/io/samples.ts';
 const OUT = 'samples-review';
 const MARGIN_MM = 2;
 const refs = loadReferences();
-const kit = parseKitProfile(JSON.parse(readFileSync('profiles/kit_marquis_opiates_v1.json', 'utf8')));
+const kit = currentKit('marquis-opiates');
 
 interface Spec {
   id: string;

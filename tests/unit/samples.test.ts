@@ -11,7 +11,8 @@ import { sha256Hex } from '../../src/io/hash.ts';
 import { decodePng } from '../../src/io/png.ts';
 import { SAMPLE_SCHEMA, type SampleSidecar } from '../../src/io/samples.ts';
 import { analyseMat } from '../../src/pipeline/analyse.ts';
-import { classify, parseKitProfile } from '../../src/pipeline/kit.ts';
+import { classify } from '../../src/pipeline/kit.ts';
+import { currentKit } from '../../scripts/lib/kits.ts';
 import { readSampleZone } from '../../src/pipeline/samplezone.ts';
 
 const DIR = 'samples';
@@ -19,7 +20,7 @@ const sidecars = readdirSync(DIR)
   .filter((f) => f.endsWith('.json'))
   .map((f) => JSON.parse(readFileSync(join(DIR, f), 'utf8')) as SampleSidecar);
 const refs = loadReferences();
-const kit = parseKitProfile(JSON.parse(readFileSync('profiles/kit_marquis_opiates_v1.json', 'utf8')));
+const kit = currentKit('marquis-opiates');
 
 describe('bundled sample images', () => {
   it('are the four planned samples, two kinds, each labelled', () => {

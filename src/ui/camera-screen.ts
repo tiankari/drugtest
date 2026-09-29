@@ -14,7 +14,7 @@ import { setCurrentCapture } from './current.ts';
 import { errorText, h, toast } from './dom.ts';
 import { geoState, geoText, onGeo, startGeo } from './geo.ts';
 import { KITS, selectedKit } from './kits.ts';
-import { plainRetake } from './plain.ts';
+import { plainRetake, targetName } from './plain.ts';
 import { loadSettings, onSettings, updateSettings } from './settings.ts';
 import { listCaptures, putCapture, requestPersistence } from './store.ts';
 import type { PreviewGuidance, PreviewRequest, PreviewResponse } from './workers/preview.worker.ts';
@@ -62,9 +62,11 @@ export function cameraScreen(root: HTMLElement, go: (route: string) => void): ()
   const guidance = h('div', { class: 'guidance', role: 'status', 'aria-live': 'polite' }, 'Starting camera…');
   const metrics = h('div', { class: 'metrics' });
   // Normal mode: the kit (fixed line, or a picker when more than one is bundled), operator and location.
-  const kitSelect = h('select', { 'aria-label': 'Kit', class: 'kit-select' });
-  for (const k of KITS) kitSelect.append(h('option', { value: k.id }, `${k.name} (v${k.version})`));
+  const kitSelect = h('select', { id: 'kit-select', class: 'kit-select' });
+  for (const k of KITS) kitSelect.append(h('option', { value: k.id }, k.name));
+  const kitPick = h('label', { class: 'kit-pick', for: 'kit-select' }, h('strong', {}, 'Kit used'), kitSelect);
   const kitName = h('strong', { class: 'kit-name' });
+  const kitDetects = h('div', { class: 'kit-detects' });
   const kitStatus = h('div', { class: 'kit-status' });
   const operatorLine = h('button', { type: 'button', class: 'link operator-line' });
   const geoLine = h('span', { class: 'geo-line' });
@@ -81,7 +83,7 @@ export function cameraScreen(root: HTMLElement, go: (route: string) => void): ()
     'div',
     { class: 'test-bar' },
     steps,
-    h('div', { class: 'kit-line' }, KITS.length > 1 ? kitSelect : kitName, kitStatus),
+    h('div', { class: 'kit-line' }, KITS.length > 1 ? kitPick : kitName, kitDetects, kitStatus),
     h('div', { class: 'test-meta' }, operatorLine, geoLine, tryLink),
     laptopNote,
   );
@@ -138,6 +140,7 @@ export function cameraScreen(root: HTMLElement, go: (route: string) => void): ()
     const kit = selectedKit(settings.kitId);
     kitSelect.value = kit.id;
     kitName.textContent = `Kit: ${kit.name}`;
+    kitDetects.textContent = `Reads: ${kit.detects.map(targetName).join(', ')}`;
     kitStatus.textContent = kit.validationLine;
     operatorLine.textContent = `Officer: ${settings.operatorId || '—'} (change)`;
     const g = geoState();

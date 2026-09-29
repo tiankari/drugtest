@@ -14,11 +14,10 @@
 
 import { mkdirSync, rmSync, writeFileSync } from 'node:fs';
 import { join } from 'node:path';
-import { readFileSync } from 'node:fs';
 import { chromium, devices, type Browser, type BrowserContext, type Page } from 'playwright';
 import { build, preview } from 'vite';
 import { labToSrgb8, type Vec3 } from '../src/pipeline/colour.ts';
-import { parseKitProfile } from '../src/pipeline/kit.ts';
+import { currentKit } from './lib/kits.ts';
 import { placement, renderPhoto, type SampleMark } from '../tests/helpers/synth-card.ts';
 import { browserChannel, writeY4mClip } from './lib/fake-camera.ts';
 import { loadReferences } from './lib/references.ts';
@@ -32,7 +31,7 @@ mkdirSync(OUT_DIR, { recursive: true });
 
 // ---- computer-drawn camera clips (copy A with its registered patch colours) ----
 const refs = loadReferences();
-const kit = parseKitProfile(JSON.parse(readFileSync('profiles/kit_marquis_opiates_v1.json', 'utf8')));
+const kit = currentKit('marquis-opiates');
 const patchColours = Object.fromEntries(Object.entries(refs.A.patches).map(([k, v]) => [k, v.rgb8])) as Record<string, Vec3>;
 const heroin = labToSrgb8(kit.outcomes[0].targets[0].lab).rgb;
 const place = placement(1080, 1920, 700, 0, 0.03);

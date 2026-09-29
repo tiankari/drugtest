@@ -1,9 +1,10 @@
-// How it works (and About): five plain steps, the current kit, the printed
-// card, and the build.
+// How it works (and About): five plain steps, the kits, the printed card,
+// and the build.
 
 import sheetUrl from '../../print/mat_A4_sheet.pdf?url';
 import { h } from './dom.ts';
 import { KITS } from './kits.ts';
+import { targetName } from './plain.ts';
 import { icon } from './verdict.ts';
 
 const STEP_ICONS = {
@@ -23,7 +24,6 @@ export function aboutScreen(root: HTMLElement): () => void {
     void navigator.serviceWorker.ready.then(() => (swState.textContent = 'installed — works offline'));
   }
   const step = (path: string, title: string, text: string) => h('li', {}, h('span', { class: 'step-icon' }, icon(path)), h('span', { class: 'step-text' }, h('strong', {}, title), h('span', {}, text)));
-  const kit = KITS[0];
 
   root.append(
     h(
@@ -46,9 +46,12 @@ export function aboutScreen(root: HTMLElement): () => void {
       h('div', { class: 'notice' }, 'It gives a presumptive field result. It never replaces laboratory confirmation.'),
       h(
         'div',
-        { class: 'card' },
-        h('strong', {}, 'The current kit'),
-        h('p', {}, kit ? `${kit.name}: colours from NIJ Standard-0604.01 (a US Department of Justice standard), not yet checked on a real reaction.` : 'No kit is bundled in this build.'),
+        { class: 'card kits' },
+        h('strong', {}, KITS.length === 1 ? 'The kit' : `The ${KITS.length} kits`),
+        KITS.length
+          ? h('ul', { class: 'kit-list' }, ...KITS.map((k) => h('li', {}, h('strong', {}, k.name), `: ${k.detects.map(targetName).join(', ')}.`)))
+          : h('p', {}, 'No kit is bundled in this build.'),
+        h('p', {}, `${KITS.length > 1 ? 'Choose the kit you used on the camera screen: the same colour means different drugs with different reagents. ' : ''}Colours from NIJ Standard-0604.01 (a US Department of Justice standard), not yet checked on a real reaction.`),
       ),
       h(
         'div',
