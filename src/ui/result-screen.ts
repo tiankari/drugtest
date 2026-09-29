@@ -1,8 +1,10 @@
 // Result screen for a camera photo or a bundled sample image, top to bottom:
 //   1. sample label (samples only); the verdict (word + icon + colour, never
 //      colour alone) and one plain sentence of why;
-//   2. RETAKE: what to do next, and nothing else. Otherwise: the test colour
-//      next to the kit's colours, and what was read drawn on the card;
+//   2. RETAKE: where the problem is and what to try (and, when the white
+//      square was read but refused, what was read drawn on the card).
+//      Otherwise: the test colour next to the kit's colours, and what was
+//      read drawn on the card;
 //   3. the kit's status; 4. the presumptive-result notice;
 //   5. optional case reference and location note; 6. for camera photos with
 //      kits where no colour means NEGATIVE, the required "test is in the
@@ -24,7 +26,7 @@ import { errorText, formatBytes, h, toast } from './dom.ts';
 import { geoSaveText, recordLocation } from './geo.ts';
 import { canonicalSha256, selectedKit } from './kits.ts';
 import { saveRecord } from './log-store.ts';
-import { plainVerdictSentence, targetName } from './plain.ts';
+import { plainVerdictSentence, retakeAdvice, targetName } from './plain.ts';
 import { REFERENCES } from './references.ts';
 import { sampleKindText } from './samples.ts';
 import { loadSettings, updateSettings } from './settings.ts';
@@ -52,12 +54,16 @@ function maskedCard(rectified: ImageData, sample: SampleReading | null): HTMLCan
   const m = sample?.mask;
   if (m) {
     const cell = k / m.pxPerMm;
+    const at = (x: number, y: number) => (x < 0 || y < 0 || x >= m.w || y >= m.h ? 0 : m.cells[y * m.w + x]);
     for (let y = 0; y < m.h; y++)
       for (let x = 0; x < m.w; x++) {
         const v = m.cells[y * m.w + x];
-        // A checker pattern, so the test's own colour stays visible through the marking.
-        if (!v || (x + y) % 2) continue;
-        ctx.fillStyle = token(v === 1 ? '--mask-sampled' : '--mask-dropped');
+        if (!v) continue;
+        // A solid edge where the marking meets something else, so it shows on any test colour;
+        // inside, a checker pattern, so the test's own colour stays visible through the marking.
+        const edge = at(x - 1, y) !== v || at(x + 1, y) !== v || at(x, y - 1) !== v || at(x, y + 1) !== v;
+        if (!edge && (x + y) % 2) continue;
+        ctx.fillStyle = token(v === 1 ? (edge ? '--mask-sampled-edge' : '--mask-sampled') : edge ? '--mask-dropped-edge' : '--mask-dropped');
         ctx.fillRect((m.x0Mm + x / m.pxPerMm) * k, (m.y0Mm + y / m.pxPerMm) * k, Math.ceil(cell), Math.ceil(cell));
       }
   }
@@ -75,10 +81,14 @@ function numbers(cls: Classification, s: SampleReading | null): HTMLElement {
   if (s) {
     rows.push(row('Sample zone reading', `${s.status}${s.status === 'retake' ? ` (${s.reason})` : ''}`));
     rows.push(row('Coloured-pixel threshold', `${s.threshold.deltaE.toFixed(1)} ΔE76 (= ${s.threshold.factor} × white-paper noise ${s.threshold.whiteNoise.toFixed(2)})`));
-    if (s.status === 'found') {
-      rows.push(row('Area read', `${s.areaMm2.toFixed(0)} mm², ${s.pixels} camera pixels; spread ${s.spread.toFixed(1)} ΔE76; clipped ${(s.clipFraction * 100).toFixed(1)}%${s.touchesEdge ? '; reaches the zone edge' : ''}`));
-      if (s.observedLab) rows.push(row('CIELAB before correction', s.observedLab.map((v) => v.toFixed(1)).join(', ')));
-      if (s.correctedLab) rows.push(row('CIELAB after correction', s.correctedLab.map((v) => v.toFixed(1)).join(', ')));
+    // A refused reading (e.g. patchy) still shows what was read; it is not a result and was never compared.
+    const refused = s.status === 'retake' ? ' (refused, not a result)' : '';
+    if (s.status === 'found' || s.observedLab) {
+      rows.push(row(`Area read${refused}`, `${s.areaMm2.toFixed(0)} mm², ${s.pixels} camera pixels; spread ${s.spread.toFixed(1)} ΔE76; clipped ${(s.clipFraction * 100).toFixed(1)}%${s.touchesEdge ? '; reaches the zone edge' : ''}`));
+      if (s.observedLab) rows.push(row(`CIELAB before correction${refused}`, s.observedLab.map((v) => v.toFixed(1)).join(', ')));
+      if (s.correctedLab) rows.push(row(`CIELAB after correction${refused}`, s.correctedLab.map((v) => v.toFixed(1)).join(', ')));
+    } else if (s.regions.length) {
+      rows.push(row('Coloured areas found', s.regions.map((r) => `${r.areaMm2.toFixed(0)} mm²`).join(', ')));
     }
   }
   for (const d of cls.distances) rows.push(row(`ΔE00 to ${d.label} (${d.notation})`, `${d.deltaE00.toFixed(2)}, radius ${d.radius.toFixed(2)} → ${d.inside ? 'inside' : 'outside'}`));
@@ -117,7 +127,8 @@ export function resultScreen(root: HTMLElement, go: (route: string) => void): ()
         h('span', {}, cap.sampleImage.kind === 'sample-drawn' ? 'No real reaction was photographed. The result below is what the app computed from this image just now.' : 'The result below is what the app computed from this photo just now.'),
       )
     : null;
-  const verdict = h('div', { class: `result-verdict v-${cls.verdict.toLowerCase()}`, role: 'status' }, verdictBadge(cls.verdict, 'large'), h('p', { class: 'why' }, plainVerdictSentence(cls)));
+  const advice = isRetake ? retakeAdvice(cls.reason, a) : null;
+  const verdict = h('div', { class: `result-verdict v-${cls.verdict.toLowerCase()}`, role: 'status' }, verdictBadge(cls.verdict, 'large'), h('p', { class: 'why' }, advice ? advice.why : plainVerdictSentence(cls)));
 
   // 2. The test colour next to the kit's colours (not for RETAKE: nothing was compared)
   const s = cap.sample;
@@ -147,8 +158,15 @@ export function resultScreen(root: HTMLElement, go: (route: string) => void): ()
         : 'Nothing in the white square differs from the card’s white paper. The app cannot tell a colourless test from an empty square.';
     colours = h('div', { class: 'card' }, h('h2', {}, 'Your test and the kit’s colours'), swatches, h('p', { class: 'hint' }, hint));
   }
-  const picture = cap.rectified && !isRetake
-    ? h('figure', { class: 'figure' }, maskedCard(cap.rectified, s), h('figcaption', { class: 'hint' }, 'The reference colour card, straightened by the app, with the white square outlined.'))
+  const showRefused = !!(advice?.showMask && s?.mask);
+  const sampled = !!s?.mask?.cells.some((v) => v === 1);
+  const picture = cap.rectified && (!isRetake || showRefused)
+    ? h(
+        'figure',
+        { class: 'figure' },
+        maskedCard(cap.rectified, s),
+        h('figcaption', { class: 'hint' }, showRefused ? `What the app saw in the white square. ${sampled ? 'Blue: the part it read. Pink: coloured parts it left out.' : 'Pink: what it counted as colour.'}` : 'The reference colour card, straightened by the app, with the white square outlined.'),
+      )
     : null;
 
   // 5-7. Saving (never for RETAKE)
@@ -252,7 +270,13 @@ export function resultScreen(root: HTMLElement, go: (route: string) => void): ()
   }
 
   const retakeHelp = isRetake
-    ? h('div', { class: 'card' }, h('p', {}, isSample ? 'This sample is meant to show a photo the app refuses. Nothing is saved for a Retake.' : 'Nothing is saved for a Retake. Fix the problem above and take the photo again.'), again)
+    ? h(
+        'div',
+        { class: 'card retake-help' },
+        advice?.tips.length ? h('ul', { class: 'tips' }, ...advice.tips.map((tip) => h('li', {}, tip))) : null,
+        h('p', {}, isSample ? 'This sample is meant to show a photo the app refuses. Nothing is saved for a Retake.' : 'Nothing is saved for a Retake. Fix the problem above and take the photo again.'),
+        again,
+      )
     : null;
 
   // 8. Technical details

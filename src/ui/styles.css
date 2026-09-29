@@ -62,6 +62,8 @@
   /* Result drawings */
   --mask-sampled: rgba(0, 170, 255, 0.55);
   --mask-dropped: rgba(255, 0, 170, 0.35);
+  --mask-sampled-edge: rgb(0, 140, 230);
+  --mask-dropped-edge: rgb(230, 0, 150);
   --zone-outline: #0b57d0;
   --swatch-border: rgba(0, 0, 0, 0.25);
   --shadow: rgba(0, 0, 0, 0.12);
@@ -180,6 +182,7 @@ body.dc-mode .camera-screen .shutter.armed { box-shadow: 0 0 0 4px var(--cam-dc)
 .page h1 { margin: 0.2em 0 0; font-size: 1.6rem; }
 .page h2 { font-size: 1.15rem; margin: 0.4em 0 0; }
 .card { background: var(--panel); border: 1px solid var(--line-soft); border-radius: 12px; padding: 0.9em; display: flex; flex-direction: column; gap: 0.5em; }
+.retake-help .tips { margin: 0; padding-left: 1.2em; display: flex; flex-direction: column; gap: 0.4em; }
 .card p { margin: 0; }
 .hint { color: var(--muted); font-size: 0.88rem; margin: 0; }
 .strong { font-weight: 700; }
