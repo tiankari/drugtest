@@ -58,4 +58,4 @@ builds with the `/drugtest/` base path (set in `vite.config.ts`) and deploys to
 GitHub Pages at https://tiankari.github.io/drugtest/.
 
 Print the card: [print/PRINT_INSTRUCTIONS.md](print/PRINT_INSTRUCTIONS.md).
-Developer notes: [CLAUDE.md](CLAUDE.md).
+
