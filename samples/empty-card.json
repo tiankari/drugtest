@@ -9,6 +9,7 @@
   "title": "Empty card",
   "kind": "sample-photo",
   "expected": "NEGATIVE",
+  "kitId": "marquis-opiates",
   "capturedAt": "2026-09-28T12:57:48.804Z",
   "note": "Real photo (Nothing phone 3a), cropped to the reference colour card plus 2 mm.",
   "derivedFrom": {

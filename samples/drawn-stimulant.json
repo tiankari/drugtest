@@ -1,0 +1,21 @@
+{
+  "schema": "fdtc.sample.v1",
+  "id": "drawn-stimulant",
+  "file": "drawn-stimulant.png",
+  "sha256": "03f4afbbc2ffb6f122c8280da02be26397e364775302cd80a2a220e416c88f53",
+  "pixelSha256": "cb9c2db527da50c1954580790fa92b4ba933c7d2ff53a631e02f867cfea0e539",
+  "width": 763,
+  "height": 1064,
+  "title": "Methamphetamine-type colour",
+  "kind": "sample-drawn",
+  "expected": "POSITIVE",
+  "kitId": "mandelin-stimulants",
+  "capturedAt": "2026-09-29T07:18:56.577Z",
+  "note": "Computer-drawn image: the reference colour card drawn with copy A's registered colours and, in the white square, the published colour of the Mandelin reaction with methamphetamine (10GY 4/6). No real reaction was photographed.",
+  "derivedFrom": {
+    "file": "tests/helpers/synth-card.ts",
+    "sha256": "",
+    "pixelSha256": "",
+    "crop": null
+  }
+}

@@ -15,7 +15,7 @@ import { setCurrentCapture } from './current.ts';
 
 const pngs = import.meta.glob<string>('../../samples/*.png', { eager: true, query: '?url', import: 'default' });
 const metas = import.meta.glob<{ default: SampleSidecar }>('../../samples/*.json', { eager: true });
-const ORDER = ['empty-card', 'orange-cap', 'drawn-opiate', 'blurred'];
+const ORDER = ['empty-card', 'orange-cap', 'drawn-opiate', 'drawn-stimulant', 'blurred'];
 
 export interface BundledSample extends SampleSidecar {
   url: string;

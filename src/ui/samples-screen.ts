@@ -2,6 +2,7 @@
 // runs through the full pipeline; the expected outcome is a label, not a result.
 
 import { errorText, h } from './dom.ts';
+import { KITS } from './kits.ts';
 import { runSample, sampleKindText, SAMPLES } from './samples.ts';
 
 export function samplesScreen(root: HTMLElement, go: (route: string) => void): () => void {
@@ -16,6 +17,7 @@ export function samplesScreen(root: HTMLElement, go: (route: string) => void): (
         h('strong', {}, s.title),
         h('span', { class: `sample-badge ${s.kind}` }, sampleKindText(s.kind)),
         s.kind === 'sample-drawn' ? h('span', { class: 'hint' }, 'No real reaction was photographed; this shows what the app does with that colour.') : null,
+        h('span', { class: 'hint sample-kit' }, `Read with: ${KITS.find((k) => k.id === s.kitId)?.name ?? `kit ${s.kitId} (not in this build)`}`),
         h('span', { class: 'expect' }, `We expect: ${s.expected === 'RETAKE' ? 'Retake, with the reason' : s.expected}`),
       ),
     );

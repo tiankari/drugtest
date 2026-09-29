@@ -249,6 +249,7 @@ table.kv.small { font-size: 0.82rem; }
 .result-verdict .verdict-badge { background: var(--panel); }
 .result-verdict .why { margin: 0; font-size: 1.08rem; }
 .kit-validation { margin: 0; color: var(--warn); font-size: 0.92rem; }
+.kit-used { margin: 0; font-weight: 600; }
 .swatches { display: flex; flex-direction: column; gap: 0.4em; }
 .swatch { display: grid; grid-template-columns: 56px 1fr; gap: 0.6em; align-items: center; padding: 0.3em; border-radius: 8px; }
 .swatch.sample { background: var(--panel-2); }

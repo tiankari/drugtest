@@ -169,6 +169,7 @@ try {
   const body = await page.innerText('main');
   check(body.includes('Presumptive result — send for laboratory confirmation'), 'presumptive notice shown');
   check(body.includes('TEST-ONLY synthetic kit for tests/e2e/result.e2e.ts'), 'kit validation line shown');
+  check(((await page.textContent('.kit-used')) ?? '').startsWith('Read as a test with the TEST-ONLY synthetic kit. Used a different kit?'), 'camera result says which kit it was read as (more than one kit)');
   check((await page.locator('.swatch.sample .chip').count()) === 1 && (await page.locator('.swatch.target').count()) === 1, 'sample swatch next to the target colour');
   check(await page.isVisible('canvas.masked'), 'sampled area drawn on the straightened card');
   check(await page.isDisabled('#save-record'), 'save disabled until the in-zone tick is given');

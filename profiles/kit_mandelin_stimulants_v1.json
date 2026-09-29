@@ -1,0 +1,573 @@
+{
+  "schema": "fdtc.kit.v1",
+  "id": "mandelin-stimulants",
+  "version": 1,
+  "name": "Mandelin reagent — cocaine and amphetamine screen",
+  "reagent": "Mandelin reagent: ammonium vanadate in concentrated sulfuric acid (NIJ Standard-0604.01 appendix A.4)",
+  "detects": [
+    "cocaine (HCl)",
+    "amphetamine (d-amphetamine HCl)",
+    "methamphetamine (d-methamphetamine HCl)"
+  ],
+  "validation": "published-reference-only",
+  "validationLine": "Mandelin cocaine and amphetamine screen — colours from NIJ Standard-0604.01, not yet checked against a real reaction with this app",
+  "source": {
+    "document": "NIJ Standard-0604.01, Color Test Reagents/Kits for Preliminary Identification of Drugs of Abuse (US Department of Justice, National Institute of Justice, July 2000)",
+    "table": "Table 1, reagent A.4 (Mandelin), rows marked * (usual kit reagent)",
+    "rows": [
+      "A.4 Cocaine HCl* CHCl3 69 Deep orange yellow 10YR 7/14",
+      "A.4 d-Amphetamine HCl* CHCl3 164 Moderate bluish green 5BG 5/6",
+      "A.4 d-Methamphetamine HCl* CHCl3 137 Dark yellowish green 10GY 4/6"
+    ],
+    "url": "https://www.ojp.gov/pdffiles1/nij/183258.pdf",
+    "pdfSha256": "7a0faa664ddaf69f34c28ee2ce9c6103000ccefc5fca07acc7e62c992dc9dcd3",
+    "excerpt": "docs/references/nij-0604.01-excerpt.txt"
+  },
+  "colourConversion": {
+    "munsellData": "docs/references/munsell/real.dat (RIT Munsell Color Science Laboratory, renotation real.dat, illuminant C, CIE 1931 2°; exact rows, no interpolation)",
+    "yScale": "Y x 0.975 / 100 (real.dat Y is relative to smoked MgO; 0.975 converts to the perfect diffuser, per the RIT page)",
+    "adaptation": "Bradford, illuminant C (ASTM E308-01 via docs/references/bradford-lindbloom-excerpt.txt) to the D65 white of src/pipeline/colour.ts",
+    "lab": "CIELAB, D65 white (src/pipeline/colour.ts)",
+    "crossCheck": "colour-science 0.4.7: largest ΔE00 difference 0.006 over 26 notations"
+  },
+  "outcomes": [
+    {
+      "verdict": "POSITIVE",
+      "label": "Reaction colour of a target drug (NIJ Table 1, Mandelin)",
+      "targets": [
+        {
+          "id": "cocaine",
+          "label": "cocaine (HCl)",
+          "notation": "10YR 7/14",
+          "sourceName": "Deep orange yellow",
+          "sourceRow": "A.4 Cocaine HCl* CHCl3 69 Deep orange yellow 10YR 7/14",
+          "lab": [
+            70.90737761883318,
+            17.15820686616315,
+            89.29057636225167
+          ],
+          "radius": 9.565668606161553,
+          "radiusDerivation": {
+            "rule": "largest ΔE00 to the neighbouring Munsell chips in real.dat (hue, chroma: hue ±2.5, chroma ±2; missing chips skipped) + median leave-one-out ΔE00 of 3 real photos that pass the card stage (registration photos excluded)",
+            "chipTerm": 5.60412158717254,
+            "chips": [
+              {
+                "notation": "7.5YR 7/14",
+                "deltaE00": 5.60412158717254
+              },
+              {
+                "notation": "2.5Y 7/14",
+                "deltaE00": 5.145799404744413
+              },
+              {
+                "notation": "10YR 7/12",
+                "deltaE00": 2.8106401064499753
+              },
+              {
+                "notation": "10YR 7/16",
+                "deltaE00": 2.5265974936114457
+              }
+            ],
+            "correctionErrorTerm": 3.9615470189890134
+          }
+        },
+        {
+          "id": "amphetamine",
+          "label": "amphetamine (d-amphetamine HCl)",
+          "notation": "5BG 5/6",
+          "sourceName": "Moderate bluish green",
+          "sourceRow": "A.4 d-Amphetamine HCl* CHCl3 164 Moderate bluish green 5BG 5/6",
+          "lab": [
+            51.069916837759564,
+            -29.242655834471332,
+            -4.724798524804319
+          ],
+          "radius": 8.69650460796935,
+          "radiusDerivation": {
+            "rule": "largest ΔE00 to the neighbouring Munsell chips in real.dat (hue, chroma: hue ±2.5, chroma ±2; missing chips skipped) + median leave-one-out ΔE00 of 3 real photos that pass the card stage (registration photos excluded)",
+            "chipTerm": 4.734957588980337,
+            "chips": [
+              {
+                "notation": "2.5BG 5/6",
+                "deltaE00": 3.2995168341623113
+              },
+              {
+                "notation": "7.5BG 5/6",
+                "deltaE00": 2.7791892451963847
+              },
+              {
+                "notation": "5BG 5/4",
+                "deltaE00": 4.734957588980337
+              },
+              {
+                "notation": "5BG 5/8",
+                "deltaE00": 4.268958272965135
+              }
+            ],
+            "correctionErrorTerm": 3.9615470189890134
+          }
+        },
+        {
+          "id": "methamphetamine",
+          "label": "methamphetamine (d-methamphetamine HCl)",
+          "notation": "10GY 4/6",
+          "sourceName": "Dark yellowish green",
+          "sourceRow": "A.4 d-Methamphetamine HCl* CHCl3 137 Dark yellowish green 10GY 4/6",
+          "lab": [
+            40.84320785725704,
+            -29.029864378979696,
+            23.30881703465527
+          ],
+          "radius": 9.46917960157834,
+          "radiusDerivation": {
+            "rule": "largest ΔE00 to the neighbouring Munsell chips in real.dat (hue, chroma: hue ±2.5, chroma ±2; missing chips skipped) + median leave-one-out ΔE00 of 3 real photos that pass the card stage (registration photos excluded)",
+            "chipTerm": 5.507632582589327,
+            "chips": [
+              {
+                "notation": "7.5GY 4/6",
+                "deltaE00": 4.04559374962431
+              },
+              {
+                "notation": "2.5G 4/6",
+                "deltaE00": 5.072129893051874
+              },
+              {
+                "notation": "10GY 4/4",
+                "deltaE00": 5.507632582589327
+              },
+              {
+                "notation": "10GY 4/8",
+                "deltaE00": 4.198111100074652
+              }
+            ],
+            "correctionErrorTerm": 3.9615470189890134
+          }
+        }
+      ]
+    }
+  ],
+  "noColourResult": "RETAKE",
+  "noColourNote": "No saved source says that Mandelin reagent is colourless before it reacts, so with this kit the app does not read “no colour” as NEGATIVE: put the test in the white square and take the photo again. A test whose colour is none of the kit’s colours reads INCONCLUSIVE.",
+  "noMatchReason": "Colour matches no cocaine or amphetamine reaction in the NIJ table",
+  "readingTime": {
+    "finalColourMinutes": [
+      1,
+      2
+    ],
+    "source": "NIJ Standard-0604.01 §3.3: the final color, generally formed within 1 min or 2 min, after intermediate colours have disappeared"
+  },
+  "sampleReading": {
+    "sampleWhiteNoiseFactor": 3,
+    "sampleMinDeltaE": 3,
+    "sampleEdgeErodeMm": 0.5,
+    "sampleNoiseFloorMm2": 2,
+    "sampleMinAreaMm2": 10,
+    "sampleSecondRegionMm2": 10,
+    "maxSampleClipFraction": 0.02,
+    "sampleDarkLevel": 10,
+    "maxSampleSpreadDeltaE": 15
+  },
+  "knownNonTargetReactions": [
+    {
+      "analyte": "Acetaminophen",
+      "sourceRow": "A.4 Acetaminophen CHCl3 107 Moderate olive 10Y 5/8",
+      "notation": "10Y 5/8",
+      "lab": [
+        51.10703607207044,
+        -10.990980996954558,
+        57.686349925962986
+      ],
+      "note": null,
+      "nearestTarget": "methamphetamine",
+      "deltaE00": 21.615794030028642,
+      "insidePositiveRadius": false
+    },
+    {
+      "analyte": "Aspirin",
+      "sourceRow": "A.4 Aspirin powder 127 Grayish olive green 2.5GY 4/2",
+      "notation": "2.5GY 4/2",
+      "lab": [
+        40.773103509357114,
+        -5.683145983039068,
+        12.467876413350753
+      ],
+      "note": null,
+      "nearestTarget": "methamphetamine",
+      "deltaE00": 13.952696971964196,
+      "insidePositiveRadius": false
+    },
+    {
+      "analyte": "Benzphetamine HCl (left out as a target)",
+      "sourceRow": "A.4 Benzphetamine HCl* CHCl3 116 Brilliant yellow green 2.5GY 8/10",
+      "notation": "2.5GY 8/10",
+      "lab": [
+        80.67950132835868,
+        -22.55900028811453,
+        70.05558794349344
+      ],
+      "note": "usual kit reagent for this drug, left out as a target: a prescription appetite suppressant, not one of the drugs this kit is for; its colour is kept as a non-target reaction",
+      "nearestTarget": "cocaine",
+      "deltaE00": 23.960475660520288,
+      "insidePositiveRadius": false
+    },
+    {
+      "analyte": "Brompheniramine Maleate",
+      "sourceRow": "A.4 Brompheniramine Maleate CHCl3 50 Strong orange 7.5YR 7/14",
+      "notation": "7.5YR 7/14",
+      "lab": [
+        70.87883921016562,
+        25.775895759667378,
+        83.17880167066005
+      ],
+      "note": null,
+      "nearestTarget": "cocaine",
+      "deltaE00": 5.60412158717254,
+      "insidePositiveRadius": true
+    },
+    {
+      "analyte": "Chlorpromazine HCl",
+      "sourceRow": "A.4 Chlorpromazine HCl CHCl3 108 Dark olive 10Y 3/4",
+      "notation": "10Y 3/4",
+      "lab": [
+        30.43313200497444,
+        -6.053447419003655,
+        26.29662619593288
+      ],
+      "note": null,
+      "nearestTarget": "methamphetamine",
+      "deltaE00": 16.791693609118504,
+      "insidePositiveRadius": false
+    },
+    {
+      "analyte": "Codeine (left out as a target)",
+      "sourceRow": "A.4 Codeine* CHCl3 108 Dark olive 10Y 3/4",
+      "notation": "10Y 3/4",
+      "lab": [
+        30.43313200497444,
+        -6.053447419003655,
+        26.29662619593288
+      ],
+      "note": "usual kit reagent for this drug, left out as a target: opiates are read with the Marquis kit; with Mandelin, codeine gives exactly the colour of chlorpromazine, and Exedrine and Dristan fall inside its radius",
+      "nearestTarget": "methamphetamine",
+      "deltaE00": 16.791693609118504,
+      "insidePositiveRadius": false
+    },
+    {
+      "analyte": "Contac",
+      "sourceRow": "A.4 Contac powder 84 Strong yellow 2.5Y 6/10",
+      "notation": "2.5Y 6/10",
+      "lab": [
+        61.105838734900246,
+        7.034547192995843,
+        67.65966273343554
+      ],
+      "note": null,
+      "nearestTarget": "cocaine",
+      "deltaE00": 10.219271338869458,
+      "insidePositiveRadius": false
+    },
+    {
+      "analyte": "Diacetylmorphine HCl (left out as a target)",
+      "sourceRow": "A.4 Diacetylmorphine HCl* CHCl3 43 Moderate reddish brown 10R 3/6",
+      "notation": "10R 3/6",
+      "lab": [
+        30.329569799094635,
+        26.331863551138508,
+        20.474124363018518
+      ],
+      "note": "usual kit reagent for this drug, left out as a target: opiates are read with the Marquis kit; with Mandelin, heroin’s colour is close to the non-target reactions of doxepin and propoxyphene (just outside its radius)",
+      "nearestTarget": "methamphetamine",
+      "deltaE00": 43.37300543670794,
+      "insidePositiveRadius": false
+    },
+    {
+      "analyte": "Dimethoxy-meth HCl",
+      "sourceRow": "A.4 Dimethoxy-meth HCl CHCl3 96 Dark olive brown 5Y 2/2",
+      "notation": "5Y 2/2",
+      "lab": [
+        20.254398733871447,
+        0.15263193990094903,
+        11.916300633665578
+      ],
+      "note": null,
+      "nearestTarget": "methamphetamine",
+      "deltaE00": 25.483538197105155,
+      "insidePositiveRadius": false
+    },
+    {
+      "analyte": "Doxepin HCl",
+      "sourceRow": "A.4 Doxepin HCl CHCl3 44 Dark reddish brown 10R 2/4",
+      "notation": "10R 2/4",
+      "lab": [
+        20.198319577111725,
+        18.13556073759451,
+        11.03568988914051
+      ],
+      "note": null,
+      "nearestTarget": "methamphetamine",
+      "deltaE00": 42.356121593154,
+      "insidePositiveRadius": false
+    },
+    {
+      "analyte": "Dristan",
+      "sourceRow": "A.4 Dristan powder 110 Grayish olive 7.5Y 4/4",
+      "notation": "7.5Y 4/4",
+      "lab": [
+        40.78927576566861,
+        -3.642260312472029,
+        29.120557834090064
+      ],
+      "note": null,
+      "nearestTarget": "methamphetamine",
+      "deltaE00": 16.769075864354367,
+      "insidePositiveRadius": false
+    },
+    {
+      "analyte": "Exedrine",
+      "sourceRow": "A.4 Exedrine powder 108 Dark olive 7.5Y 3/4",
+      "notation": "7.5Y 3/4",
+      "lab": [
+        30.42510279371207,
+        -2.8698431294962856,
+        26.58785186684782
+      ],
+      "note": null,
+      "nearestTarget": "methamphetamine",
+      "deltaE00": 19.06211017814178,
+      "insidePositiveRadius": false
+    },
+    {
+      "analyte": "Mace5",
+      "sourceRow": "A.4 Mace5 crystals 125 Moderate olive green 5GY 4/8",
+      "notation": "5GY 4/8",
+      "lab": [
+        40.85405067842805,
+        -23.928449495183884,
+        49.64013996712197
+      ],
+      "note": null,
+      "nearestTarget": "methamphetamine",
+      "deltaE00": 12.200447301225475,
+      "insidePositiveRadius": false
+    },
+    {
+      "analyte": "MDA HCl",
+      "sourceRow": "A.4 MDA HCl CHCl3 193 Bluish black 10B 2/2",
+      "notation": "10B 2/2",
+      "lab": [
+        20.221495529308527,
+        -2.61702235450878,
+        -8.467453219000298
+      ],
+      "note": null,
+      "nearestTarget": "methamphetamine",
+      "deltaE00": 31.30935348513849,
+      "insidePositiveRadius": false
+    },
+    {
+      "analyte": "Mescaline HCl (left out as a target)",
+      "sourceRow": "A.4 Mescaline HCl* CHCl3 78 Dark yellowish brown 10YR 3/4",
+      "notation": "10YR 3/4",
+      "lab": [
+        30.394304415806666,
+        7.211076355953,
+        23.79539324930543
+      ],
+      "note": "usual kit reagent for this drug, left out as a target: read with the Marquis kit; with Mandelin, a radius around its colour takes in opium and the non-target reaction of Exedrine",
+      "nearestTarget": "methamphetamine",
+      "deltaE00": 27.399924214522258,
+      "insidePositiveRadius": false
+    },
+    {
+      "analyte": "Methadone HCl",
+      "sourceRow": "A.4 Methadone HCl CHCl3 187 Dark grayish blue 5B 3/2",
+      "notation": "5B 3/2",
+      "lab": [
+        30.379244133577913,
+        -6.373222815474977,
+        -7.114003150147585
+      ],
+      "note": null,
+      "nearestTarget": "amphetamine",
+      "deltaE00": 24.05233296077899,
+      "insidePositiveRadius": false
+    },
+    {
+      "analyte": "Methaqualone",
+      "sourceRow": "A.4 Methaqualone CHCl3 66 Very orange yellow 10YR 8/14",
+      "notation": "10YR 8/14",
+      "lab": [
+        80.58452872747603,
+        16.720353929608077,
+        88.94168894146327
+      ],
+      "note": null,
+      "nearestTarget": "cocaine",
+      "deltaE00": 7.013398974324022,
+      "insidePositiveRadius": true
+    },
+    {
+      "analyte": "Methylphenidate HCl",
+      "sourceRow": "A.4 Methylphenidate HCl CHCl3 67 Brilliant orange yellow 2.5Y 8/10",
+      "notation": "2.5Y 8/10",
+      "lab": [
+        80.60393952252515,
+        5.454301946504259,
+        66.98760711671855
+      ],
+      "note": null,
+      "nearestTarget": "cocaine",
+      "deltaE00": 10.0769770545405,
+      "insidePositiveRadius": false
+    },
+    {
+      "analyte": "Morphine monohydrate (left out as a target)",
+      "sourceRow": "A.4 Morphine monohydrate* CHCl3 47 Dark grayish reddish Brown 10R 3/2",
+      "notation": "10R 3/2",
+      "lab": [
+        30.363955919763747,
+        9.825198953241465,
+        7.11906505955191
+      ],
+      "note": "usual kit reagent for this drug, left out as a target: opiates are read with the Marquis kit; with Mandelin, a radius around morphine’s colour takes in the non-target reactions of doxepin and propoxyphene",
+      "nearestTarget": "methamphetamine",
+      "deltaE00": 34.72457632376466,
+      "insidePositiveRadius": false
+    },
+    {
+      "analyte": "Opium (left out as a target)",
+      "sourceRow": "A.4 Opium* CHCl3 59 Dark brown 7.5YR 2/4",
+      "notation": "7.5YR 2/4",
+      "lab": [
+        20.233875223806464,
+        10.759737081811355,
+        21.183369753435286
+      ],
+      "note": "usual kit reagent for this drug, left out as a target: opiates are read with the Marquis kit; with Mandelin, a radius around opium’s colour takes in mescaline and the non-target reactions of doxepin and propoxyphene",
+      "nearestTarget": "methamphetamine",
+      "deltaE00": 33.77615123191494,
+      "insidePositiveRadius": false
+    },
+    {
+      "analyte": "Oxycodone HCl",
+      "sourceRow": "A.4 Oxycodone HCl CHCl3 103 Dark greenish yellow 10Y 6/6",
+      "notation": "10Y 6/6",
+      "lab": [
+        61.135129454243724,
+        -10.084078192462709,
+        43.66562876821396
+      ],
+      "note": null,
+      "nearestTarget": "cocaine",
+      "deltaE00": 21.282681841137492,
+      "insidePositiveRadius": false
+    },
+    {
+      "analyte": "Procaine HCl",
+      "sourceRow": "A.4 Procaine HCl CHCl3 51 Deep orange 5YR 5/12",
+      "notation": "5YR 5/12",
+      "lab": [
+        50.98735852134996,
+        30.91300315460299,
+        63.54557128645716
+      ],
+      "note": null,
+      "nearestTarget": "cocaine",
+      "deltaE00": 21.66949806928265,
+      "insidePositiveRadius": false
+    },
+    {
+      "analyte": "Propoxyphene HCl",
+      "sourceRow": "A.4 Propoxyphene HCl CHCl3 44 Dark reddish brown 10R 2/4",
+      "notation": "10R 2/4",
+      "lab": [
+        20.198319577111725,
+        18.13556073759451,
+        11.03568988914051
+      ],
+      "note": null,
+      "nearestTarget": "methamphetamine",
+      "deltaE00": 42.356121593154,
+      "insidePositiveRadius": false
+    },
+    {
+      "analyte": "Quinine HCl",
+      "sourceRow": "A.4 Quinine HCl CHCl3 100 Deep greenish yellow 10Y 9/6",
+      "notation": "10Y 9/6",
+      "lab": [
+        90.28363091165231,
+        -11.455812736008152,
+        45.47825855552916
+      ],
+      "note": null,
+      "nearestTarget": "cocaine",
+      "deltaE00": 24.217679979707913,
+      "insidePositiveRadius": false
+    },
+    {
+      "analyte": "Salt",
+      "sourceRow": "A.4 Salt crystals 50 Strong orange 5YR 7/12",
+      "notation": "5YR 7/12",
+      "lab": [
+        70.85208229339523,
+        30.888688145049027,
+        63.5534139553669
+      ],
+      "note": null,
+      "nearestTarget": "cocaine",
+      "deltaE00": 13.044961520605636,
+      "insidePositiveRadius": false
+    }
+  ],
+  "provenance": {
+    "script": "scripts/build-kit-profile.ts",
+    "commit": "1cd1a283cad3",
+    "generatedAt": "2026-09-29T07:17:03.608Z",
+    "options": {
+      "kit": "mandelin",
+      "radius": "hue-chroma",
+      "correctionError": "non-registration"
+    },
+    "leftOut": [
+      {
+        "analyte": "Benzphetamine HCl",
+        "why": "a prescription appetite suppressant, not one of the drugs this kit is for; its colour is kept as a non-target reaction"
+      },
+      {
+        "analyte": "Diacetylmorphine HCl",
+        "why": "opiates are read with the Marquis kit; with Mandelin, heroin’s colour is close to the non-target reactions of doxepin and propoxyphene (just outside its radius)"
+      },
+      {
+        "analyte": "Morphine monohydrate",
+        "why": "opiates are read with the Marquis kit; with Mandelin, a radius around morphine’s colour takes in the non-target reactions of doxepin and propoxyphene"
+      },
+      {
+        "analyte": "Codeine",
+        "why": "opiates are read with the Marquis kit; with Mandelin, codeine gives exactly the colour of chlorpromazine, and Exedrine and Dristan fall inside its radius"
+      },
+      {
+        "analyte": "Opium",
+        "why": "opiates are read with the Marquis kit; with Mandelin, a radius around opium’s colour takes in mescaline and the non-target reactions of doxepin and propoxyphene"
+      },
+      {
+        "analyte": "Mescaline HCl",
+        "why": "read with the Marquis kit; with Mandelin, a radius around its colour takes in opium and the non-target reaction of Exedrine"
+      }
+    ],
+    "correctionErrorPhotos": [
+      {
+        "file": "lighting/daylight_nothing-phone-3a_A_20260928T115423275Z.png",
+        "looMean": 3.716075885191097
+      },
+      {
+        "file": "lighting/tube_nothing-phone-3a_A_20260928T115938362Z.png",
+        "looMean": 3.9615470189890134
+      },
+      {
+        "file": "should_fail/fail-shadow_nothing-phone-3a_A_20260928T120640832Z.png",
+        "looMean": 4.346208238623305
+      }
+    ]
+  },
+  "status": "Thin evidence: target colours are published Munsell notations (NIJ, 2000) converted to CIELAB, not measurements of real reactions photographed with this app; the correction-error term comes from 3 real photos (the card with an orange-red plastic cap in the zone, Nothing Phone (3a)). POSITIVE has been tested only on synthetic images. Known non-target reactions inside a POSITIVE radius (presumptive-test false positives): Brompheniramine Maleate, Methaqualone. This kit never gives NEGATIVE: no saved source says the reagent is colourless, so “no colour” is a RETAKE."
+}

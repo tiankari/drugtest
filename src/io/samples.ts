@@ -13,6 +13,8 @@ export interface SampleSidecar {
   kind: SampleKind;
   /** What we expect the app to say (for the label only). */
   expected: string;
+  /** The kit the sample is read with (and its expected outcome is for), whatever kit is chosen on the camera screen. */
+  kitId: string;
   file: string;
   /** SHA-256 of the PNG file and of its RGBA pixels. */
   sha256: string;

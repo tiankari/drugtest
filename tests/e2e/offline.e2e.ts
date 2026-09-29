@@ -83,13 +83,13 @@ try {
         const r = await c.match(req);
         const n = r ? (await r.clone().arrayBuffer()).byteLength : 0;
         bytes += n;
-        if (/\/assets\/(empty-card|orange-cap|drawn-opiate|blurred)-/.test(req.url)) samples += n;
+        if (/\/assets\/(empty-card|orange-cap|drawn-opiate|drawn-stimulant|blurred)-/.test(req.url)) samples += n;
       }
     }
     return { bytes, samples };
   });
   console.log(`      precache: ${(cached.bytes / 1e6).toFixed(2)} MB in total, of which sample images ${(cached.samples / 1e6).toFixed(2)} MB`);
-  check(cached.samples > 2.5e6, 'the four sample images are in the offline cache');
+  check(cached.samples > 3.5e6, 'the five sample images are in the offline cache');
 
   // 4. Data collection capture offline.
   await page.goto(`${url}#/settings`);
