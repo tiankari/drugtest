@@ -14,7 +14,8 @@ import { mkdirSync, readdirSync, rmSync, writeFileSync } from 'node:fs';
 import { join } from 'node:path';
 import { readFileSync } from 'node:fs';
 import { analyseMat } from '../src/pipeline/analyse.ts';
-import { classify, parseKitProfile } from '../src/pipeline/kit.ts';
+import { classify } from '../src/pipeline/kit.ts';
+import { currentKit } from './lib/kits.ts';
 import { readSampleZone } from '../src/pipeline/samplezone.ts';
 import { buildRecordDraft } from '../src/records/build.ts';
 import { canonicalJson } from '../src/records/canonical.ts';
@@ -27,7 +28,7 @@ import { loadCapture } from './lib/capture-files.ts';
 import { loadReferences } from './lib/references.ts';
 
 const OUT = 'incoming/demo-export';
-const kit = parseKitProfile(JSON.parse(readFileSync('profiles/kit_marquis_opiates_v1.json', 'utf8')));
+const kit = currentKit('marquis-opiates');
 const refs = loadReferences();
 const key = await generateDeviceKey();
 const log = new MemoryLog();

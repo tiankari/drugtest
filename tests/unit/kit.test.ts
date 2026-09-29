@@ -6,9 +6,11 @@ import { readFileSync } from 'node:fs';
 import { describe, expect, it } from 'vitest';
 import { ciede2000 } from '../../src/pipeline/ciede2000.ts';
 import type { Vec3 } from '../../src/pipeline/colour.ts';
-import { classify, KitProfileError, parseKitProfile, type KitProfile } from '../../src/pipeline/kit.ts';
+import { classify, KitProfileError, latestVersions, parseKitProfile, type KitProfile } from '../../src/pipeline/kit.ts';
+import { currentKits, loadKits } from '../../scripts/lib/kits.ts';
 
 const marquis = parseKitProfile(JSON.parse(readFileSync('profiles/kit_marquis_opiates_v1.json', 'utf8')));
+const marquis2 = parseKitProfile(JSON.parse(readFileSync('profiles/kit_marquis_opiates_v2.json', 'utf8')));
 
 function target(id: string, lab: Vec3, radius: number) {
   return { id, label: id, notation: `N ${id}`, sourceName: id, sourceRow: id, lab, radius, radiusDerivation: { rule: 'test', chipTerm: 0, chips: [], correctionErrorTerm: 0 } };
@@ -26,7 +28,67 @@ function testProfile(over: Partial<KitProfile> = {}): KitProfile {
   return { ...base, ...over };
 }
 
-describe('the Marquis profile (from NIJ Standard-0604.01)', () => {
+describe('the Marquis profile v2: five targets, the v1 opiate targets unchanged', () => {
+  const v2 = marquis2.outcomes[0].targets;
+  it('adds oxycodone and mescaline from the same NIJ table (usual kit reagent rows)', () => {
+    expect(marquis2.id).toBe(marquis.id);
+    expect(marquis2.version).toBe(2);
+    expect(v2.map((t) => [t.id, t.notation])).toEqual([
+      ['heroin', '7.5RP 3/10'],
+      ['morphine', '10P 3/6'],
+      ['codeine', '7.5P 2/4'],
+      ['oxycodone', '2.5P 6/4'],
+      ['mescaline', '5YR 6/12'],
+    ]);
+    expect(v2.find((t) => t.id === 'oxycodone')!.sourceRow).toBe('A.5 Oxycodone HCl* CHCl3 214 Pale violet 2.5P 6/4');
+    expect(v2.find((t) => t.id === 'mescaline')!.sourceRow).toBe('A.5 Mescaline HCl* CHCl3 50 Strong orange 5YR 6/12');
+    expect(marquis2.validation).toBe('published-reference-only');
+    expect(marquis2.validationLine).toMatch(/not yet checked against a real reaction with this app$/);
+    expect(marquis2.noColourResult).toBe('NEGATIVE');
+  });
+
+  it('heroin, morphine and codeine are exactly the v1 colours and radii (same rule, same photos)', () => {
+    for (const t of marquis.outcomes[0].targets) {
+      const u = v2.find((x) => x.id === t.id)!;
+      expect([u.lab, u.radius, u.notation, u.radiusDerivation.correctionErrorTerm]).toEqual([t.lab, t.radius, t.notation, t.radiusDerivation.correctionErrorTerm]);
+    }
+  });
+
+  it('adds no new known false positive, and every usual-reagent row left out says why', () => {
+    expect([...new Set(marquis2.knownNonTargetReactions.filter((n) => n.insidePositiveRadius).map((n) => n.analyte))].sort()).toEqual(['Chlorpromazine HCl', 'Propoxyphene HCl']);
+    const leftOut = marquis2.provenance.leftOut as { analyte: string; why: string }[];
+    expect(leftOut.map((l) => l.analyte).sort()).toEqual(['Benzphetamine HCl', 'MDA HCl', 'Opium', 'd-Amphetamine HCl', 'd-Methamphetamine HCl']);
+    for (const l of leftOut) expect(l.why.length).toBeGreaterThan(20);
+  });
+
+  it('classifies each of its five target colours POSITIVE, naming the target', () => {
+    for (const t of v2) {
+      const c = classify(marquis2, { status: 'found', reason: '', correctedLab: t.lab });
+      expect([c.verdict, c.nearest?.targetId]).toEqual(['POSITIVE', t.id]);
+    }
+  });
+});
+
+describe('kit versions', () => {
+  it('every profile version is kept for re-running old records; a new test uses the newest', () => {
+    const all = loadKits();
+    expect(all.filter((k) => k.id === 'marquis-opiates').map((k) => k.version).sort()).toEqual([1, 2]);
+    const cur = currentKits();
+    expect(cur.find((k) => k.id === 'marquis-opiates')!.version).toBe(2);
+    expect(new Set(cur.map((k) => k.id)).size).toBe(cur.length);
+  });
+  it('latestVersions keeps the highest version of each id', () => {
+    const a = { ...structuredClone(marquis), id: 'x', version: 3 };
+    const b = { ...structuredClone(marquis), id: 'x', version: 1 };
+    const c = { ...structuredClone(marquis), id: 'y', version: 1 };
+    expect(latestVersions([b, a, c]).map((k) => [k.id, k.version])).toEqual([
+      ['x', 3],
+      ['y', 1],
+    ]);
+  });
+});
+
+describe('the Marquis profile v1 (from NIJ Standard-0604.01; kept for records made with it)', () => {
   it('has the three opiate targets with published-reference-only status', () => {
     expect(marquis.outcomes).toHaveLength(1);
     expect(marquis.outcomes[0].targets.map((t) => [t.id, t.notation])).toEqual([

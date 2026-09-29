@@ -123,6 +123,9 @@ body.dc-mode nav.tabs a.active { color: var(--dc); box-shadow: inset 0 4px 0 var
 .test-bar { background: var(--cam-panel); padding: 0.35em 0.8em; display: flex; flex-direction: column; gap: 0.1em; font-size: 0.88rem; border-bottom: 1px solid var(--cam-line); }
 .kit-line { display: flex; flex-direction: column; gap: 0.1em; }
 .kit-status { color: var(--cam-warn); font-size: 0.8rem; }
+.kit-pick { display: flex; align-items: center; gap: 0.5em; }
+.kit-pick select { flex: 1; min-width: 0; }
+.kit-detects { font-size: 0.8rem; }
 .test-meta { display: flex; justify-content: space-between; align-items: center; gap: 0.6em; flex-wrap: wrap; }
 .geo-line.fix { color: var(--cam-ok); }
 .geo-line.unavailable, .geo-line.waiting { color: var(--cam-warn); }
@@ -182,6 +185,7 @@ body.dc-mode .camera-screen .shutter.armed { box-shadow: 0 0 0 4px var(--cam-dc)
 .page h1 { margin: 0.2em 0 0; font-size: 1.6rem; }
 .page h2 { font-size: 1.15rem; margin: 0.4em 0 0; }
 .card { background: var(--panel); border: 1px solid var(--line-soft); border-radius: 12px; padding: 0.9em; display: flex; flex-direction: column; gap: 0.5em; }
+.kit-list { margin: 0; padding-left: 1.2em; display: flex; flex-direction: column; gap: 0.3em; }
 .retake-help .tips { margin: 0; padding-left: 1.2em; display: flex; flex-direction: column; gap: 0.4em; }
 .card p { margin: 0; }
 .hint { color: var(--muted); font-size: 0.88rem; margin: 0; }
