@@ -131,6 +131,19 @@ export function parseKitProfile(json: unknown): KitProfile {
   return json as KitProfile;
 }
 
+/**
+ * The newest version of each kit id. Older versions stay in profiles/ so that
+ * records made with them can be re-run; a new test always uses the newest.
+ */
+export function latestVersions(profiles: readonly KitProfile[]): KitProfile[] {
+  const best = new Map<string, KitProfile>();
+  for (const p of profiles) {
+    const b = best.get(p.id);
+    if (!b || p.version > b.version) best.set(p.id, p);
+  }
+  return [...best.values()];
+}
+
 export interface TargetDistance {
   outcome: ColouredOutcome;
   targetId: string;

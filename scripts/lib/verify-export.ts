@@ -10,13 +10,14 @@ import { decodePng } from '../../src/io/png.ts';
 import { analyseMat } from '../../src/pipeline/analyse.ts';
 import { ciede2000 } from '../../src/pipeline/ciede2000.ts';
 import type { Vec3 } from '../../src/pipeline/colour.ts';
-import { classify, parseKitProfile, type KitProfile } from '../../src/pipeline/kit.ts';
+import { classify, type KitProfile } from '../../src/pipeline/kit.ts';
 import { readSampleZone } from '../../src/pipeline/samplezone.ts';
 import { canonicalJson } from '../../src/records/canonical.ts';
 import { importPublicKey } from '../../src/records/keys.ts';
 import { checkNotedHash, verifyLog, type LogReport } from '../../src/records/log.ts';
 import type { LogEntry } from '../../src/records/record.ts';
 import { sha256HexOf } from '../../src/records/webcrypto.ts';
+import { loadKits } from './kits.ts';
 import { loadReferences } from './references.ts';
 
 export interface ExportFiles {
@@ -98,13 +99,7 @@ export interface Reanalysis {
   maxDiff: number | null;
 }
 
-function loadKits(dir = 'profiles'): KitProfile[] {
-  return readdirSync(dir)
-    .filter((f) => /^kit_.*\.json$/.test(f))
-    .map((f) => parseKitProfile(JSON.parse(readFileSync(join(dir, f), 'utf8'))));
-}
-
-/** Default: the profiles in profiles/ (what the app bundles). Tests may pass their own. */
+/** Default: every profile version in profiles/ (each record is re-run with the version it cites). Tests may pass their own. */
 export async function reanalyse(x: ExportFiles, entries: LogEntry[], given: { references?: ReturnType<typeof loadReferences>; kits?: KitProfile[] } = {}): Promise<Reanalysis[]> {
   const refs = given.references ?? loadReferences();
   const kits = given.kits ?? loadKits();
