@@ -12,7 +12,7 @@ import { decodePng } from '../../src/io/png.ts';
 import { SAMPLE_SCHEMA, type SampleSidecar } from '../../src/io/samples.ts';
 import { analyseMat } from '../../src/pipeline/analyse.ts';
 import { classify } from '../../src/pipeline/kit.ts';
-import { currentKit } from '../../scripts/lib/kits.ts';
+import { currentKit, currentKits } from '../../scripts/lib/kits.ts';
 import { readSampleZone } from '../../src/pipeline/samplezone.ts';
 
 const DIR = 'samples';
@@ -20,17 +20,20 @@ const sidecars = readdirSync(DIR)
   .filter((f) => f.endsWith('.json'))
   .map((f) => JSON.parse(readFileSync(join(DIR, f), 'utf8')) as SampleSidecar);
 const refs = loadReferences();
-const kit = currentKit('marquis-opiates');
 
 describe('bundled sample images', () => {
-  it('are the four planned samples, two kinds, each labelled', () => {
-    expect(sidecars.map((s) => s.id).sort()).toEqual(['blurred', 'drawn-opiate', 'empty-card', 'orange-cap']);
+  it('are the five planned samples, two kinds, each labelled and read with a bundled kit', () => {
+    expect(sidecars.map((s) => s.id).sort()).toEqual(['blurred', 'drawn-opiate', 'drawn-stimulant', 'empty-card', 'orange-cap']);
+    const kitIds = currentKits().map((k) => k.id);
+    for (const s of sidecars) expect(kitIds).toContain(s.kitId);
+    expect(sidecars.find((s) => s.id === 'drawn-stimulant')?.kitId).toBe('mandelin-stimulants');
+    expect(sidecars.filter((s) => s.id !== 'drawn-stimulant').every((s) => s.kitId === 'marquis-opiates')).toBe(true);
     for (const s of sidecars) {
       expect(s.schema).toBe(SAMPLE_SCHEMA);
       expect(['sample-photo', 'sample-drawn']).toContain(s.kind);
       if (s.kind === 'sample-photo') expect(s.derivedFrom.crop).not.toBeNull();
     }
-    expect(sidecars.find((s) => s.id === 'drawn-opiate')?.kind).toBe('sample-drawn');
+    expect(sidecars.filter((s) => s.kind === 'sample-drawn').map((s) => s.id).sort()).toEqual(['drawn-opiate', 'drawn-stimulant']);
   });
 
   it.each(sidecars.map((s) => [s.id, s] as const))('%s: file and pixel hashes match, PNG has no colour profile', async (_id, s) => {
@@ -41,7 +44,8 @@ describe('bundled sample images', () => {
     expect([img.width, img.height]).toEqual([s.width, s.height]);
   });
 
-  it.each(sidecars.map((s) => [s.id, s] as const))('%s: the real pipeline gives the expected outcome', (_id, s) => {
+  it.each(sidecars.map((s) => [s.id, s] as const))('%s: the real pipeline with its kit gives the expected outcome', (_id, s) => {
+    const kit = currentKit(s.kitId);
     const img = decodePng(new Uint8Array(readFileSync(join(DIR, s.file))));
     const a = analyseMat(img, { references: refs });
     const verdict = a.verdict !== 'PASS' ? 'RETAKE' : classify(kit, readSampleZone(img, a)).verdict;

@@ -24,7 +24,7 @@ import { isoWithOffset } from '../records/record.ts';
 import { currentCapture, type CurrentCapture } from './current.ts';
 import { errorText, formatBytes, h, toast } from './dom.ts';
 import { geoSaveText, recordLocation } from './geo.ts';
-import { canonicalSha256, selectedKit } from './kits.ts';
+import { canonicalSha256, KITS, selectedKit } from './kits.ts';
 import { saveRecord } from './log-store.ts';
 import { plainVerdictSentence, retakeAdvice, targetName } from './plain.ts';
 import { REFERENCES } from './references.ts';
@@ -106,7 +106,10 @@ export function resultScreen(root: HTMLElement, go: (route: string) => void): ()
   const urls: string[] = [];
   let kit: KitProfile;
   try {
-    kit = selectedKit(settings.kitId);
+    // A sample is always read with the kit it was made for; a camera photo with the kit chosen on the camera screen.
+    const sampleKit = cap.sampleImage ? KITS.find((k) => k.id === cap.sampleImage!.kitId) : undefined;
+    if (cap.sampleImage && !sampleKit) throw new Error(`This sample is read with the kit “${cap.sampleImage.kitId}”, which is not in this build`);
+    kit = sampleKit ?? selectedKit(settings.kitId);
   } catch (e) {
     root.append(h('section', { class: 'page' }, h('h1', {}, 'Result'), h('div', { class: 'error-box' }, errorText(e))));
     return () => {};
@@ -127,8 +130,14 @@ export function resultScreen(root: HTMLElement, go: (route: string) => void): ()
         h('span', {}, cap.sampleImage.kind === 'sample-drawn' ? 'No real reaction was photographed. The result below is what the app computed from this image just now.' : 'The result below is what the app computed from this photo just now.'),
       )
     : null;
-  const advice = isRetake ? retakeAdvice(cls.reason, a) : null;
+  const advice = isRetake ? retakeAdvice(cls.reason, a, kit) : null;
   const verdict = h('div', { class: `result-verdict v-${cls.verdict.toLowerCase()}`, role: 'status' }, verdictBadge(cls.verdict, 'large'), h('p', { class: 'why' }, advice ? advice.why : plainVerdictSentence(cls)));
+
+  // The same colour means different drugs with different reagents: say which kit this camera photo was read as.
+  const kitUsed =
+    !isSample && !isRetake && KITS.length > 1
+      ? h('p', { class: 'kit-used' }, `Read as a test with the ${kit.name.split(' — ')[0]}. Used a different kit? Choose it under “Kit used” on the camera screen and take the photo again.`)
+      : null;
 
   // 2. The test colour next to the kit's colours (not for RETAKE: nothing was compared)
   const s = cap.sample;
@@ -289,6 +298,7 @@ export function resultScreen(root: HTMLElement, go: (route: string) => void): ()
       h('h1', {}, 'Result'),
       sampleLabel,
       verdict,
+      kitUsed,
       retakeHelp,
       colours,
       picture,

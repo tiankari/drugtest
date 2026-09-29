@@ -5,7 +5,7 @@ import { CARD_MESSAGES, type MatAnalysis } from '../pipeline/analyse.ts';
 import { linearLuminance } from '../pipeline/colour.ts';
 import { THRESHOLDS } from '../pipeline/config.ts';
 import { WHITE_IDS } from '../pipeline/flatfield.ts';
-import type { Classification } from '../pipeline/kit.ts';
+import { NO_COLOUR_RETAKE, type Classification, type KitProfile } from '../pipeline/kit.ts';
 import { MAT_V1, type PatchSpec } from '../pipeline/mat.ts';
 import { SAMPLE_MESSAGES } from '../pipeline/samplezone.ts';
 import type { EntryCheck, LogReport, NotedHashCheck } from '../records/log.ts';
@@ -104,9 +104,10 @@ function darkestWhite(a: MatAnalysis): PatchSpec | null {
 /**
  * Plain advice for a RETAKE. `reason` is the sealed/technical reason (card
  * or sample stage); the analysis, when given, says where on the card the
- * problem is. The measurements behind it stay in Technical details.
+ * problem is; the kit, when given, says why "no colour" is not a result. The
+ * measurements behind it stay in Technical details.
  */
-export function retakeAdvice(reason: string, a?: MatAnalysis | null): RetakeAdvice {
+export function retakeAdvice(reason: string, a?: MatAnalysis | null, kit?: KitProfile | null): RetakeAdvice {
   const out = (why: string, tips: string[] = [], showMask = false): RetakeAdvice => ({ why, tips, showMask });
   if (reason === CARD_MESSAGES.uneven) {
     const p = a ? darkestWhite(a) : null;
@@ -135,6 +136,7 @@ export function retakeAdvice(reason: string, a?: MatAnalysis | null): RetakeAdvi
   if (reason === SAMPLE_MESSAGES.patchy) {
     return out('The colour in the white square is uneven, so the app cannot read one colour.', ['A shadow at the edge of the test, a printed label or a mix of colours causes this.', 'Let the colour finish developing, and keep only the test in the white square.', 'The picture below marks what the app read.'], true);
   }
+  if (reason === NO_COLOUR_RETAKE) return out('Nothing coloured in the white square, and this kit does not read that as NEGATIVE.', [kit ? kit.noColourNote : 'Put the test in the white square and take the photo again.']);
   return out(plainRetake(reason));
 }
 

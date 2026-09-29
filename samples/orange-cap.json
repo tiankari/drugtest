@@ -9,6 +9,7 @@
   "title": "Orange cap, not a drug-test colour",
   "kind": "sample-photo",
   "expected": "INCONCLUSIVE",
+  "kitId": "marquis-opiates",
   "capturedAt": "2026-09-28T11:54:23.275Z",
   "note": "Real photo (Nothing phone 3a), cropped to the reference colour card plus 2 mm.",
   "derivedFrom": {

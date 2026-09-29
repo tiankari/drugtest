@@ -6,11 +6,12 @@ import { readFileSync } from 'node:fs';
 import { describe, expect, it } from 'vitest';
 import { ciede2000 } from '../../src/pipeline/ciede2000.ts';
 import type { Vec3 } from '../../src/pipeline/colour.ts';
-import { classify, KitProfileError, latestVersions, parseKitProfile, type KitProfile } from '../../src/pipeline/kit.ts';
+import { classify, KitProfileError, latestVersions, NO_COLOUR_RETAKE, parseKitProfile, type KitProfile } from '../../src/pipeline/kit.ts';
 import { currentKits, loadKits } from '../../scripts/lib/kits.ts';
 
 const marquis = parseKitProfile(JSON.parse(readFileSync('profiles/kit_marquis_opiates_v1.json', 'utf8')));
 const marquis2 = parseKitProfile(JSON.parse(readFileSync('profiles/kit_marquis_opiates_v2.json', 'utf8')));
+const mandelin = parseKitProfile(JSON.parse(readFileSync('profiles/kit_mandelin_stimulants_v1.json', 'utf8')));
 
 function target(id: string, lab: Vec3, radius: number) {
   return { id, label: id, notation: `N ${id}`, sourceName: id, sourceRow: id, lab, radius, radiusDerivation: { rule: 'test', chipTerm: 0, chips: [], correctionErrorTerm: 0 } };
@@ -66,6 +67,47 @@ describe('the Marquis profile v2: five targets, the v1 opiate targets unchanged'
       const c = classify(marquis2, { status: 'found', reason: '', correctedLab: t.lab });
       expect([c.verdict, c.nearest?.targetId]).toEqual(['POSITIVE', t.id]);
     }
+  });
+});
+
+describe('the Mandelin profile v1: cocaine and the amphetamines (NIJ Table 1, A.4)', () => {
+  const t = mandelin.outcomes[0].targets;
+  it('has the three targets from the usual kit reagent rows, published-reference-only', () => {
+    expect(t.map((x) => [x.id, x.notation, x.sourceRow])).toEqual([
+      ['cocaine', '10YR 7/14', 'A.4 Cocaine HCl* CHCl3 69 Deep orange yellow 10YR 7/14'],
+      ['amphetamine', '5BG 5/6', 'A.4 d-Amphetamine HCl* CHCl3 164 Moderate bluish green 5BG 5/6'],
+      ['methamphetamine', '10GY 4/6', 'A.4 d-Methamphetamine HCl* CHCl3 137 Dark yellowish green 10GY 4/6'],
+    ]);
+    expect(mandelin.validation).toBe('published-reference-only');
+    expect(mandelin.validationLine).toMatch(/not yet checked against a real reaction with this app$/);
+    expect(mandelin.source.table).toMatch(/reagent A\.4 \(Mandelin\)/);
+  });
+
+  it('never says NEGATIVE: no source says the reagent is colourless, so no colour is RETAKE', () => {
+    expect(mandelin.noColourResult).toBe('RETAKE');
+    expect(mandelin.outcomes.map((o) => o.verdict)).toEqual(['POSITIVE']);
+    const c = classify(mandelin, { status: 'none', reason: '' });
+    expect([c.verdict, c.reason, c.classified]).toEqual(['RETAKE', NO_COLOUR_RETAKE, false]);
+  });
+
+  it('flags brompheniramine and methaqualone as known false positives (cocaine); salt stays outside', () => {
+    const fp = mandelin.knownNonTargetReactions.filter((n) => n.insidePositiveRadius);
+    expect(fp.map((n) => [n.analyte, n.nearestTarget])).toEqual([
+      ['Brompheniramine Maleate', 'cocaine'],
+      ['Methaqualone', 'cocaine'],
+    ]);
+    const salt = mandelin.knownNonTargetReactions.find((n) => n.analyte === 'Salt')!;
+    expect([salt.nearestTarget, salt.insidePositiveRadius]).toEqual(['cocaine', false]);
+  });
+
+  it('uses the same correction-error term as the Marquis profile', () => {
+    for (const x of t) expect(x.radiusDerivation.correctionErrorTerm).toBe(marquis2.outcomes[0].targets[0].radiusDerivation.correctionErrorTerm);
+  });
+
+  it('classifies each target colour POSITIVE, and the Marquis heroin colour INCONCLUSIVE', () => {
+    for (const x of t) expect(classify(mandelin, { status: 'found', reason: '', correctedLab: x.lab }).nearest?.targetId).toBe(x.id);
+    const heroin = marquis2.outcomes[0].targets.find((x) => x.id === 'heroin')!;
+    expect(classify(mandelin, { status: 'found', reason: '', correctedLab: heroin.lab }).verdict).toBe('INCONCLUSIVE');
   });
 });
 

@@ -41,7 +41,9 @@ const url = server.resolvedUrls!.local[0];
 const shots = mkdtempSync(join(tmpdir(), 'fdtc-eval-'));
 const browser = await chromium.launch({ channel: browserChannel, headless: !process.env.HEADED });
 
-const EXPECT: Record<string, string> = { 'empty-card': 'NEGATIVE', 'orange-cap': 'INCONCLUSIVE', 'drawn-opiate': 'POSITIVE', blurred: 'RETAKE' };
+const EXPECT: Record<string, string> = { 'empty-card': 'NEGATIVE', 'orange-cap': 'INCONCLUSIVE', 'drawn-opiate': 'POSITIVE', 'drawn-stimulant': 'POSITIVE', blurred: 'RETAKE' };
+/** The kit each sample is read with, as its name starts on the result screen. */
+const KIT_OF: Record<string, string> = { 'drawn-stimulant': 'Mandelin reagent' };
 
 try {
   for (const [vp, opts] of [
@@ -74,15 +76,18 @@ try {
     check((await page.locator('ol.how-steps > li').count()) === 5 && (await page.locator('ol.how-steps svg').count()) === 5, 'How it works: 5 numbered steps with icons');
     const how = await visibleText(page);
     check(how.includes('not yet checked on a real reaction') && how.includes('Download card (A4 PDF)'), 'How it works: kit status and the printable card');
+    check(/Marquis reagent[^\n]*: heroin, morphine, codeine, oxycodone, mescaline\./.test(how) && /Mandelin reagent[^\n]*: cocaine, amphetamine, methamphetamine\./.test(how), 'How it works: both kits and what each reads');
     await jargonCheck(page, `How it works (${vp})`);
 
     // Samples
     await page.goto(`${url}#/samples`);
     await page.waitForSelector('.sample-card');
     const titles = await page.$$eval('.sample-card strong', (els) => els.map((e) => e.textContent));
-    check(titles.length === 4, `four samples listed (${titles.join(' | ')})`);
+    check(titles.length === 5, `five samples listed (${titles.join(' | ')})`);
     const badges = await page.$$eval('.sample-card .sample-badge', (els) => els.map((e) => e.textContent));
-    check(badges.filter((b) => b === 'Real photo').length === 3 && badges.includes('Computer-drawn image'), `samples labelled real photo / computer-drawn (${badges.join(', ')})`);
+    check(badges.filter((b) => b === 'Real photo').length === 3 && badges.filter((b) => b === 'Computer-drawn image').length === 2, `samples labelled real photo / computer-drawn (${badges.join(', ')})`);
+    const kitLines = await page.locator('.sample-card .sample-kit').allTextContents();
+    check(kitLines.length === 5 && kitLines.filter((l) => l.includes('Mandelin reagent')).length === 1 && kitLines.filter((l) => l.includes('Marquis reagent')).length === 4, `each sample says which kit reads it (${kitLines.join(' | ')})`);
     await jargonCheck(page, `samples (${vp})`);
     for (const [id, expected] of Object.entries(EXPECT)) {
       await page.goto(`${url}#/samples`);
@@ -93,7 +98,9 @@ try {
       const label = (await page.textContent('.sample-banner')) ?? '';
       check(word === expected, `sample ${id}: the app computed ${word} (expected ${expected})`);
       check(label.startsWith('Sample image'), `sample ${id}: labelled as a sample on the result`);
-      if (id === 'drawn-opiate') check(label.includes('Computer-drawn image') && label.includes('No real reaction was photographed'), 'computer-drawn sample says so on the result');
+      if (id.startsWith('drawn-')) check(label.includes('Computer-drawn image') && label.includes('No real reaction was photographed'), `computer-drawn sample ${id} says so on the result`);
+      const kitLine = (await page.textContent('.kit-validation')) ?? '';
+      check(kitLine.startsWith(`Kit: ${KIT_OF[id] ?? 'Marquis reagent'}`), `sample ${id}: read with its own kit (${kitLine.slice(0, 60)})`);
       if (expected === 'RETAKE') {
         check(!(await page.isVisible('#save-record')) && (await page.isVisible('text=Try another sample')), 'Retake: no save form, one way forward');
         check(((await page.textContent('.why')) ?? '').includes('Hold steady'), 'Retake says why (blur)');
@@ -157,6 +164,8 @@ try {
     await page.goto(`${url}#/test`);
     await page.waitForSelector('.camera-error:not([hidden])', { timeout: 20000 });
     check(await page.isVisible('.camera-error a:has-text("Try a sample")'), 'no camera: the error offers "Try a sample"');
+    check((await page.locator('select.kit-select option').count()) === 2 && ((await page.textContent('.kit-pick')) ?? '').includes('Kit used'), 'camera screen: a labelled picker offers the two kits');
+    check(((await page.textContent('.kit-detects')) ?? '').startsWith('Reads: heroin, morphine, codeine, oxycodone, mescaline'), 'camera screen: the Marquis kit is the default and says what it reads');
     await jargonCheck(page, `camera (${vp})`);
 
     // Settings: developer words stay inside Developer tools.

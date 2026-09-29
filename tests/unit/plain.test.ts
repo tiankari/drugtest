@@ -9,6 +9,8 @@ import { MAT_V1 } from '../../src/pipeline/mat.ts';
 import { combineRegistration, REFERENCE_SCHEMA, type MatReference } from '../../src/pipeline/reference.ts';
 import { readSampleZone, SAMPLE_MESSAGES } from '../../src/pipeline/samplezone.ts';
 import { plainRetake, retakeAdvice } from '../../src/ui/plain.ts';
+import { NO_COLOUR_RETAKE } from '../../src/pipeline/kit.ts';
+import { currentKit } from '../../scripts/lib/kits.ts';
 import { JARGON } from '../e2e/jargon.ts';
 import { placement, renderPhoto, type SampleMark } from '../helpers/synth-card.ts';
 
@@ -91,7 +93,15 @@ describe('Retake advice names where the problem is (synthetic)', () => {
 });
 
 describe('Retake advice without a photo', () => {
-  it.each([...Object.values(CARD_MESSAGES), ...Object.values(SAMPLE_MESSAGES)])('"%s" has plain advice', (reason) => {
+  it('no colour with a kit that does not read it as NEGATIVE: the kit says why', () => {
+    const kit = currentKit('mandelin-stimulants');
+    const adv = retakeAdvice(NO_COLOUR_RETAKE, null, kit);
+    expect(adv.why).toMatch(/^Nothing coloured in the white square/);
+    expect(adv.tips).toEqual([kit.noColourNote]);
+    expect(plain([adv.why, ...adv.tips].join(' '))).toEqual([]);
+  });
+
+  it.each([...Object.values(CARD_MESSAGES), ...Object.values(SAMPLE_MESSAGES), NO_COLOUR_RETAKE])('"%s" has plain advice', (reason) => {
     const adv = retakeAdvice(reason, null);
     expect(adv.why.length).toBeGreaterThan(5);
     expect(plain([adv.why, ...adv.tips].join(' '))).toEqual([]);

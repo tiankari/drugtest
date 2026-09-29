@@ -5,7 +5,9 @@
 // radius in CIEDE2000. The decision is deterministic:
 //
 //   - sample RETAKE (or card RETAKE)   -> never classified;
-//   - no coloured region               -> the profile's noColourResult;
+//   - no coloured region               -> the profile's noColourResult
+//     (RETAKE for a kit whose negative has its own colour, or whose reagent
+//     is not known to be colourless);
 //   - otherwise, for each outcome, d = ΔE00(sample, each target). Exactly one
 //     outcome with a target within its radius -> that outcome, naming the
 //     nearest such target. None, or more than one -> INCONCLUSIVE with a plain
@@ -17,6 +19,9 @@ import { ciede2000 } from './ciede2000.ts';
 import type { Vec3 } from './colour.ts';
 
 export const KIT_SCHEMA = 'fdtc.kit.v1';
+
+/** Reason when a kit with noColourResult RETAKE finds no coloured region (the profile's noColourNote says why). */
+export const NO_COLOUR_RETAKE = 'No coloured region — this kit does not read “no colour” as NEGATIVE; put the test in the sample zone';
 export type KitValidation = 'published-reference-only' | 'validated-on-real-photos';
 export type ColouredOutcome = 'POSITIVE' | 'NEGATIVE';
 export type KitVerdict = 'POSITIVE' | 'NEGATIVE' | 'INCONCLUSIVE';
@@ -174,7 +179,7 @@ export function classify(profile: KitProfile, sample: SampleForClassification): 
   if (sample.status === 'none') {
     return profile.noColourResult === 'NEGATIVE'
       ? { verdict: 'NEGATIVE', reason: 'No colour developed in the sample zone. The app cannot tell this from an empty zone; the photo shows which it was.', classified: true, nearest: null, distances: [] }
-      : { verdict: 'RETAKE', reason: 'No coloured region — this kit’s negative has its own colour; put the test in the sample zone', classified: false, nearest: null, distances: [] };
+      : { verdict: 'RETAKE', reason: NO_COLOUR_RETAKE, classified: false, nearest: null, distances: [] };
   }
   const lab = sample.correctedLab;
   if (!lab || !lab.every(Number.isFinite)) return { verdict: 'RETAKE', reason: 'Sample colour could not be measured', classified: false, nearest: null, distances: [] };

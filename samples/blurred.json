@@ -9,6 +9,7 @@
   "title": "Blurred photo",
   "kind": "sample-photo",
   "expected": "RETAKE",
+  "kitId": "marquis-opiates",
   "capturedAt": "2026-09-28T12:07:54.449Z",
   "note": "Real photo (Nothing phone 3a), cropped to the reference colour card plus 2 mm.",
   "derivedFrom": {

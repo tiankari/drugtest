@@ -9,6 +9,7 @@
   "title": "Opiate-type colour",
   "kind": "sample-drawn",
   "expected": "POSITIVE",
+  "kitId": "marquis-opiates",
   "capturedAt": "2026-09-28T19:07:48.469Z",
   "note": "Computer-drawn image: the reference colour card drawn with copy A's registered colours and, in the white square, the published colour of the Marquis reaction with heroin (7.5RP 3/10). No real reaction was photographed.",
   "derivedFrom": {
