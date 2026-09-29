@@ -13,19 +13,25 @@ pixels at that moment; nothing is hard-coded.
 1. **Open the link.** The Welcome screen says what the app does in one line
    and offers **Start a test (needs the printed card)** and **Try with sample
    images**. Tap **How it works** for the five steps (30 seconds).
-2. **Try with sample images.** Four samples, each labelled *Real photo* or
-   *Computer-drawn image*, with what we expect:
+2. **Try with sample images.** Five samples, each labelled *Real photo* or
+   *Computer-drawn image*, with the kit it is read with and what we expect:
    - **Empty card** (real photo) → **NEGATIVE**: no colour developed.
    - **Orange cap, not a drug-test colour** (real photo) → **INCONCLUSIVE**:
      the colour matches none of the kit's reaction colours.
    - **Opiate-type colour** (computer-drawn; no real reaction was
      photographed) → **POSITIVE**: matches the published colour of the
      Marquis reaction with heroin.
+   - **Methamphetamine-type colour** (computer-drawn, read with the
+     **Mandelin** kit) → **POSITIVE**: matches the published colour of the
+     Mandelin reaction with methamphetamine. The same colour would mean
+     nothing with the Marquis kit: the reagent decides what a colour means.
    - **Blurred photo** (real photo) → **RETAKE**, "Hold steady": the app
      refuses a bad photo instead of guessing.
    Each result shows the test colour next to the kit's colours and the area
    the app read on the straightened card. **Technical details** (collapsed)
-   holds every number.
+   holds every number. How it works lists the two kits and the eight drugs
+   they read (Marquis: heroin, morphine, codeine, oxycodone, mescaline;
+   Mandelin: cocaine, amphetamine, methamphetamine).
 3. **Save one.** On the POSITIVE sample, type any officer ID (e.g.
    `EVALUATOR-1`), optionally a case reference, and tap **Save sealed
    record**. The saved test opens with three checks: ✓ Not changed since it
@@ -52,7 +58,8 @@ filling the on-screen outline.
    Settings). Allow location when asked; if refused, saved tests say so.
 2. The camera screen shows three steps: **1. Put the test in the white
    square. 2. Fit the card in the frame. 3. Hold still and tap Capture.** It
-   also shows the kit ("Marquis reagent — opiate screen", colours from NIJ
+   also shows **Kit used** (Marquis first; choose Mandelin if that is the kit
+   you used), what the kit reads, its line (colours from NIJ
    Standard-0604.01, not yet checked against a real reaction) and the
    location accuracy. The guidance says **Ready — tap to capture** when the
    card is found, sharp and evenly lit.
@@ -60,7 +67,15 @@ filling the on-screen outline.
    from an empty square, so the officer must tick **The test is in the white
    square** before saving (for a demo, say out loud that the square is
    empty).
-4. **Orange cap in the square → INCONCLUSIVE.**
+4. **Orange cap in the square → INCONCLUSIVE**, with its colour next to the
+   kit's colours. An object that is raised, wide or shiny can give a
+   **Retake** instead: the Retake screen says what the app saw and where
+   (for example "the small white patch on the left edge (beside the lower
+   corner of the white square) looks darker than the other white patches",
+   or "Shine in the white square"), and what to try. Keep it flat and inside
+   the white square.
+   With the **Mandelin** kit an empty square is a Retake, never NEGATIVE (no
+   source says the reagent is colourless).
 5. **Save sealed record** with a case reference; the saved test opens with
    its three checks. The **Log** lists it; **Check log** passes.
 6. **Log → Advanced → Log code to write down**: the short code that should go
@@ -68,8 +83,8 @@ filling the on-screen outline.
    comparing with a code written down earlier (**Compare**).
 7. **Download log (for the lab)**, then run the file check below on a laptop.
 
-**POSITIVE on a real card is not possible yet**: no real Marquis reaction has
-been photographed with this app. POSITIVE is shown only from the labelled
+**POSITIVE on a real card is not possible yet**: no real Marquis or Mandelin
+reaction has been photographed with this app. POSITIVE is shown only from the labelled
 computer-drawn sample (and the synthetic tests). **No stand-in object may be
 used to fake a POSITIVE** in a demo.
 

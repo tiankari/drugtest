@@ -9,11 +9,14 @@ signed, hash-chained record (time, GPS, operator ID, SHA-256 of the photo) in a
 searchable log that can be exported and checked independently. The output is a
 **presumptive field result**; it never replaces laboratory confirmation.
 
-The only kit profile is the **Marquis opiate screen** (heroin, morphine,
-codeine), with colours from NIJ Standard-0604.01, **not yet checked against a
-real reaction with this app**; POSITIVE has been tested on synthetic images
-only. See [docs/session2_handoff.md](docs/session2_handoff.md) for the evidence
-and [docs/demo.md](docs/demo.md) for the demo and the tamper demo.
+Two kit profiles, colours from NIJ Standard-0604.01, **not yet checked
+against a real reaction with this app** (POSITIVE has been tested on
+synthetic images only): the **Marquis** screen (heroin, morphine, codeine,
+oxycodone, mescaline) and the **Mandelin** screen (cocaine, amphetamine,
+methamphetamine). See [docs/kit_profiles.md](docs/kit_profiles.md),
+[docs/session4_handoff.md](docs/session4_handoff.md) and
+[docs/session2_handoff.md](docs/session2_handoff.md) for the evidence, and
+[docs/demo.md](docs/demo.md) for the demo and the tamper demo.
 
 **Evaluators without the printed card:** open https://tiankari.github.io/drugtest/
 and tap **Try with sample images**; the two-minute walkthrough is in
@@ -43,8 +46,8 @@ npm run typecheck      # app, no-DOM pipeline, Node scripts
 node scripts/register-mat.ts   # registration photos -> profiles/mat_reference_1_<copy>.json
 node scripts/validate-mat.ts   # every real photo -> docs/validation/mat_v1.md
 node scripts/validate-sample.ts  # sample-zone reader on real photos -> docs/validation/sample_zone_v1.md
-node scripts/build-kit-profile.ts  # NIJ + Munsell data -> Marquis profile analysis (--write to regenerate)
-node scripts/validate-kit.ts   # the kit on real photos + synthetic colours -> docs/validation/kit_marquis_v1.md
+node scripts/build-kit-profile.ts --kit=marquis|mandelin  # NIJ + Munsell data -> kit profile analysis (--write to regenerate)
+node scripts/validate-kit.ts   # each kit on real photos + synthetic colours -> docs/validation/kit_<reagent>_v<n>.md
 node scripts/verify-log.ts <export.zip> [--noted <hash>] [--reanalyse]   # check an exported log
 npm run mat            # regenerate the printable reference colour card into print/
 npm run build          # production build into dist/
