@@ -103,6 +103,34 @@ const KITS: Record<string, KitSpec> = {
     noColourNote: 'Marquis reagent is colourless before it reacts; no colour developed means NEGATIVE. The app cannot tell a colourless negative from an empty zone, so the officer must confirm the test is in the sample zone; the signed photo shows which it was.',
     noMatchReason: 'Colour matches no reaction colour of this kit in the NIJ table',
   },
+  mandelin: {
+    id: 'mandelin-stimulants',
+    version: 1,
+    out: 'profiles/kit_mandelin_stimulants_v1.json',
+    name: 'Mandelin reagent — cocaine and amphetamine screen',
+    block: 'A.4',
+    reagentName: 'Mandelin',
+    reagent: 'Mandelin reagent: ammonium vanadate in concentrated sulfuric acid (NIJ Standard-0604.01 appendix A.4)',
+    validationLine: `Mandelin cocaine and amphetamine screen — ${NOT_CHECKED}`,
+    outcomeLabel: 'Reaction colour of a target drug (NIJ Table 1, Mandelin)',
+    targets: [
+      { id: 'cocaine', label: 'cocaine (HCl)', analyte: 'Cocaine HCl' },
+      { id: 'amphetamine', label: 'amphetamine (d-amphetamine HCl)', analyte: 'd-Amphetamine HCl' },
+      { id: 'methamphetamine', label: 'methamphetamine (d-methamphetamine HCl)', analyte: 'd-Methamphetamine HCl' },
+    ],
+    leftOut: [
+      { analyte: 'Benzphetamine HCl', why: 'a prescription appetite suppressant, not one of the drugs this kit is for; its colour is kept as a non-target reaction' },
+      { analyte: 'Diacetylmorphine HCl', why: 'opiates are read with the Marquis kit; with Mandelin, heroin’s colour is close to the non-target reactions of doxepin and propoxyphene (just outside its radius)' },
+      { analyte: 'Morphine monohydrate', why: 'opiates are read with the Marquis kit; with Mandelin, a radius around morphine’s colour takes in the non-target reactions of doxepin and propoxyphene' },
+      { analyte: 'Codeine', why: 'opiates are read with the Marquis kit; with Mandelin, codeine gives exactly the colour of chlorpromazine, and Exedrine and Dristan fall inside its radius' },
+      { analyte: 'Opium', why: 'opiates are read with the Marquis kit; with Mandelin, a radius around opium’s colour takes in mescaline and the non-target reactions of doxepin and propoxyphene' },
+      { analyte: 'Mescaline HCl', why: 'read with the Marquis kit; with Mandelin, a radius around its colour takes in opium and the non-target reaction of Exedrine' },
+    ],
+    noColourResult: 'RETAKE',
+    noColourNote: 'No saved source says that Mandelin reagent is colourless before it reacts, so with this kit the app does not read “no colour” as NEGATIVE: put the test in the white square and take the photo again. A test whose colour is none of the kit’s colours reads INCONCLUSIVE.',
+    noMatchReason: 'Colour matches no cocaine or amphetamine reaction in the NIJ table',
+    statusExtra: 'This kit never gives NEGATIVE: no saved source says the reagent is colourless, so “no colour” is a RETAKE.',
+  },
 };
 
 const args = Object.fromEntries(process.argv.slice(2).map((a) => a.replace(/^--/, '').split('=')).map(([k, v]) => [k, v ?? true]));

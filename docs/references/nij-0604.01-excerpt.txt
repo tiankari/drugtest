@@ -1,5 +1,5 @@
 NIJ Standard-0604.01 — Color Test Reagents/Kits for Preliminary Identification of Drugs of Abuse
-EXCERPT, for the Marquis (reagent A.5) kit profile.
+EXCERPT, for the Marquis (reagent A.5) and Mandelin (reagent A.4) kit profiles.
 
 Source:   https://www.ojp.gov/pdffiles1/nij/183258.pdf
 Fetched:  2026-09-28
@@ -7,7 +7,8 @@ PDF:      183258.pdf, 176470 bytes, SHA-256 7a0faa664ddaf69f34c28ee2ce9c6103000c
 Licence:  work of the U.S. federal government (Department of Justice), public domain.
 Method:   text extracted with pypdf 6.19.0; lines copied unchanged except where noted.
           In the extracted text the en dash in 'NIJ Standard–0604.01' sometimes comes out as '?'.
-          scripts/build-kit-profile.ts reads the Munsell notations from the TABLE 1 A.5 block below.
+          scripts/build-kit-profile.ts reads the Munsell notations from the TABLE 1 A.5 and A.4 blocks below.
+          The A.4 sections were added on 2026-09-29 from the same PDF and the same pypdf text.
 
 === TITLE BLOCK (page 3 of the PDF) ===
 U.S. Department of Justice
@@ -52,6 +53,41 @@ drugs and other substances
 Analyte Solvent ISCC-
 NIST**
 Color Munsell
+
+=== TABLE 1, ALL ROWS FOR REAGENT A.4 (Mandelin), pages 3-4 ===
+Rows that the PDF text wraps over two or three lines are joined here with single spaces;
+nothing else is changed. Columns as for A.5 below. A '*' after the analyte marks the usual kit reagent
+for that drug. 'Mace5' is Mace with footnote 5 (2-chloroacetophenone), run into the word by the text extraction.
+BEGIN A.4
+A.4 Acetaminophen CHCl3 107 Moderate olive 10Y 5/8
+A.4 Aspirin powder 127 Grayish olive green 2.5GY 4/2
+A.4 Benzphetamine HCl* CHCl3 116 Brilliant yellow green 2.5GY 8/10
+A.4 Brompheniramine Maleate CHCl3 50 Strong orange 7.5YR 7/14
+A.4 Chlorpromazine HCl CHCl3 108 Dark olive 10Y 3/4
+A.4 Cocaine HCl* CHCl3 69 Deep orange yellow 10YR 7/14
+A.4 Codeine* CHCl3 108 Dark olive 10Y 3/4
+A.4 Contac powder 84 Strong yellow 2.5Y 6/10
+A.4 d-Amphetamine HCl* CHCl3 164 Moderate bluish green 5BG 5/6
+A.4 d-Methamphetamine HCl* CHCl3 137 Dark yellowish green 10GY 4/6
+A.4 Diacetylmorphine HCl* CHCl3 43 Moderate reddish brown 10R 3/6
+A.4 Dimethoxy-meth HCl CHCl3 96 Dark olive brown 5Y 2/2
+A.4 Doxepin HCl CHCl3 44 Dark reddish brown 10R 2/4
+A.4 Dristan powder 110 Grayish olive 7.5Y 4/4
+A.4 Exedrine powder 108 Dark olive 7.5Y 3/4
+A.4 Mace5 crystals 125 Moderate olive green 5GY 4/8
+A.4 MDA HCl CHCl3 193 Bluish black 10B 2/2
+A.4 Mescaline HCl* CHCl3 78 Dark yellowish brown 10YR 3/4
+A.4 Methadone HCl CHCl3 187 Dark grayish blue 5B 3/2
+A.4 Methaqualone CHCl3 66 Very orange yellow 10YR 8/14
+A.4 Methylphenidate HCl CHCl3 67 Brilliant orange yellow 2.5Y 8/10
+A.4 Morphine monohydrate* CHCl3 47 Dark grayish reddish Brown 10R 3/2
+A.4 Opium* CHCl3 59 Dark brown 7.5YR 2/4
+A.4 Oxycodone HCl CHCl3 103 Dark greenish yellow 10Y 6/6
+A.4 Procaine HCl CHCl3 51 Deep orange 5YR 5/12
+A.4 Propoxyphene HCl CHCl3 44 Dark reddish brown 10R 2/4
+A.4 Quinine HCl CHCl3 100 Deep greenish yellow 10Y 9/6
+A.4 Salt crystals 50 Strong orange 5YR 7/12
+END A.4
 
 === TABLE 1, ALL ROWS FOR REAGENT A.5 (Marquis), pages 4-5 ===
 Rows that the PDF text wraps over two or three lines are joined here with single spaces;
@@ -99,6 +135,26 @@ Aspirin - - - + + - - - + - - -
 Sugar - - - - + - - - + + - -
 1Substances that gave no colors with these reagents are:  D-galactose, glucose, mannitol, oregano, rosemary, and
   thyme.2Tea, mace, and nutmeg may interfere with the Duquenios test but not the Duquenois-Levine modified test (A.3).
+
+=== TABLE 3, SPECIFICITY OF COLOR TESTS (page 11): every row with '+' under A.4 (the fourth column; columns as in the header above) ===
+Acetominophen - - - + - + - + - - - -
+Aspirin - - - + + - - - + - - -
+Brompheniramine Maleate + - - + - - - - - - - -
+Chlorpromazine HCl + - - + + + - + + + - -
+Contac - - - + - - - - + + - -
+Doxepin HCl + - - + + + - - + + - -
+Dristan - - - + + + - + + + - -
+Exedrine - - - + + + - + + + + -
+Mace2 - - + + + + - - + + - -
+Methaqualone - - - + - - - - - - - -
+Methylphenidate HCl + - - + + - - - - - - +
+Propoxyphene HCl + - - + + - - - + + - -
+Quinine HCl + - - + - - - - - - - -
+Salt - - - + - - - - - - - -
+
+=== APPENDIX A.4, THE REAGENT (page 12) ===
+A.4  Mandelin Reagent
+Dissolve 1.0 g of ammonium vanadate in 100 mL of concentrated sulfuric acid.
 
 === APPENDIX A.5, THE REAGENT (page 12) ===
 A.5  Marquis Reagent
