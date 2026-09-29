@@ -82,6 +82,7 @@ export const CARD_MESSAGES = {
   'id-unreadable': 'Card ID unreadable — show the whole card, flat and in focus',
   closer: 'Move closer',
   glare: 'Glare on the card — tilt the phone',
+  glareZone: 'Glare in the white square — tilt the phone',
   uneven: 'Uneven light — move out of the shadow',
   correction: 'Colour correction unreliable — retake in even light',
 } as const;
@@ -170,7 +171,8 @@ export function analyseMat(img: RgbaImage, opts: AnalyseOptions = {}): MatAnalys
   checks.push({
     id: 'glare',
     pass: worstClip <= T.maxClipFraction.value,
-    message: CARD_MESSAGES.glare,
+    // Name where it is: shine on the test itself is the usual cause in the white square.
+    message: where === 'sample zone' ? CARD_MESSAGES.glareZone : CARD_MESSAGES.glare,
     value: worstClip,
     threshold: T.maxClipFraction.value,
     detail: `most clipped: ${where}`,
