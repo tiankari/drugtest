@@ -7,8 +7,10 @@ Thumbs.db
 # Vitest browser-mode failure screenshots
 .vitest/
 __screenshots__/
-# Local Claude Code settings (per machine)
-.claude/settings.local.json
+# Local agent/editor settings and tool folders (per machine)
+.claude/
+.freebuff/
+CLAUDE.md
 # Real photos stay on this machine (they show the user's surroundings; the repo
 # is public). Only the README and the folder skeleton are tracked.
 data/real/**/*.png

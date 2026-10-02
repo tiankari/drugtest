@@ -1,4 +1,4 @@
-# Session 1 handoff — for writing the Session 2 prompt
+# Session 1 handoff — for Session 2
 
 Project: **SIH26231, Digital Companion for Field Drug Testing** (Smart India
 Hackathon, Ministry of Home Affairs). A **hackathon prototype**; it must be
@@ -12,16 +12,16 @@ and are mandatory for the submission.**
 - Repo: https://github.com/tiankari/drugtest (branch `main`)
 - Live app: https://tiankari.github.io/drugtest/ (GitHub Pages, deployed by
   `.github/workflows/deploy.yml` on every push to `main`)
-- Local folder: the repo root; `CLAUDE.md` is the developer guide and must be
+- Local folder: the repo root; `DEVELOPMENT.md` is the developer guide and must be
   read first in Session 2.
 
-## Rules that carry over (keep them in the Session 2 prompt)
+## Rules that carry over (keep them for Session 2)
 
 **Personal project, git hygiene**
 - Commit as `tiankari <271698808+tiankari@users.noreply.github.com>`, set in the
   repo's local git config only. Never touch global git config or other repos.
 - Never use or write any work/organisational email, account, registry or repo.
-- No AI co-author trailer in commit messages.
+- No co-author or attribution trailers in commit messages.
 - Only remote: `https://tiankari@github.com/tiankari/drugtest.git`, with
   `credential.useHttpPath true`. HTTPS only, no SSH keys, no gh CLI. If git
   offers a stored login for any other account, stop and tell the user; never

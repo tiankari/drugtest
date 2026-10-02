@@ -1,4 +1,4 @@
-# CLAUDE.md — Field drug-test companion (SIH26231)
+# DEVELOPMENT.md — Field drug-test companion (SIH26231)
 
 ## STATUS: Session 4 CLOSED (2026-09-29) — clearer Retakes, eight drugs in two kits
 
@@ -123,7 +123,7 @@ name table and OFL.txt say SIL OFL 1.1), not Google Sans Flex as planned.
 
 This is a personal project. **Never use a work or organisational email,
 account, registry or repo for it, and never write such an address into the
-repo.** No AI co-author trailer in commit messages (user's choice).
+repo.** Plain commit messages: no co-author or attribution trailers.
 
 - Commit identity (repo-local config only; global config is not touched):
   `tiankari <271698808+tiankari@users.noreply.github.com>`.
@@ -378,7 +378,7 @@ OpenCV.js.
   `npm run test:e2e`, `npm run test:e2e:result` and `npm run test:e2e:evaluator`
   after UI/capture changes;
   `npm run test:offline -- [url] [--mobile]` after a deploy (or against a local
-  `preview` from `.claude/launch.json`: `http://localhost:4173/drugtest/`).
+  `npm run preview`: `http://localhost:4173/drugtest/`).
 - `node scripts/validate-mat.ts`, `validate-sample.ts`, `validate-kit.ts`
   regenerate the reports in `docs/validation/` from `data/real/`.
 - `node scripts/build-kit-profile.ts --kit=<marquis|mandelin>` (analysis, into
